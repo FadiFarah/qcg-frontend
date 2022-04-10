@@ -1,0 +1,78 @@
+.qcg-info-card {
+    background: #FFEEED;
+    font-weight: 900;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    border-radius: 0.5em;
+    min-height: fit-content;
+    overflow: hidden;
+    box-shadow: 0 0 1em rgb(202, 202, 202);
+    margin: 1em 0;
+    cursor: pointer;
+
+    .info-card-wrapper {
+        overflow: hidden;
+        min-height: inherit;
+        
+        .ribbon-wrapper {
+            padding: 0 1em;
+            text-align: center;
+            border-radius: 0.5em;
+            background-color: #FFD8D6;
+            box-shadow: 1px 0px 5px rgb(196, 194, 194);
+
+            .ribbon-value {
+                padding: 0.5em 0;
+            }
+
+            .ribbon-icon {
+                font-size: 1.5em;
+            }
+
+            .ribbon-icon-exclamation {
+                color: red;
+            }
+
+            .ribbon-icon-good {
+                color: green;
+            }
+        }
+
+        .content-wrapper {
+            padding: 0 0.5em;
+
+            .info-card-title{
+                padding: 0.2em;
+            }
+
+            .info-wrapper {
+
+                .info-content {
+                    padding: 0.2em;
+
+                    .info-value-good {
+                        color: green;
+                    }
+
+                    .info-value-exclamation {
+                        color: red;
+                    }
+                }
+            }
+
+            .additional-info-wrapper {
+                margin: 0 0.2em;
+
+                input {
+                    text-overflow: ellipsis;
+                    padding: 0.5em;
+                }
+            }
+        }
+        
+    }
+
+}
+
+.qcg-info-card:hover {
+    opacity: 0.5;
+}

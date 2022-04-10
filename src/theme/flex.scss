@@ -1,0 +1,212 @@
+
+@mixin flex($values) {
+    -webkit-box-flex: $values;
+    -moz-box-flex: $values;
+    -webkit-flex: $values;
+    -ms-flex: $values;
+    flex: $values;
+}
+
+.qcg-flex {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.qcg-flex-column {
+    -ms-flex-direction: column;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+
+.qcg-flex-column-reverse {
+    -ms-flex-direction: column-reverse;
+    -webkit-flex-direction: column-reverse;
+    flex-direction: column-reverse;
+}
+
+.qcg-flex-row-reverse {
+    -ms-flex-direction: row-reverse;
+    -webkit-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+}
+
+.qcg-flex-row {
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+}
+
+.qcg-flex-row-nowrap {
+    -ms-flex-flow: row nowrap;
+    -webkit-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+}
+
+.qcg-flex-row-reverse {
+    -ms-flex-direction: row-reverse;
+    -webkit-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+}
+
+.qcg-flex-v-stack {
+    @extend .qcg-flex;
+    @extend .qcg-flex-column;
+    height: 100%;
+}
+
+.qcg-flex-v-stack-reverse {
+    @extend .qcg-flex;
+    @extend .qcg-flex-column-reverse;
+    height: 100%;
+}
+.qcg-flex-h-stack {
+    @extend .qcg-flex;
+    @extend .qcg-flex-row;
+    width: 100%;
+}
+
+.qcg-flex-row-1 {
+    @include flex(1 1 0%);
+}
+
+.qcg-flex-row-2 {
+    @include flex(2 1 0%);
+}
+
+.qcg-flex-row-3 {
+    @include flex(3 1 0%);
+}
+
+.qcg-flex-wrap {
+    @extend .qcg-flex;
+    height: auto;
+    width: auto;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+}
+
+.qcg-flex-center {
+    align-items: center;
+    justify-content: center;
+}
+
+.qcg-flex-start {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.qcg-flex-align-items-end {
+    display: flex;
+    align-items: flex-end;
+}
+
+.qcg-flex-justify-content-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.qcg-flex-align-center {
+    align-items: center;
+}
+
+.qcg-flex-align-self-start {
+    align-self: flex-start;
+}
+
+.qcg-flex-align-self-center {
+    align-self: center;
+}
+
+.qcg-flex-justify-center {
+    justify-content: center;
+}
+
+.qcg-flex-justify-space-around {
+    justify-content: space-around;
+}
+
+.qcg-flex-justify-space-between {
+    justify-content: space-between;
+}
+
+.qcg-flex-justify-space-evenly {
+    justify-content: space-evenly;
+}
+
+.qcg-flex-col {
+    @extend .qcg-flex;
+    overflow-x: auto;
+}
+
+.qcg-flex-col-0-auto {
+    @include flex(0 1 auto);
+}
+
+.qcg-flex-col-1 {
+    @include flex(1 1 100%);
+}
+
+.qcg-flex-col-2 {
+    @include flex(2 1 100%);
+}
+
+.qcg-flex-col-3 {
+    @include flex(3 1 100%);
+}
+
+.qcg-flex-equal {
+    flex-basis: 100%;
+    min-width: 0;
+}
+
+.qcg-flex-grow {
+    flex-grow: 1;
+}
+
+.qcg-flex-shrink {
+    flex-shrink: 1;
+}
+
+.qcg-flex-auto {
+    flex: auto;
+}
+
+.qcg-flex-60 {
+    @include flex(0 0 60%);
+}
+
+.qcg-flex-45 {
+    @include flex(0 0 45%);
+}
+
+.qcg-flex-40 {
+    @include flex(0 0 40%);
+}
+
+.qcg-flex-30 {
+    @include flex(0 0 30%);
+}
+
+.qcg-flex-25 {
+    @include flex(0 0 25%);
+}
+
+.qcg-flex-20 {
+    @include flex(0 0 20%);
+}
+
+.qcg-flex-15 {
+    @include flex(0 0 15%);
+}
+
+.qcg-flex-10 {
+    @include flex(0 0 10%);
+}
+
+.qcg-flex-33 {
+    @include flex(0 0 calc(100% / 3));
+}

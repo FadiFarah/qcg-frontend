@@ -1,0 +1,30 @@
+.popup-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: white;
+    color:black;
+    box-shadow: 0 0 0.8em black;
+    border-radius: 0.5em;
+    padding: 2em;
+    outline: unset;
+    text-align: center;
+
+    .popup-actions,
+    .popup-input,
+    .popup-validation-message {
+        margin-top: 1em;
+    }
+
+    .popup-actions {
+        .cancel-action {
+            color: darkred;
+        }
+    }
+
+    .popup-validation-message {
+        color: rgba(darkred,0.6);
+    }
+}

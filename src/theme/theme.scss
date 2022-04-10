@@ -1,0 +1,13 @@
+.full-height {
+    height: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.single-line-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
