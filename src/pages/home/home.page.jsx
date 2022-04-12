@@ -23,7 +23,7 @@ const HomePage = () => {
         }
     });
     return (
-        <div className="qcg-home-page qcg-flex- qcg-flex-column">
+        <div className="qcg-home-page qcg-flex qcg-flex-column">
             <div id="home" className="qcg-flex qcg-flex-center">
                 <div className="home-wrapper qcg-flex qcg-flex-column">
                     <div className="header">

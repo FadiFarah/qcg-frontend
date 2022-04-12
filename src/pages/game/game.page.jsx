@@ -36,7 +36,7 @@ const GamePage = () => {
               {Array.from(Array(cardNumber), (e, i) => {
                 return (
                   <div key={i} className="card">
-                    <HandCardComponent></HandCardComponent>
+                    <HandCardComponent ></HandCardComponent>
                   </div>
                 );
               })}
@@ -55,20 +55,9 @@ const GamePage = () => {
               onClick={(e) => navigationService(States.Main, {state: {HomePage}})}
               color="light"
             >
-              <ion-label>Home</ion-label>
+              <ion-label>Main Menu</ion-label>
             </ion-fab-button>
-            <ion-fab-button
-              onClick={(e) => navigationService(States.Main, {state: {HomePage}})}
-              color="light"
-            >
-              <ion-label>Rules</ion-label>
-            </ion-fab-button>
-            <ion-fab-button
-              onClick={(e) => navigationService(States.Main, {state: {HomePage}})}
-              color="light"
-            >
-              <ion-label>About</ion-label>
-            </ion-fab-button>
+
             <ion-fab-button
               onClick={(e) => navigationService(States.RoomsList, {state: {RoomsListPage}})}
               color="light"
