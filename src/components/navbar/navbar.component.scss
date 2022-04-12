@@ -1,0 +1,65 @@
+.qcg-navbar {
+    img {
+        width: 120px;
+    }
+
+    ion-title {
+        background-color:#b7094c;
+        height: 8em;
+
+        .nav-items-wrapper {
+
+            .nav-item {
+                color: #fff;
+                text-decoration: none;
+                text-transform: uppercase;
+                font-weight: 600;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .nav-item:hover {
+                color: black;
+            }
+        }
+
+    }
+
+    .floating-button {
+        display: none;
+    }
+
+    ion-fab {
+        top: 2.5em;
+
+        ion-fab-button:first-of-type{
+            --background : black;
+        }
+    }
+
+    ion-fab-list {
+        right: 1em;
+
+        ion-fab-button {
+            margin: 0 0.5em;
+        }
+    }
+
+    ion-fab-button {
+        width: 5em;
+        height: 5em;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .nav-items-wrapper {
+            display: none;
+        }
+
+        .floating-button {
+            display: block;
+        }
+
+        .home-wrapper {
+            width: 90%;
+        }
+    }
+}

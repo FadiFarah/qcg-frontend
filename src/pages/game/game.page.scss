@@ -1,3 +1,73 @@
 .qcg-game-page {
-    
+    background: linear-gradient(to right,#1565C0,#b92b27);;
+    height: 100vh;
+    overflow: hidden;
+    scroll-behavior: smooth;
+
+    ion-fab {
+        top: 2.5em;
+
+        ion-fab-button:first-of-type{
+            --background : black;
+        }
+    }
+
+    ion-label {
+        white-space: initial;
+    }
+
+    ion-fab-list {
+        right: 1em;
+
+        ion-fab-button {
+            margin: 0 0.5em;
+        }
+    }
+
+    ion-fab-button {
+        width: 5em;
+        height: 5em;
+    }
+
+    .game-content {
+
+        .deck-on-table{
+            cursor: pointer;
+            width: 15vh;
+            height: 20vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -100%);
+        }
+
+        .hand-cards {
+            width: 90%;
+            -webkit-overflow-scrolling: auto;
+            
+            .cards-wrapper {
+                padding: 0 3em;
+                margin: 0 1em;
+                -webkit-overflow-scrolling: auto;
+                width: fit-content;
+                overflow-x: scroll;
+                height: 30vh;
+
+                .card {
+                    margin: 0 0.5em;
+                    transition: ease-in 0.3s;
+                }
+                
+                .card:hover {
+                    transform: scale(1.3);
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .game-players {
+        border-radius: 0 5em 5em 0;
+        box-shadow: 0 0 5em rgb(43, 42, 42);
+    }
 }

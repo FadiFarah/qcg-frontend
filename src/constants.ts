@@ -9,13 +9,13 @@ export class Limitations {
 }
 
 export class States {
-    public static Main: string = "";
-    public static RoomsList: string = "rooms-list";
-    public static RoomCreation: string = "room-creation";
-    public static RoomWait: string = "room-wait";
-    public static Game: string = "game";
-    public static Help: string = "help";
-    public static Profile: string = "profile";
+    public static Main: string = "/";
+    public static RoomsList: string = "/rooms-list";
+    public static RoomCreation: string = "/room-creation";
+    public static RoomWait: string = "/room-wait";
+    public static Game: string = "/game";
+    public static Help: string = "/help";
+    public static Profile: string = "/profile";
 }
 
 export class Endpoints {
