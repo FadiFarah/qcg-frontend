@@ -1,3 +1,121 @@
 .qcg-profile-page {
-    
+    height:100vh;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    padding-bottom: 10em;
+    font-family: 'Courier New', Courier, monospace;
+
+    .profile-wrapper {
+        overflow: hidden;
+        position: relative;
+        transform: translate(-50%, 0);
+        left: 50%;
+        top: 0;
+        height: fit-content;
+        width: 80%;
+        background-color: white;
+        border-radius: 2em;
+        box-shadow: 0 0 3em rgb(124, 124, 124);
+        margin: 1em 0;
+    }
+
+    .edit-button {
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: xx-large;
+        transform: translate(0.5em, 0.5em);
+        cursor: pointer;
+    }
+
+    .title-wrapper {
+        h1 {
+            font-weight: bolder;
+            font-size: 7vw;
+        }
+    }
+
+    .input-disabled {
+        opacity: 0.5;
+    }
+
+    input {
+        width: 100%;
+        border-radius: 0.5em;
+        border: 0.5px solid black;
+        padding: 0.5em;
+    }
+
+    input,
+    label {
+        margin: 0.5em 1em;
+    }
+
+    .picture-wrapper {
+        margin: 1em 0;
+        border-radius: 50%;
+        overflow: hidden;
+        width: 20vw;
+        height: 20vw;
+        min-width: 4em;
+        min-height: 4em;
+        transition: 0.2s ease-in;
+        position: relative;
+        cursor: pointer;
+
+        img {
+            pointer-events: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: fit-content;
+            height: inherit;
+        }
+
+        .picture-editable {
+            pointer-events: all;
+        }
+    }
+
+    .picture-wrapper:hover {
+        transform: scale(1.1);
+    }
+
+    .buttons-wrapper {
+        width: 30%;
+        margin: 2em 0 1em 0;
+
+        .button {
+            margin: 0 1em;
+            border-radius: 0.5em;
+            padding: 1em;
+            background-color: #b7094c;
+            color: white;
+            transition: 0.2s ease-in;
+        }
+
+        .button:hover {
+            opacity: 0.5;
+        }
+    }
+
+    @media only screen and (min-width: 768px) {
+        .profile-wrapper {
+            width: 70%;
+        }
+
+        .title-wrapper {
+            h1 {
+                font-size: 3.5em;
+            }
+        }
+    }
+
+    @media only screen and (min-width: 1440px) {
+        .profile-wrapper {
+            align-self: center;
+            width: 50%;
+        }
+    }
 }

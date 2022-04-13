@@ -105,6 +105,10 @@ class AuthenticationService implements IAuthenticationService {
         localStorage.setItem("user", JSON.stringify(this.authenticationInfo.userDetails));
     }
 
+    public updateUserDetails(updatedUser: user): void {
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+    }
+
     public storeUserId(id: string): void {
         localStorage.setItem("userId", id);
     }

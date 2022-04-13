@@ -23,5 +23,6 @@ export class Endpoints {
     public static SignalRRoomsListEndpointPrefix: string = environment.signalRRoomsListEndpointPrefix;
 
     public static Users: string = `${Endpoints.EndpointPrefix}/user`;
+    public static UserById: string = `${Endpoints.EndpointPrefix}/user/{0}`;
     public static Rooms: string = `${Endpoints.EndpointPrefix}/room`;
 }
