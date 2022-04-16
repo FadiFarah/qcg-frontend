@@ -1,23 +1,34 @@
 import "./game.page.scss";
 import "./../../theme/flex.scss";
 import "./../../theme/theme.scss";
-import * as image from "../../assets/exports/images";
-import PlayerInfoComponent from "./components/player-info/player-info.component";
-import HandCardComponent from "./components/hand-card/hand-card.component";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { States } from "../../constants";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Endpoints, States } from "../../constants";
 import HomePage from "../home/home.page";
 import RoomsListPage from "../rooms/rooms-list/rooms-list.page";
 import PopupMessageComponent from "../../components/popup-message/popup-message.component";
+import StartedStateComponent from "./components/started-state/started-state.component";
+import WaitingStateComponent from "./components/waiting-state/waiting-state.component";
+import AuthenticationService from "../../services/authentication.service";
+import * as signalR from "@microsoft/signalr";
 
 const GamePage = () => {
-  const [cardNumber, setCardsNumber] = useState(4);
-  const [popupModalSettings, setPopupModalSettings] = useState({});
-  const [popupAlert, setPopupAlert] = useState(false);
+  const { id } = useParams();
+  const authenticationService = new AuthenticationService();
   const navigationService = useNavigate();
 
-  const handlePopupAlertClose = (e) => {
+  const [popupModalSettings, setPopupModalSettings] = useState({});
+  const [popupAlert, setPopupAlert] = useState(false);
+  const [isWaiting, setIsWaiting] = useState(true);
+  const [room, setRoom] = useState({});
+  const [players, setPlayers] = useState([]);
+  const [isMaster, setIsMaster] = useState(false);
+  const hubConnection = new signalR.HubConnectionBuilder()
+    .withUrl(Endpoints.SignalRGameEndpointPrefix)
+    .configureLogging(signalR.LogLevel.Information)
+    .build();
+
+  const handlePopupAlertClose = () => {
     setPopupAlert(false);
   };
 
@@ -31,46 +42,81 @@ const GamePage = () => {
     setPopupAlert(true);
   };
 
+  const handleStartClick = async () => {
+    const bodyDetails = {
+      roomId: id
+    };
+    await authenticationService.post(`${Endpoints.SignalRGameEndpointPrefix}/gameStarted`, bodyDetails);
+  }
+
+  useEffect(() => {
+    hubConnection.start().then(() => {
+      hubConnection.on("UserConnected", (connectionId) => {
+        if (hubConnection.connectionId === connectionId) {
+          const bodyDetails = {
+            connectionId: hubConnection.connectionId,
+            roomId: id,
+            userId: localStorage.getItem("userId"),
+          };
+          authenticationService.post(`${Endpoints.SignalRGameEndpointPrefix}/addtogroup`, bodyDetails)
+            .then(() => {
+              authenticationService
+                .get(Endpoints.RoomById.replace("{0}", id))
+                .then((resultData) => {
+                  setRoom(resultData.data);
+                  setPlayers(resultData.data.currentUsers);
+                  if (resultData.data.roomMaster._id === localStorage.getItem("userId")) {
+                    setIsMaster(true);
+                  }
+                });
+            });
+        }
+      });
+
+      hubConnection.on("UserDisconnected", () => {
+        console.log("User Disconnected");
+      });
+
+      hubConnection.on("gameDataUpdated", () => {
+        console.log("game data updated");
+        authenticationService
+          .get(Endpoints.RoomById.replace("{0}", id))
+          .then((resultData) => {
+            setRoom(resultData.data);
+            setPlayers(resultData.data.currentUsers);
+          });
+      });
+
+      hubConnection.on("gameStarted", () => {
+        setIsWaiting(false);
+      })
+
+      hubConnection.onclose(() => {
+        console.log("Connection Closed");
+        setTimeout(async () => {
+          console.log("Connection Closed");
+          await hubConnection.start();
+        }, 5000);
+      });
+    });
+  }, []);
+
   return (
     <div className="qcg-game-page">
-      <div className="qcg-flex full-height">
-        <div className="game-players qcg-flex-5">
-          <div className="qcg-flex qcg-flex-column qcg-flex-justify-space-evenly qcg-flex-center full-height">
-            <PlayerInfoComponent></PlayerInfoComponent>
-            <PlayerInfoComponent></PlayerInfoComponent>
-            <PlayerInfoComponent></PlayerInfoComponent>
-            <PlayerInfoComponent></PlayerInfoComponent>
+      {
+        isWaiting ?
+          <div className="qcg-flex qcg-flex-center full-height">
+            <WaitingStateComponent isMaster={isMaster} handleStartClick={handleStartClick} players={players} room={room}></WaitingStateComponent>
           </div>
-        </div>
-        <div className="game-content qcg-flex qcg-flex-column-reverse full-height full-width">
-          <div
-            onClick={() => setCardsNumber(cardNumber + 1)}
-            className="deck-on-table"
-          >
-            <img src={image.MidDeck}></img>
-          </div>
-          <div className="hand-cards qcg-flex qcg-flex-justify-center">
-            <div className="cards-wrapper qcg-flex">
-              {Array.from(Array(cardNumber), (e, i) => {
-                return (
-                  <div key={i} className="card qcg-flex qcg-flex-column">
-                    <HandCardComponent
-                      handleInfoButtonClick={handleInfoButtonClick}
-                    ></HandCardComponent>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </div>
-
+          :
+          <StartedStateComponent handleInfoButtonClick={handleInfoButtonClick}></StartedStateComponent>
+      }
       <div className="floating-button">
         <ion-fab horizontal="end" vertical="top" slot="fixed">
           <ion-fab-button>
-            <ion-icon name="chevron-back-outline"></ion-icon>
+            <ion-icon name="chevron-down-outline"></ion-icon>
           </ion-fab-button>
-          <ion-fab-list side="start">
+          <ion-fab-list side="bottom">
             <ion-fab-button
               onClick={(e) =>
                 navigationService(States.Main, { state: { HomePage } })

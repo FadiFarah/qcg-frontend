@@ -9,6 +9,7 @@ import zebra from '../images/zebra.svg';
 import eggplant from '../images/eggplant.svg';
 import cards_for_player from '../images/cards_for_player.svg';
 import StartGameButton from '../images/StartGameButton.svg';
+import crown from "../images/crown.svg";
 //import CardOnCard from '../images/CardOnCard.svg';
 import MidDeck from '../images/MidDeck.svg';
 export {
@@ -25,6 +26,6 @@ export {
     eggplant,
     //CardOnCard,
     MidDeck,
-    StartGameButton
-
+    StartGameButton,
+    crown
 };

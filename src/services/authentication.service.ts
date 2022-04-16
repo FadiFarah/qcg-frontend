@@ -86,7 +86,7 @@ class AuthenticationService implements IAuthenticationService {
         });
     }
 
-    public storeAuthenticationInfo(tokenClaims: any): void {
+    public storeAuthenticationInfo(tokenClaims: any, accessToken: any): void {
         this._authenticationInfo = {
             userDetails: {
                 email: tokenClaims.email,
@@ -98,10 +98,10 @@ class AuthenticationService implements IAuthenticationService {
                 picture: tokenClaims.picture,
                 sub: tokenClaims.sub
             },
-            authenticationToken: tokenClaims.__raw
+            authenticationToken: accessToken
         };
         
-        localStorage.setItem("auth", tokenClaims.__raw);
+        localStorage.setItem("auth", accessToken);
         localStorage.setItem("user", JSON.stringify(this.authenticationInfo.userDetails));
     }
 

@@ -179,6 +179,10 @@
     @include flex(0 0 60%);
 }
 
+.qcg-flex-50 {
+    @include flex(0 0 50%);
+}
+
 .qcg-flex-45 {
     @include flex(0 0 45%);
 }
