@@ -19,10 +19,12 @@ export class States {
 }
 
 export class Endpoints {
-    public static EndpointPrefix: string = environment.localEndpointPrefix;
+    public static EndpointPrefix: string = environment.serverEndpointPrefix;
     public static SignalRRoomsListEndpointPrefix: string = environment.signalRRoomsListEndpointPrefix;
+    public static SignalRGameEndpointPrefix: string = environment.signalRGameEndpointPrefix;
 
     public static Users: string = `${Endpoints.EndpointPrefix}/user`;
     public static UserById: string = `${Endpoints.EndpointPrefix}/user/{0}`;
     public static Rooms: string = `${Endpoints.EndpointPrefix}/room`;
+    public static RoomById: string = `${Endpoints.EndpointPrefix}/room/{0}`;
 }

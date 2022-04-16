@@ -10,17 +10,19 @@ const HomePage = () => {
     const authenticationService = new AuthenticationService();
     const httpHandlerService = new HttpHandlerService();
     const navigationService = useNavigate();
-    const { user, isAuthenticated, getIdTokenClaims } = useAuth0();
-    getIdTokenClaims().then((token) => {
-        if(token) {
-            if(!authenticationService.getAuthenticationInfo()) {
-                authenticationService.storeAuthenticationInfo(token);
-                httpHandlerService.post(Endpoints.Users, authenticationService.authenticationInfo.userDetails)
-                    .then((result) => {
-                        authenticationService.storeUserId(result.data._id);
-                    });
-            }
-        }
+    const { user, isAuthenticated, getIdTokenClaims, getAccessTokenSilently } = useAuth0();
+    getAccessTokenSilently().then((accessToken) => {
+        getIdTokenClaims().then((tokenClaims) => {
+            if(tokenClaims) {
+                if(!authenticationService.getAuthenticationInfo()) {
+                    authenticationService.storeAuthenticationInfo(tokenClaims, accessToken);
+                    httpHandlerService.post(Endpoints.Users, authenticationService.authenticationInfo.userDetails)
+                        .then((result) => {
+                            authenticationService.storeUserId(result.data._id);
+                        });
+                    }
+                }
+        });
     });
     return (
         <div className="qcg-home-page qcg-flex qcg-flex-column">

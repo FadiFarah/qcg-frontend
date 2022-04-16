@@ -36,9 +36,9 @@ const NavbarComponent = (props) => {
         <div className="floating-button">
           <ion-fab horizontal="end" vertical="top" slot="fixed">
               <ion-fab-button>
-                <ion-icon name="chevron-back-outline"></ion-icon>
+                <ion-icon name="chevron-down-outline"></ion-icon>
               </ion-fab-button>
-              <ion-fab-list side="start">
+              <ion-fab-list side="bottom">
                 <ion-fab-button href="#home" onClick={(e) => handleClick(e, States.Main)} color="light">
                   <ion-label>Home</ion-label>
                 </ion-fab-button>

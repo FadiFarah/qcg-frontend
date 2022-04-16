@@ -1,0 +1,148 @@
+.qcg-waiting-state {
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+    border: 1px solid;
+    border-radius: 1em;
+    box-shadow: 0 0 1em rgb(167, 167, 167);
+    width: 80%;
+    min-height: 73%;
+    max-height: 90%;
+
+    .page-title {
+        color: white;
+        padding-bottom: 0.5em;
+        text-align: center;
+        font-size: 3em;
+        border-bottom: 3px solid black;
+        margin: 0 2em;
+    }
+
+    .room-name {
+        color: rgb(209, 207, 207);
+        font-style: italic;
+        padding: 1em;
+    }
+
+    .player {
+        height: 50%;
+        border: 1px solid;
+        background-color: rgb(219, 225, 226);
+        border-radius: 1em;
+        padding: 0.5em;
+
+        .image-wrapper {
+            margin-bottom: 1.5em;
+            position: relative;
+            overflow: hidden;
+            width: 9em;
+            height: 9em;
+            background-color: rgb(255, 255, 255);
+            border-radius: 50%;
+            
+            .player-image {
+                height: -webkit-fill-available;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+    
+        .player-info {
+            height: 7vh;
+            border: 2px inset black;
+            margin-bottom: 1em;
+
+            &.room-master {
+                border: 2px inset gold;
+            }
+
+            .master-crown-image {
+                width: 2em;
+            }
+
+            .name,
+            .master-crown-image {
+                margin: 0 0.5em;
+            }
+        }
+    }
+
+    .button-wrapper {
+        padding: 1em;
+        border-top: 1px solid black;
+        
+        button {
+            background: black;
+            color: white;
+            border-radius: 0.5em;
+            margin: 0 auto;
+            padding: 0.5em;
+            font-size: 1.2em;
+            transition: 0.2s ease-in;
+        }
+
+        button:hover {
+            background: rgb(204, 204, 204);
+            color: rgb(129, 127, 127);
+        }
+    }
+
+    @media only screen and (max-height: 653px){
+        .player {
+            .image-wrapper {
+                width: 7vw;
+                height: 7vw;
+            }
+
+            .player-info {
+                height: 5vh;
+                margin-bottom: unset;
+            }
+        }
+
+        .page-title {
+            font-size: 1.5em;
+        }
+
+        .button-wrapper {
+            min-height: 2vh;
+            padding: unset;
+
+            button {
+                flex: 0 0 30%;
+                padding: unset;
+            }
+        }
+    }
+
+    @media only screen and (max-width: 768px) and (min-height: 653px){
+        &.qcg-waiting-state {
+            min-height: 55%;
+        }
+
+        .player {
+            .image-wrapper {
+                width: 5em;
+                height: 5em;
+            }
+
+            .name {
+                font-size: 0.8em;
+            }
+
+        }
+
+        .page-title {
+            font-size: 1.5em;
+        }
+
+        .button-wrapper {
+            button {
+                flex: 0 0 40%;
+            }
+        }
+    }
+}

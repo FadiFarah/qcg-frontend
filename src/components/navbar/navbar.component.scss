@@ -10,6 +10,7 @@
         .nav-items-wrapper {
 
             .nav-item {
+                margin: 0.5em;
                 color: #fff;
                 text-decoration: none;
                 text-transform: uppercase;
@@ -30,6 +31,7 @@
 
     ion-fab {
         top: 2.5em;
+        right: 1.5em;
 
         ion-fab-button:first-of-type{
             --background : black;
@@ -42,10 +44,10 @@
     }
 
     ion-fab-list {
-        right: 1em;
+        top: 0.5em;
 
         ion-fab-button {
-            margin: 0 0.5em;
+            margin: 0.5em 0;
         }
     }
 
@@ -54,7 +56,7 @@
         height: 5em;
     }
 
-    @media only screen and (max-width: 768px) {
+    @media only screen and (max-width: 768px) and (min-height: 376px) {
         .nav-items-wrapper {
             display: none;
         }
