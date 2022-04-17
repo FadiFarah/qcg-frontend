@@ -1,3 +1,43 @@
 .qcg-room-creation-page {
-    
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-transform: uppercase;
+  // overflow: scroll;
+  overflow-y: scroll;
+  line-height: normal;
+  height: 80vh;
+
+  .wrapper {
+    height: 100%;
+    width: 80%;
+
+    .creation-wrapper {
+      // overflow: hidden;
+      // overflow: scroll;
+      height: fit-content;
+      // width: 80%;
+      background-color: white;
+      border-radius: 2em;
+      box-shadow: 0 0 3em rgb(124, 124, 124);
+      margin: 1.5em 0;
+      padding: 1em;
+
+      // .create-button {
+      //   overflow-y: scroll;
+      // }
+    }
+  }
+
+  @media only screen and (max-width: 900px) and (max-height: 420px) {
+    &.qcg-room-creation-page {
+      height: 55vh;
+      .wrapper {
+        display: flex;
+        justify-content: center;
+
+        .creation-wrapper {
+          width: 80%;
+        }
+      }
+    }
+  }
 }
