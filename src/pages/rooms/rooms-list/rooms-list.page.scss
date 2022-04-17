@@ -1,82 +1,82 @@
 .qcg-rooms-list-page {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    height: calc(100vh - 10em);
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  height: calc(100vh - 10em);
+  overflow-y: scroll;
+
+  .react-tabs {
+    background-color: rgb(255, 255, 255);
+    padding: 2em;
+    border-radius: 1em;
+    box-shadow: 0 0 1em rgb(153, 152, 152);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .react-tabs__tab-list {
+    display: flex;
+    justify-content: center;
+    margin: 1em 0;
+    padding: 0;
+    color: rgb(0, 0, 0);
+    background: #eed2d2;
+    height: fit-content;
+    border: unset;
+    border-radius: 0.5em;
+    overflow: hidden;
+  }
+
+  .react-tabs__tab {
+    width: 100%;
+    border: unset;
+    padding: 1em 2em;
+    text-align: center;
+  }
+
+  .react-tabs__tab--selected::after {
+    content: none;
+  }
+
+  @keyframes tabSwitch {
+    from {
+      background: #eed2d2;
+    }
+    to {
+      background: rgb(228, 198, 198);
+    }
+  }
+
+  .react-tabs__tab--selected {
+    background: rgb(228, 198, 198);
+    color: rgb(255, 255, 255);
+    border: unset;
+    bottom: 0;
+    border-radius: 0;
+    animation-name: tabSwitch;
+    animation-duration: 400ms;
+    animation-timing-function: ease-in;
+  }
+
+  .react-tabs__tab-panel {
     overflow-y: scroll;
+    padding: 0 1em;
+    max-height: 40em;
+  }
 
-    .react-tabs {
-        background-color: rgb(255, 255, 255);
-        padding: 2em;
-        border-radius: 1em;
-        box-shadow: 0 0 1em rgb(153, 152, 152);
-        display: flex;
-        flex-direction: column;
-      } 
-      
-      .react-tabs__tab-list {
-        display: flex;
-        justify-content: center;
-        margin: 1em 0;
-        padding: 0;
-        color: rgb(0, 0, 0);
-        background: #eed2d2;
-        height: fit-content;
-        border: unset;
-        border-radius: 0.5em;
-        overflow: hidden;
-      }
-      
-      .react-tabs__tab {
-        width: 100%;
-        border: unset;
-        padding: 1em 2em;
-        text-align: center;
-      }
+  @keyframes fadeIn {
+    from {
+      padding: 0 30em;
+      opacity: 0;
+    }
+    to {
+      padding: 0em;
+      opacity: 1;
+    }
+  }
 
-      .react-tabs__tab--selected::after {
-        content: none;
-      }
-      
-      @keyframes tabSwitch {
-        from {
-          background: #eed2d2;  
-        }
-        to {
-          background: rgb(228, 198, 198);
-        } 
-      }
-
-      .react-tabs__tab--selected {
-        background: rgb(228, 198, 198);
-        color: rgb(255, 255, 255);
-        border: unset;
-        bottom: 0;
-        border-radius: 0;
-        animation-name: tabSwitch;
-        animation-duration: 400ms;
-        animation-timing-function: ease-in;
-      }
-      
-      .react-tabs__tab-panel {
-        overflow-y: scroll;
-        padding: 0 1em;
-        max-height: 40em;
-      }
-
-      @keyframes fadeIn {
-        from {
-          padding: 0 30em;
-          opacity: 0;
-        }
-        to {
-          padding: 0em;
-          opacity: 1;
-          
-        } 
-      }
-      
-      .react-tabs__tab-panel--selected {
-        animation-name: fadeIn;
-        animation-duration: 500ms;
-        animation-timing-function: linear;
-      }
+  .react-tabs__tab-panel--selected {
+    animation-name: fadeIn;
+    animation-duration: 500ms;
+    animation-timing-function: linear;
+  }
 }
