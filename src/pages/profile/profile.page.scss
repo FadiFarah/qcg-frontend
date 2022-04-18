@@ -1,8 +1,7 @@
 .qcg-profile-page {
-    height:100vh;
+    height: calc(100vh - 10em);
     overflow-y: scroll;
     scroll-behavior: smooth;
-    padding-bottom: 10em;
     font-family: 'Courier New', Courier, monospace;
 
     .profile-wrapper {

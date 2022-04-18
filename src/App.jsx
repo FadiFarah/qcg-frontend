@@ -19,13 +19,13 @@ function App() {
     }
     else {
         return (
-            <div>
-                <div className="qcg-flex qcg-flex-column">
+                <div className="qcg-app qcg-flex qcg-flex-column">
                     <BrowserRouter>
                     {
                         !window.location.pathname.includes(States.Game) &&
                         <NavbarComponent></NavbarComponent>
                     }
+                    <div className="routes">
                         <Routes>
                             <Route path={States.Main} element={<HomePage />} />
                             <Route path={States.Profile} element={<ProfilePage />} />
@@ -34,9 +34,9 @@ function App() {
                             <Route path={`${States.Game}/:id`} element={<GamePage />} />
                             <Route path={States.Help} element={<HelpPage />} />
                         </Routes>
+                    </div>
                     </BrowserRouter>
                 </div>
-            </div>
         );
     }
 }
