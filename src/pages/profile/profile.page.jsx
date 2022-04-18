@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoaderCompletedComponent from "../../components/loader-completed/loader-completed.component";
 import { Endpoints } from "../../constants";
 import AuthenticationService from "../../services/authentication.service";
@@ -8,15 +8,26 @@ import "./profile.page.scss";
 
 const ProfilePage = () => {
     const authenticationService = new AuthenticationService();
-    const userDetails = authenticationService.getAuthenticationInfo().userDetails;
-    const [email, setEmail] = useState(userDetails.email);
-    const [firstName, setFirstName] = useState(userDetails.firstName);
-    const [lastName, setLastName] = useState(userDetails.lastName);
-    const [profileImage, setProfileImage] = useState(userDetails.picture);
+    const [email, setEmail] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [profileImage, setProfileImage] = useState("");
+    const [sub, setSub] = useState("");
     const [isEdit, setIsEdit] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { logout } = useAuth0();
     var fileInput;
+
+    useEffect(() => {
+        authenticationService.get(Endpoints.UserById.replace("{0}", authenticationService.getUserId()))
+            .then((user) => {
+                setEmail(user.data.email);
+                setFirstName(user.data.firstName);
+                setLastName(user.data.lastName);
+                setProfileImage(user.data.picture);
+                setSub(user.data.sub.split("|")[0]);
+            });
+    }, [null])
 
     const onEditClick = () => {
         setIsEdit(!isEdit);
@@ -76,7 +87,7 @@ const ProfilePage = () => {
                 </div>
                 <div className="email-wrapper full-width qcg-flex">
                     <label className="qcg-flex qcg-flex-20">Email</label>
-                    <input type="email" disabled={!isEdit} className={`qcg-flex qcg-flex-60 ${!isEdit && 'input-disabled'}`} value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                    <input type="email" disabled={!isEdit || sub !== "auth0"} className={`qcg-flex qcg-flex-60 ${(!isEdit || sub !== "auth0") && 'input-disabled'}`} value={email} onChange={(e) => setEmail(e.target.value)}></input>
                 </div>
                 <div className="first-name-wrapper full-width qcg-flex">
                     <label className="qcg-flex qcg-flex-20">First Name</label>
