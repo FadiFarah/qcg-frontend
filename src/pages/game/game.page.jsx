@@ -44,10 +44,13 @@ const GamePage = () => {
 
   const handleStartClick = async () => {
     const bodyDetails = {
-      roomId: id
+      roomId: id,
     };
-    await authenticationService.post(`${Endpoints.SignalRGameEndpointPrefix}/gameStarted`, bodyDetails);
-  }
+    await authenticationService.post(
+      `${Endpoints.SignalRGameEndpointPrefix}/gameStarted`,
+      bodyDetails
+    );
+  };
 
   useEffect(() => {
     hubConnection.start().then(() => {
@@ -58,14 +61,21 @@ const GamePage = () => {
             roomId: id,
             userId: localStorage.getItem("userId"),
           };
-          authenticationService.post(`${Endpoints.SignalRGameEndpointPrefix}/addtogroup`, bodyDetails)
+          authenticationService
+            .post(
+              `${Endpoints.SignalRGameEndpointPrefix}/addtogroup`,
+              bodyDetails
+            )
             .then(() => {
               authenticationService
                 .get(Endpoints.RoomById.replace("{0}", id))
                 .then((resultData) => {
                   setRoom(resultData.data);
                   setPlayers(resultData.data.currentUsers);
-                  if (resultData.data.roomMaster._id === localStorage.getItem("userId")) {
+                  if (
+                    resultData.data.roomMaster._id ===
+                    localStorage.getItem("userId")
+                  ) {
                     setIsMaster(true);
                   }
                 });
@@ -89,7 +99,7 @@ const GamePage = () => {
 
       hubConnection.on("gameStarted", () => {
         setIsWaiting(false);
-      })
+      });
 
       hubConnection.onclose(() => {
         console.log("Connection Closed");
@@ -103,14 +113,20 @@ const GamePage = () => {
 
   return (
     <div className="qcg-game-page">
-      {
-        isWaiting ?
-          <div className="qcg-flex qcg-flex-center full-height">
-            <WaitingStateComponent isMaster={isMaster} handleStartClick={handleStartClick} players={players} room={room}></WaitingStateComponent>
-          </div>
-          :
-          <StartedStateComponent handleInfoButtonClick={handleInfoButtonClick}></StartedStateComponent>
-      }
+      {isWaiting ? (
+        <div className="qcg-flex qcg-flex-center full-height">
+          <WaitingStateComponent
+            isMaster={isMaster}
+            handleStartClick={handleStartClick}
+            players={players}
+            room={room}
+          ></WaitingStateComponent>
+        </div>
+      ) : (
+        <StartedStateComponent
+          handleInfoButtonClick={handleInfoButtonClick}
+        ></StartedStateComponent>
+      )}
       <div className="floating-button">
         <ion-fab horizontal="end" vertical="top" slot="fixed">
           <ion-fab-button>

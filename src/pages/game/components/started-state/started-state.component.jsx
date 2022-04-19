@@ -4,29 +4,58 @@ import "../../../../theme/flex.scss";
 import * as image from "./../../../../assets/exports/images";
 import PlayerInfoComponent from "../player-info/player-info.component";
 import HandCardComponent from "../hand-card/hand-card.component";
-import {useState} from "react";
+import PopOverComponent from "../pop-over/pop-over.component";
+import { useState } from "react";
 
 const StartedStateComponent = (props) => {
-  const [cardNumber,
-    setCardsNumber] = useState(4);
+  const [cardNumber, setCardsNumber] = useState(4);
+  const [id, setId] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
   const handleInfoButtonClick = () => {
     props.handleInfoButtonClick();
-  }
+  };
+
+  const handlePlayerInfoClick = (id) => {
+    setId(id);
+    setIsOpen(true);
+  };
 
   return (
     <div className="qcg-started-state qcg-flex full-height">
+      <PopOverComponent id={id} isOpen={isOpen}></PopOverComponent>
       <div className="game-players qcg-flex-5">
-        <div
-          className="qcg-flex qcg-flex-column qcg-flex-justify-space-evenly qcg-flex-center full-height">
-          <PlayerInfoComponent></PlayerInfoComponent>
-          <PlayerInfoComponent></PlayerInfoComponent>
-          <PlayerInfoComponent></PlayerInfoComponent>
-          <PlayerInfoComponent></PlayerInfoComponent>
+        <div className="qcg-flex qcg-flex-column qcg-flex-justify-space-evenly qcg-flex-center full-height">
+          <div id={1}>
+            <PlayerInfoComponent
+              id={1}
+              handlePlayerInfoClick={handlePlayerInfoClick}
+            ></PlayerInfoComponent>
+          </div>
+          <div id={2}>
+            <PlayerInfoComponent
+              id={2}
+              handlePlayerInfoClick={handlePlayerInfoClick}
+            ></PlayerInfoComponent>
+          </div>
+          <div id={3}>
+            <PlayerInfoComponent
+              id={3}
+              handlePlayerInfoClick={handlePlayerInfoClick}
+            ></PlayerInfoComponent>
+          </div>
+          <div id={4}>
+            <PlayerInfoComponent
+              id={4}
+              handlePlayerInfoClick={handlePlayerInfoClick}
+            ></PlayerInfoComponent>
+          </div>
         </div>
       </div>
-      <div
-        className="game-content qcg-flex qcg-flex-column-reverse full-height full-width">
-        <div onClick={() => setCardsNumber(cardNumber + 1)} className="deck-on-table">
+      <div className="game-content qcg-flex qcg-flex-column-reverse full-height full-width">
+        <div
+          onClick={() => setCardsNumber(cardNumber + 1)}
+          className="deck-on-table"
+        >
           <img src={image.MidDeck}></img>
         </div>
         <div className="hand-cards qcg-flex qcg-flex-justify-center">
@@ -34,7 +63,9 @@ const StartedStateComponent = (props) => {
             {Array.from(Array(cardNumber), (e, i) => {
               return (
                 <div key={i} className="card qcg-flex qcg-flex-column">
-                  <HandCardComponent handleInfoButtonClick={handleInfoButtonClick}></HandCardComponent>
+                  <HandCardComponent
+                    handleInfoButtonClick={handleInfoButtonClick}
+                  ></HandCardComponent>
                 </div>
               );
             })}
