@@ -54,33 +54,26 @@ const GamePage = () => {
 
   useEffect(() => {
     hubConnection.start().then(() => {
-      hubConnection.on("UserConnected", (connectionId) => {
-        if (hubConnection.connectionId === connectionId) {
+      hubConnection.on("UserConnected", async (connectionId) => {
+        if (connectionId === hubConnection.connectionId) {
           const bodyDetails = {
             connectionId: hubConnection.connectionId,
             roomId: id,
             userId: localStorage.getItem("userId"),
           };
-          authenticationService
-            .post(
-              `${Endpoints.SignalRGameEndpointPrefix}/addtogroup`,
-              bodyDetails
-            )
-            .then(() => {
-              authenticationService
-                .get(Endpoints.RoomById.replace("{0}", id))
-                .then((resultData) => {
-                  setRoom(resultData.data);
-                  setPlayers(resultData.data.currentUsers);
-                  if (
-                    resultData.data.roomMaster._id ===
-                    localStorage.getItem("userId")
-                  ) {
-                    setIsMaster(true);
-                  }
-                });
-            });
+          await authenticationService.post(`${Endpoints.SignalRGameEndpointPrefix}/addtogroup`, bodyDetails);
         }
+        authenticationService
+          .get(Endpoints.RoomById.replace("{0}", id))
+          .then((resultData) => {
+            var roomById = resultData.data;
+            setRoom(roomById);
+            setPlayers(roomById.players);
+            var masterRoom = roomById.players.find(player => player.isMaster);
+            if (masterRoom && masterRoom.userId === localStorage.getItem("userId")) {
+              setIsMaster(true);
+            }
+          });
       });
 
       hubConnection.on("UserDisconnected", () => {
@@ -92,8 +85,13 @@ const GamePage = () => {
         authenticationService
           .get(Endpoints.RoomById.replace("{0}", id))
           .then((resultData) => {
-            setRoom(resultData.data);
-            setPlayers(resultData.data.currentUsers);
+            var roomById = resultData.data;
+            setRoom(roomById);
+            setPlayers(roomById.players);
+            var masterRoom = roomById.players.find(player => player.isMaster);
+            if (masterRoom && masterRoom.userId === localStorage.getItem("userId")) {
+              setIsMaster(true);
+            }
           });
       });
 
@@ -113,20 +111,14 @@ const GamePage = () => {
 
   return (
     <div className="qcg-game-page">
-      {isWaiting ? (
-        <div className="qcg-flex qcg-flex-center full-height">
-          <WaitingStateComponent
-            isMaster={isMaster}
-            handleStartClick={handleStartClick}
-            players={players}
-            room={room}
-          ></WaitingStateComponent>
-        </div>
-      ) : (
-        <StartedStateComponent
-          handleInfoButtonClick={handleInfoButtonClick}
-        ></StartedStateComponent>
-      )}
+      {
+        isWaiting ?
+          <div className="qcg-flex qcg-flex-center full-height">
+            <WaitingStateComponent isMaster={isMaster} handleStartClick={handleStartClick} players={players}></WaitingStateComponent>
+          </div>
+          :
+          <StartedStateComponent handleInfoButtonClick={handleInfoButtonClick}></StartedStateComponent>
+      }
       <div className="floating-button">
         <ion-fab horizontal="end" vertical="top" slot="fixed">
           <ion-fab-button>
