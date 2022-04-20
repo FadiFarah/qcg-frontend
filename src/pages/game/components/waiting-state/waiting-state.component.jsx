@@ -3,7 +3,7 @@ import "../../../../theme/theme.scss";
 import "../../../../theme/flex.scss";
 import * as image from "../../../../assets/exports/images"
 
-const WaitingStateComponent = ({players, room, isMaster, handleStartClick}) => {
+const WaitingStateComponent = ({players, isMaster, handleStartClick}) => {
     return (
         <div className="qcg-waiting-state qcg-flex qcg-flex-column full-width full-height">
             <div className="qcg-flex qcg-flex-column full-width full-height">
@@ -15,16 +15,16 @@ const WaitingStateComponent = ({players, room, isMaster, handleStartClick}) => {
                     <div className="qcg-flex-wrap full-width full-height">
                         {
                             players.map(player => {
-                                return <div key={player._id} className="player qcg-flex-column qcg-flex-50 qcg-flex-justify-center">
+                                return <div key={player.userId} className="player qcg-flex-column qcg-flex-50 qcg-flex-justify-center">
                                     <div className="qcg-flex full-width qcg-flex-justify-center">
                                         <div className="image-wrapper">
                                             <img className="player-image" src={player.picture}></img>
                                         </div>
                                     </div>
-                                    <div className={`qcg-flex qcg-flex-center player-info  ${room.roomMaster.email === player.email && 'room-master'} `}>
-                                        <div className="name">{`${player.firstName} ${player.lastName}`}</div>
+                                    <div className={`qcg-flex qcg-flex-center player-info  ${player.isMaster && 'room-master'} `}>
+                                        <div className="name">{`${player.fullName}`}</div>
                                         {
-                                            room.roomMaster.email === player.email &&
+                                            player.isMaster &&
                                             <div className="master-crown-image">
                                                 <img src={image.crown}></img>
                                             </div>

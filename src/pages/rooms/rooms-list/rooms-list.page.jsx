@@ -41,7 +41,7 @@ const RoomsListPage = () => {
     });
 
     if (roomById.isWaiting) {
-      if (roomById.currentUsers && roomById.currentUsers.length < Limitations.MaxPlayers) {
+      if (roomById.players && roomById.players.length < Limitations.MaxPlayers) {
         if (roomById.isPublic) {
           navigationService(States.Game + "/" + id, {state: {GamePage}})
           console.log("Entered the room");
@@ -88,7 +88,7 @@ const RoomsListPage = () => {
 
   const generateToInfoCard = (room) => {
     return {
-      ribbonTitle: room.category.categoryName,
+      ribbonTitle: room.categoryName,
       ribbonIcon: {
         title: null,
         value: room.isPublic
@@ -102,7 +102,7 @@ const RoomsListPage = () => {
       infoList: [
         {
           title: "Current users",
-          value: `${room.currentUsers.length}/${Limitations.MaxPlayers}`,
+          value: `${room.players.length}/${Limitations.MaxPlayers}`,
           style: MessageStyle.Normal
         }, {
           title: "Status",
