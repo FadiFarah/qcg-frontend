@@ -18,13 +18,12 @@ import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import AuthenticationService from "../../../services/authentication.service";
-import * as signalR from "@microsoft/signalr";
 
 const RoomCreationPage = () => {
   const authenticationService = new AuthenticationService();
 
   const [roomName, setRoomName] = useState();
-  const [category, setCategory] = useState(" ");
+  const [category, setCategory] = useState("");
 
   const [categories, setCategories] = useState([]);
 
@@ -32,11 +31,6 @@ const RoomCreationPage = () => {
   const [password, setPassword] = useState();
 
   const navigationService = useNavigate();
-
-  const hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl(Endpoints.SignalRRoomsListEndpointPrefix)
-    .configureLogging(signalR.LogLevel.Information)
-    .build();
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -57,14 +51,7 @@ const RoomCreationPage = () => {
   };
 
   useEffect(() => {
-    hubConnection.start().then(() => {
-      console.log("connected");
-      getAllCategories();
-
-      hubConnection.on("All categories uploaded", () => {
-        getAllCategories();
-      });
-    });
+    getAllCategories();
   }, []);
 
   return (
@@ -90,7 +77,7 @@ const RoomCreationPage = () => {
             autoComplete="off"
           >
             <TextField
-              id="standard-basic"
+              id="roomNameInput"
               label="Room Name"
               variant="standard"
               onChange={(e) => {
@@ -111,10 +98,10 @@ const RoomCreationPage = () => {
               >
                 {categories.length !== 0 ? (
                   categories.map((e) => {
-                    return <MenuItem value={e._id}>{e.categoryName}</MenuItem>;
+                    return <MenuItem key={e.id}>{e.categoryName}</MenuItem>;
                   })
                 ) : (
-                  <></>
+                  <div></div>
                 )}
               </Select>
             </FormControl>
@@ -134,18 +121,18 @@ const RoomCreationPage = () => {
                       value="public"
                       control={<Radio />}
                       label="public"
+                      checked={isPublic}
                       onChange={() => {
                         setIsPublic(true);
-                        console.log(isPublic);
                       }}
                     />
                     <FormControlLabel
                       value="private"
                       control={<Radio />}
                       label="Private"
+                      checked={!isPublic}
                       onChange={() => {
                         setIsPublic(false);
-                        console.log(isPublic);
                       }}
                     />
                   </div>
@@ -155,7 +142,7 @@ const RoomCreationPage = () => {
             {!isPublic ? (
               <TextField
                 type="password"
-                id="standard-basic"
+                id="isPrivatePassword"
                 label="password"
                 variant="standard"
                 onChange={(e) => {
