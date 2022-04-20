@@ -1,7 +1,7 @@
 import "./game.page.scss";
 import "./../../theme/flex.scss";
 import "./../../theme/theme.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Endpoints, States } from "../../constants";
 import HomePage from "../home/home.page";
@@ -11,6 +11,8 @@ import StartedStateComponent from "./components/started-state/started-state.comp
 import WaitingStateComponent from "./components/waiting-state/waiting-state.component";
 import AuthenticationService from "../../services/authentication.service";
 import * as signalR from "@microsoft/signalr";
+import ChatMessages from "./components/chat/chat-messages.component";
+import { list } from "firebase/storage";
 
 const GamePage = () => {
   const { id } = useParams();
@@ -23,6 +25,24 @@ const GamePage = () => {
   const [room, setRoom] = useState({});
   const [players, setPlayers] = useState([]);
   const [isMaster, setIsMaster] = useState(false);
+  const [isChatDisplay, setIsChatDisplay] = useState(false);
+  const [chatMessagesList, setChatMessagesList] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const chatBoxRef = useRef();
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    setIsChatDisplay(!isChatDisplay);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setIsChatDisplay(false);
+  };
+
+  const open = Boolean(anchorEl);
+  const popOverId = open ? "chat" : undefined;
+
   const hubConnection = new signalR.HubConnectionBuilder()
     .withUrl(Endpoints.SignalRGameEndpointPrefix)
     .configureLogging(signalR.LogLevel.Information)
@@ -52,6 +72,21 @@ const GamePage = () => {
     );
   };
 
+  const handleNewChatMessageClick = async (message) => {
+    const bodyDetails = {
+      roomId: id,
+      fullName:
+        authenticationService.getAuthenticationInfo().userDetails.firstName +
+        " " +
+        authenticationService.getAuthenticationInfo().userDetails.lastName,
+      chatMessage: message,
+    };
+    await authenticationService.post(
+      `${Endpoints.SignalRGameEndpointPrefix}/newChatMessage`,
+      bodyDetails
+    );
+  };
+
   useEffect(() => {
     hubConnection.start().then(() => {
       hubConnection.on("UserConnected", async (connectionId) => {
@@ -61,7 +96,10 @@ const GamePage = () => {
             roomId: id,
             userId: localStorage.getItem("userId"),
           };
-          await authenticationService.post(`${Endpoints.SignalRGameEndpointPrefix}/addtogroup`, bodyDetails);
+          await authenticationService.post(
+            `${Endpoints.SignalRGameEndpointPrefix}/addtogroup`,
+            bodyDetails
+          );
         }
         authenticationService
           .get(Endpoints.RoomById.replace("{0}", id))
@@ -69,8 +107,11 @@ const GamePage = () => {
             var roomById = resultData.data;
             setRoom(roomById);
             setPlayers(roomById.players);
-            var masterRoom = roomById.players.find(player => player.isMaster);
-            if (masterRoom && masterRoom.userId === localStorage.getItem("userId")) {
+            var masterRoom = roomById.players.find((player) => player.isMaster);
+            if (
+              masterRoom &&
+              masterRoom.userId === localStorage.getItem("userId")
+            ) {
               setIsMaster(true);
             }
           });
@@ -88,8 +129,11 @@ const GamePage = () => {
             var roomById = resultData.data;
             setRoom(roomById);
             setPlayers(roomById.players);
-            var masterRoom = roomById.players.find(player => player.isMaster);
-            if (masterRoom && masterRoom.userId === localStorage.getItem("userId")) {
+            var masterRoom = roomById.players.find((player) => player.isMaster);
+            if (
+              masterRoom &&
+              masterRoom.userId === localStorage.getItem("userId")
+            ) {
               setIsMaster(true);
             }
           });
@@ -97,6 +141,16 @@ const GamePage = () => {
 
       hubConnection.on("gameStarted", () => {
         setIsWaiting(false);
+      });
+
+      hubConnection.on("newChatMessage", (fullName, chatMessage) => {
+        setChatMessagesList((chatMessagesList) => [
+          ...chatMessagesList,
+          `${fullName}: ${chatMessage}`,
+        ]);
+        setTimeout(() => {
+          chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+        }, 100);
       });
 
       hubConnection.onclose(() => {
@@ -111,15 +165,20 @@ const GamePage = () => {
 
   return (
     <div className="qcg-game-page">
-      {
-        isWaiting ?
-          <div className="qcg-flex qcg-flex-center full-height">
-            <WaitingStateComponent isMaster={isMaster} handleStartClick={handleStartClick} players={players}></WaitingStateComponent>
-          </div>
-          :
-          <StartedStateComponent handleInfoButtonClick={handleInfoButtonClick}></StartedStateComponent>
-      }
-      <div className="floating-button">
+      {isWaiting ? (
+        <div className="qcg-flex qcg-flex-center full-height">
+          <WaitingStateComponent
+            isMaster={isMaster}
+            handleStartClick={handleStartClick}
+            players={players}
+          ></WaitingStateComponent>
+        </div>
+      ) : (
+        <StartedStateComponent
+          handleInfoButtonClick={handleInfoButtonClick}
+        ></StartedStateComponent>
+      )}
+      <div className="floating-button-menu">
         <ion-fab horizontal="end" vertical="top" slot="fixed">
           <ion-fab-button>
             <ion-icon name="chevron-down-outline"></ion-icon>
@@ -147,6 +206,28 @@ const GamePage = () => {
           </ion-fab-list>
         </ion-fab>
       </div>
+
+      {isChatDisplay && (
+        <ChatMessages
+          id={popOverId}
+          isOpen={isChatDisplay}
+          triggerId="chat"
+          handleNewChatMessageClick={handleNewChatMessageClick}
+          chatMessagesList={chatMessagesList}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          chatBoxRef={chatBoxRef}
+        />
+      )}
+      <div className="floating-button">
+        <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+          <ion-fab-button id="chat" onClick={(e) => handleClick(e)}>
+            <ion-icon name="chatbubbles-outline"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+      </div>
+
       <PopupMessageComponent
         popupAlert={popupAlert}
         handlePopupAlertClose={handlePopupAlertClose}
