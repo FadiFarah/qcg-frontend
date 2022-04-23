@@ -1,51 +1,71 @@
 .qcg-hand-card {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif, Helvetica, sans-serif;
-    margin: 1em 0;
-    width: 10em;
-    background: linear-gradient(194deg,rgba(230, 230, 230, 1) 10%,rgba(144, 144, 144, 1) 79%);
-    border-radius: 1em;
-    border: 0.3em solid black;
-    box-shadow: 0 0 1em rgb(0, 0, 0);
-    padding: 0.5em;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif,
+    Helvetica, sans-serif;
+  margin: 1em 0;
+  width: 10em;
+  background: linear-gradient(
+    194deg,
+    rgba(230, 230, 230, 1) 10%,
+    rgba(144, 144, 144, 1) 79%
+  );
+  border-radius: 1em;
+  border: 0.3em solid black;
+  box-shadow: 0 0 1em rgb(0, 0, 0);
+  padding: 0.5em;
 
-    .header-wrapper {
-        margin: 0.2em 0;
+  .header-wrapper {
+    margin: 0.2em 0;
 
-        .header {
-            font-size: 80%;
-        }
-
-        .icon {
-            font-size: 1.2em;
-        }
+    .header {
+      font-size: 80%;
     }
 
-    .image-wrapper {
-        margin: 0.2em 0;
-
-        img {
-            height: 100%;
-            border-radius: 0.2em;
-            box-shadow: 0 0 0.5em rgb(78, 77, 77);
-        }
+    .icon {
+      font-size: 1.2em;
     }
+  }
 
-    .card-name-wrapper {
-        margin: 0.4em 0;
+  .image-wrapper {
+    margin: 0.2em 0;
+
+    img {
+      height: 100%;
+      border-radius: 0.2em;
+      box-shadow: 0 0 0.5em rgb(78, 77, 77);
     }
+  }
 
+  .the-whole-cards-four-options {
+    .main-image {
+      img {
+        opacity: 1;
+      }
+    }
+    img {
+      height: 1.7em;
+      width: 1.7em;
+      margin: 0.2em;
+      border-radius: 20%;
+      opacity: 0.5;
+    }
+  }
+
+  .card-name-wrapper {
+    margin: 0.4em 0;
+  }
+
+  .card-description-wrapper {
+    margin: 0.4em 0;
+    font-size: 1em;
+  }
+
+  @media only screen and (max-width: 768px) {
     .card-description-wrapper {
-        margin: 0.4em 0;
-        font-size: 1em;
+      font-size: 0.9em;
     }
 
-    @media only screen and (max-width: 768px) {
-        .card-description-wrapper {
-            font-size: 0.9em;
-        }
-
-        &.qcg-hand-card {
-            width: 11em;
-        }
+    &.qcg-hand-card {
+      width: 11em;
     }
+  }
 }
