@@ -25,30 +25,19 @@ const StartedStateComponent = (props) => {
       <PopOverComponent id={id} isOpen={isOpen}></PopOverComponent>
       <div className="game-players qcg-flex-5">
         <div className="qcg-flex qcg-flex-column qcg-flex-justify-space-evenly qcg-flex-center full-height">
-          <div id={1}>
-            <PlayerInfoComponent
-              id={1}
-              handlePlayerInfoClick={handlePlayerInfoClick}
-            ></PlayerInfoComponent>
-          </div>
-          <div id={2}>
-            <PlayerInfoComponent
-              id={2}
-              handlePlayerInfoClick={handlePlayerInfoClick}
-            ></PlayerInfoComponent>
-          </div>
-          <div id={3}>
-            <PlayerInfoComponent
-              id={3}
-              handlePlayerInfoClick={handlePlayerInfoClick}
-            ></PlayerInfoComponent>
-          </div>
-          <div id={4}>
-            <PlayerInfoComponent
-              id={4}
-              handlePlayerInfoClick={handlePlayerInfoClick}
-            ></PlayerInfoComponent>
-          </div>
+          {props.players.map((player) => {
+            return (
+              <div id={player.userId}>
+                <PlayerInfoComponent
+                  id={player.userId}
+                  picture={player.picture}
+                  cardsLength={player.cards.length}
+                  fullName={player.fullName}
+                  handlePlayerInfoClick={handlePlayerInfoClick}
+                ></PlayerInfoComponent>
+              </div>
+            );
+          })}
         </div>
       </div>
       <div className="game-content qcg-flex qcg-flex-column-reverse full-height full-width">

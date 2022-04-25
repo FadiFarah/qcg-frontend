@@ -20,6 +20,7 @@ const GamePage = () => {
   const [popupModalSettings, setPopupModalSettings] = useState({});
   const [popupAlert, setPopupAlert] = useState(false);
   const [isWaiting, setIsWaiting] = useState(true);
+  const [remainingCards, setRemainigCards] = useState([]);
   const [room, setRoom] = useState({});
   const [players, setPlayers] = useState([]);
   const [isMaster, setIsMaster] = useState(false);
@@ -61,7 +62,10 @@ const GamePage = () => {
             roomId: id,
             userId: localStorage.getItem("userId"),
           };
-          await authenticationService.post(`${Endpoints.SignalRGameEndpointPrefix}/addtogroup`, bodyDetails);
+          await authenticationService.post(
+            `${Endpoints.SignalRGameEndpointPrefix}/addtogroup`,
+            bodyDetails
+          );
         }
         authenticationService
           .get(Endpoints.RoomById.replace("{0}", id))
@@ -69,8 +73,12 @@ const GamePage = () => {
             var roomById = resultData.data;
             setRoom(roomById);
             setPlayers(roomById.players);
-            var masterRoom = roomById.players.find(player => player.isMaster);
-            if (masterRoom && masterRoom.userId === localStorage.getItem("userId")) {
+            setRemainigCards(roomById.remainingCards);
+            var masterRoom = roomById.players.find((player) => player.isMaster);
+            if (
+              masterRoom &&
+              masterRoom.userId === localStorage.getItem("userId")
+            ) {
               setIsMaster(true);
             }
           });
@@ -88,8 +96,11 @@ const GamePage = () => {
             var roomById = resultData.data;
             setRoom(roomById);
             setPlayers(roomById.players);
-            var masterRoom = roomById.players.find(player => player.isMaster);
-            if (masterRoom && masterRoom.userId === localStorage.getItem("userId")) {
+            var masterRoom = roomById.players.find((player) => player.isMaster);
+            if (
+              masterRoom &&
+              masterRoom.userId === localStorage.getItem("userId")
+            ) {
               setIsMaster(true);
             }
           });
@@ -111,14 +122,21 @@ const GamePage = () => {
 
   return (
     <div className="qcg-game-page">
-      {
-        isWaiting ?
-          <div className="qcg-flex qcg-flex-center full-height">
-            <WaitingStateComponent isMaster={isMaster} handleStartClick={handleStartClick} players={players}></WaitingStateComponent>
-          </div>
-          :
-          <StartedStateComponent handleInfoButtonClick={handleInfoButtonClick}></StartedStateComponent>
-      }
+      {isWaiting ? (
+        <div className="qcg-flex qcg-flex-center full-height">
+          <WaitingStateComponent
+            isMaster={isMaster}
+            handleStartClick={handleStartClick}
+            players={players}
+          ></WaitingStateComponent>
+        </div>
+      ) : (
+        <StartedStateComponent
+          handleInfoButtonClick={handleInfoButtonClick}
+          remainingCards={remainingCards}
+          players={players}
+        ></StartedStateComponent>
+      )}
       <div className="floating-button">
         <ion-fab horizontal="end" vertical="top" slot="fixed">
           <ion-fab-button>
