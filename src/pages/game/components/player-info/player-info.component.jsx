@@ -11,13 +11,13 @@ const PlayerInfoComponent = (props) => {
     <div onClick={handlePlayerInfoClick} className="qcg-player-info full-width">
       <div className="game-wrapper qcg-flex qcg-flex-column qcg-flex-align-center">
         <div className="image">
-          <img src={image.banana}></img>
+          <img src={props.picture}></img>
         </div>
         <div className="info">
           <div className="qcg-flex qcg-flex-center full-height">
-            <span>Fadi</span>
+            <span>{props.fullName}</span>
             <img src={image.cards_for_player}></img>
-            <span>16</span>
+            <span>{props.cardsLength}</span>
           </div>
         </div>
       </div>
