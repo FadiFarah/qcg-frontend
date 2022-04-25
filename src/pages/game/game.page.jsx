@@ -22,6 +22,7 @@ const GamePage = () => {
   const [popupModalSettings, setPopupModalSettings] = useState({});
   const [popupAlert, setPopupAlert] = useState(false);
   const [isWaiting, setIsWaiting] = useState(true);
+  const [remainingCards, setRemainigCards] = useState([]);
   const [room, setRoom] = useState({});
   const [players, setPlayers] = useState([]);
   const [isMaster, setIsMaster] = useState(false);
@@ -107,6 +108,7 @@ const GamePage = () => {
             var roomById = resultData.data;
             setRoom(roomById);
             setPlayers(roomById.players);
+            setRemainigCards(roomById.remainingCards);
             var masterRoom = roomById.players.find((player) => player.isMaster);
             if (
               masterRoom &&
@@ -176,9 +178,11 @@ const GamePage = () => {
       ) : (
         <StartedStateComponent
           handleInfoButtonClick={handleInfoButtonClick}
+          remainingCards={remainingCards}
+          players={players}
         ></StartedStateComponent>
       )}
-      <div className="floating-button-menu">
+      <div className="floating-button">
         <ion-fab horizontal="end" vertical="top" slot="fixed">
           <ion-fab-button>
             <ion-icon name="chevron-down-outline"></ion-icon>
