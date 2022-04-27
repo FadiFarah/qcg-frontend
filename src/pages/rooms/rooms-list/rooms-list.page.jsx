@@ -1,21 +1,25 @@
-import {useState, useEffect} from "react";
-import {lockClosedOutline, lockOpenOutline} from "ionicons/icons";
-import {Tab, Tabs, TabList, TabPanel} from "react-tabs";
+import { useState, useEffect } from "react";
+import { lockClosedOutline, lockOpenOutline } from "ionicons/icons";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import * as signalR from "@microsoft/signalr";
 
 import "react-tabs/style/react-tabs.css";
 import GamePage from "./../../game/game.page"
 import PopupMessageComponent from "../../../components/popup-message/popup-message.component";
 import InfoCardComponent from "../../../components/info-card/info-card.component";
-import {Endpoints, Limitations, States} from "../../../constants";
+import { Endpoints, Limitations, States } from "../../../constants";
 import AuthenticationService from "../../../services/authentication.service";
-import {MessageStyle} from "../../../local.entities";
+import { MessageStyle } from "../../../local.entities";
 import "./rooms-list.page.scss";
 import "./../../../theme/theme.scss";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import LoaderCompletedComponent from "../../../components/loader-completed/loader-completed.component";
 
 const RoomsListPage = () => {
   const authenticationService = new AuthenticationService();
+  const [isLoadingRooms, setIsLoadingRooms] = useState(true);
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
   const navigationService = useNavigate();
   const [roomsList,
     setRoomsList] = useState([]);
@@ -43,7 +47,7 @@ const RoomsListPage = () => {
     if (roomById.isWaiting) {
       if (roomById.players && roomById.players.length < Limitations.MaxPlayers) {
         if (roomById.isPublic) {
-          navigationService(States.Game + "/" + id, {state: {GamePage}})
+          navigationService(States.Game + "/" + id, { state: { GamePage } })
           console.log("Entered the room");
         } else {
           setPopupModalSettings({
@@ -59,12 +63,12 @@ const RoomsListPage = () => {
           setPopupAlert(true);
         }
       } else {
-        setPopupModalSettings({title: "The room is full. Max number of players reached!", input: null, action: "Ok", hasCancel: false});
+        setPopupModalSettings({ title: "The room is full. Max number of players reached!", input: null, action: "Ok", hasCancel: false });
         setPopupAlert(true);
         console.log("The room is full. Max number of players reached!");
       }
     } else {
-      setPopupModalSettings({title: "The game has already started. You cannot join!", input: null, action: "Ok", hasCancel: false});
+      setPopupModalSettings({ title: "The game has already started. You cannot join!", input: null, action: "Ok", hasCancel: false });
       setPopupAlert(true);
       console.log("The room has already started. You cannot join!");
     }
@@ -122,6 +126,7 @@ const RoomsListPage = () => {
       .get(Endpoints.Rooms)
       .then((result) => {
         setRoomsList(result.data);
+        setIsLoadingRooms(false);
       })
       .catch((error) => {
         console.log(error);
@@ -130,10 +135,10 @@ const RoomsListPage = () => {
 
   useEffect(() => {
     hubConnection
-    .start()
-    .then(() => {
-      console.log("connected");
-      getAllRooms();
+      .start()
+      .then(() => {
+        console.log("connected");
+        getAllRooms();
 
         hubConnection.on("roomsListUpdated", () => {
           getAllRooms();
@@ -141,66 +146,71 @@ const RoomsListPage = () => {
       });
   }, []);
 
-  return (
-    <div className="qcg-rooms-list-page">
-      <Tabs>
-        <h1 className="qcg-flex-align-self-center">Rooms</h1>
-        <TabList>
-          <Tab>
-            <p>All rooms</p>
-          </Tab>
-          <Tab>
-            <p>Public rooms</p>
-          </Tab>
-          <Tab>
-            <p>Private rooms</p>
-          </Tab>
-        </TabList>
+  if (!isLoading && !isAuthenticated) loginWithRedirect();
+  else {
+    return (
+      <div className="qcg-rooms-list-page">
+        <Tabs>
+          <h1 className="qcg-flex-align-self-center">Rooms</h1>
+          <TabList>
+            <Tab>
+              <p>All rooms</p>
+            </Tab>
+            <Tab>
+              <p>Public rooms</p>
+            </Tab>
+            <Tab>
+              <p>Private rooms</p>
+            </Tab>
+          </TabList>
 
-        <TabPanel>
-          <div className="panel-content">
-            {roomsList.map((room) => {
-              return (<InfoCardComponent
-                handleClick={onRoomClicked}
-                key={room._id}
-                id={room._id}
-                data={generateToInfoCard(room)}/>);
-            })}
-          </div>
-        </TabPanel>
-        <TabPanel>
-          <div className="panel-content">
-            {roomsList.map((room) => {
-              return (room.isPublic && (<InfoCardComponent
-                handleClick={onRoomClicked}
-                key={room._id}
-                id={room._id}
-                data={generateToInfoCard(room)}/>));
-            })}
-          </div>
-        </TabPanel>
-        <TabPanel>
-          <div className="panel-content">
-            {roomsList.map((room) => {
-              return (!room.isPublic && (<InfoCardComponent
-                handleClick={onRoomClicked}
-                key={room._id}
-                id={room._id}
-                data={generateToInfoCard(room)}/>));
-            })}
-          </div>
-        </TabPanel>
-      </Tabs>
+          <TabPanel>
+            <div className="panel-content">
+              {roomsList.map((room) => {
+                return (<InfoCardComponent
+                  handleClick={onRoomClicked}
+                  key={room._id}
+                  id={room._id}
+                  data={generateToInfoCard(room)} />);
+              })}
+            </div>
+          </TabPanel>
+          <TabPanel>
+            <div className="panel-content">
+              {roomsList.map((room) => {
+                return (room.isPublic && (<InfoCardComponent
+                  handleClick={onRoomClicked}
+                  key={room._id}
+                  id={room._id}
+                  data={generateToInfoCard(room)} />));
+              })}
+            </div>
+          </TabPanel>
+          <TabPanel>
+            <div className="panel-content">
+              {roomsList.map((room) => {
+                return (!room.isPublic && (<InfoCardComponent
+                  handleClick={onRoomClicked}
+                  key={room._id}
+                  id={room._id}
+                  data={generateToInfoCard(room)} />));
+              })}
+            </div>
+          </TabPanel>
+        </Tabs>
 
-      <PopupMessageComponent
-        inputValidation={inputValidation}
-        inputValue={inputValue}
-        setInputValue={(value) => setInputValue(value)}
-        popupAlert={popupAlert}
-        handlePopupAlertClose={handlePopupAlertClose}
-        popupModalSettings={popupModalSettings}/>
-    </div>
-  );
-};
+        <PopupMessageComponent
+          inputValidation={inputValidation}
+          inputValue={inputValue}
+          setInputValue={(value) => setInputValue(value)}
+          popupAlert={popupAlert}
+          handlePopupAlertClose={handlePopupAlertClose}
+          popupModalSettings={popupModalSettings} />
+
+        {isLoadingRooms && <LoaderCompletedComponent></LoaderCompletedComponent>}
+      </div>
+    );
+  };
+}
 
 export default RoomsListPage;

@@ -19,9 +19,10 @@ const ProfilePage = () => {
   const [profileImage, setProfileImage] = useState("");
   const [sub, setSub] = useState("");
   const [isEdit, setIsEdit] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { logout } = useAuth0();
+  const [isLoading, setIsLoading] = useState(true);
+  const { logout, loginWithRedirect, isAuthenticated } = useAuth0();
   var fileInput;
+
 
   useEffect(() => {
     authenticationService
@@ -32,6 +33,7 @@ const ProfilePage = () => {
         setLastName(user.data.lastName);
         setProfileImage(user.data.picture);
         setSub(user.data.sub.split("|")[0]);
+        setIsLoading(false);
       });
   }, [null]);
 
@@ -88,73 +90,75 @@ const ProfilePage = () => {
     localStorage.clear();
   };
 
-  return (
-    <div className="qcg-profile-page">
-      <div className="profile-wrapper qcg-flex qcg-flex-column qcg-flex-align-center">
-        <div onClick={onEditClick} className="edit-button">
-          <ion-icon name="create-outline"></ion-icon>
+  if (!isAuthenticated) loginWithRedirect();
+  else {
+    return (
+      <div className="qcg-profile-page">
+        <div className="profile-wrapper qcg-flex qcg-flex-column qcg-flex-align-center">
+          <div onClick={onEditClick} className="edit-button">
+            <ion-icon name="create-outline"></ion-icon>
+          </div>
+          <div className="title-wrapper">
+            <h1>User Profile</h1>
+          </div>
+          <div className="email-wrapper full-width qcg-flex">
+            <label className="qcg-flex qcg-flex-20">Email</label>
+            <input
+              type="email"
+              disabled={!isEdit || sub !== "auth0"}
+              className={`qcg-flex qcg-flex-60 ${(!isEdit || sub !== "auth0") && "input-disabled"
+                }`}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            ></input>
+          </div>
+          <div className="first-name-wrapper full-width qcg-flex">
+            <label className="qcg-flex qcg-flex-20">First Name</label>
+            <input
+              type="text"
+              disabled={!isEdit}
+              className={`qcg-flex qcg-flex-60 ${!isEdit && "input-disabled"}`}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            ></input>
+          </div>
+          <div className="last-name-wrapper full-width qcg-flex">
+            <label className="qcg-flex qcg-flex-20">Last Name</label>
+            <input
+              type="text"
+              disabled={!isEdit}
+              className={`qcg-flex qcg-flex-60 ${!isEdit && "input-disabled"}`}
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            ></input>
+          </div>
+          <div className="picture-wrapper">
+            <input
+              ref={(fileInputRef) => (fileInput = fileInputRef)}
+              style={{ display: "none" }}
+              accept=".jpg, .png, .jpeg"
+              type="file"
+              onChange={(e) => onPictureChanged(e.target.files[0])}
+            ></input>
+            <img
+              className={`${isEdit && "picture-editable"}`}
+              onClick={() => fileInput.click()}
+              src={profileImage}
+            ></img>
+          </div>
+          <div className="buttons-wrapper qcg-flex qcg-flex-justify-center">
+            <button className="button full-width" onClick={onSaveClick}>
+              Save
+            </button>
+            <button className="button full-width" onClick={onLogoutClick}>
+              Logout
+            </button>
+          </div>
+          {isLoading && <LoaderCompletedComponent></LoaderCompletedComponent>}
         </div>
-        <div className="title-wrapper">
-          <h1>User Profile</h1>
-        </div>
-        <div className="email-wrapper full-width qcg-flex">
-          <label className="qcg-flex qcg-flex-20">Email</label>
-          <input
-            type="email"
-            disabled={!isEdit || sub !== "auth0"}
-            className={`qcg-flex qcg-flex-60 ${
-              (!isEdit || sub !== "auth0") && "input-disabled"
-            }`}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          ></input>
-        </div>
-        <div className="first-name-wrapper full-width qcg-flex">
-          <label className="qcg-flex qcg-flex-20">First Name</label>
-          <input
-            type="text"
-            disabled={!isEdit}
-            className={`qcg-flex qcg-flex-60 ${!isEdit && "input-disabled"}`}
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          ></input>
-        </div>
-        <div className="last-name-wrapper full-width qcg-flex">
-          <label className="qcg-flex qcg-flex-20">Last Name</label>
-          <input
-            type="text"
-            disabled={!isEdit}
-            className={`qcg-flex qcg-flex-60 ${!isEdit && "input-disabled"}`}
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          ></input>
-        </div>
-        <div className="picture-wrapper">
-          <input
-            ref={(fileInputRef) => (fileInput = fileInputRef)}
-            style={{ display: "none" }}
-            accept=".jpg, .png, .jpeg"
-            type="file"
-            onChange={(e) => onPictureChanged(e.target.files[0])}
-          ></input>
-          <img
-            className={`${isEdit && "picture-editable"}`}
-            onClick={() => fileInput.click()}
-            src={profileImage}
-          ></img>
-        </div>
-        <div className="buttons-wrapper qcg-flex qcg-flex-justify-center">
-          <button className="button full-width" onClick={onSaveClick}>
-            Save
-          </button>
-          <button className="button full-width" onClick={onLogoutClick}>
-            Logout
-          </button>
-        </div>
-        {isLoading && <LoaderCompletedComponent></LoaderCompletedComponent>}
       </div>
-    </div>
-  );
-};
+    );
+  };
+}
 
 export default ProfilePage;

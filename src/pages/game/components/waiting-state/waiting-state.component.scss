@@ -1,8 +1,4 @@
 .qcg-waiting-state {
-    // position: absolute;
-    // top: 50%;
-    // left: 50%;
-    // transform: translate(-50%, -50%);
     border: 1px solid;
     border-radius: 1em;
     box-shadow: 0 0 1em rgb(167, 167, 167);
@@ -40,7 +36,7 @@
             height: 9em;
             background-color: rgb(255, 255, 255);
             border-radius: 50%;
-            
+
             .player-image {
                 height: -webkit-fill-available;
                 position: absolute;
@@ -49,7 +45,7 @@
                 transform: translate(-50%, -50%);
             }
         }
-    
+
         .player-info {
             height: 7vh;
             border: 2px inset black;
@@ -73,7 +69,7 @@
     .button-wrapper {
         padding: 1em;
         border-top: 1px solid black;
-        
+
         button {
             background: black;
             color: white;
@@ -90,15 +86,16 @@
         }
     }
 
-    @media only screen and (max-height: 653px){
+    @media only screen and (max-height: 749px) {
         .player {
             .image-wrapper {
-                width: 7vw;
-                height: 7vw;
+                margin-bottom: 0.5em;
+                width: 15vh;
+                height: 15vh;
             }
 
             .player-info {
-                height: 5vh;
+                height: 6vh;
                 margin-bottom: unset;
             }
         }
@@ -118,7 +115,7 @@
         }
     }
 
-    @media only screen and (max-width: 768px) and (min-height: 653px){
+    @media only screen and (max-width: 768px) and (min-height: 653px) {
         &.qcg-waiting-state {
             min-height: 55%;
         }

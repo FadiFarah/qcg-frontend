@@ -13,9 +13,7 @@ export class States {
   public static RoomsList: string = "/rooms-list";
   public static RoomCreation: string = "/room-creation";
   public static Category: string = "/category";
-  public static RoomWait: string = "/room-wait";
   public static Game: string = "/game";
-  public static Help: string = "/help";
   public static Profile: string = "/profile";
 }
 

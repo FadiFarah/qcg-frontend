@@ -175,6 +175,10 @@
     flex: auto;
 }
 
+.qcg-flex-70 {
+    @include flex(0 0 70%);
+}
+
 .qcg-flex-60 {
     @include flex(0 0 60%);
 }
