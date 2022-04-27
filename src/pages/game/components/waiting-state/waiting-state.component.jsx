@@ -3,14 +3,14 @@ import "../../../../theme/theme.scss";
 import "../../../../theme/flex.scss";
 import * as image from "../../../../assets/exports/images"
 
-const WaitingStateComponent = ({players, isMaster, handleStartClick}) => {
+const WaitingStateComponent = ({ players, isMaster, handleStartClick, roomName }) => {
     return (
         <div className="qcg-waiting-state qcg-flex qcg-flex-column full-width full-height">
             <div className="qcg-flex qcg-flex-column full-width full-height">
                 <div className="page-title">Waiting room</div>
                 <div className="qcg-flex qcg-flex-column qcg-flex-align-center full-height">
                     <div className="room-name">
-                        Room name will be displayed here asd asd
+                        {roomName}
                     </div>
                     <div className="qcg-flex-wrap full-width full-height">
                         {
@@ -35,7 +35,7 @@ const WaitingStateComponent = ({players, isMaster, handleStartClick}) => {
                         }
                     </div>
                 </div>
-                
+
             </div>
             {
                 isMaster &&

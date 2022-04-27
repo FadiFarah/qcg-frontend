@@ -7,23 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "./home.page.scss";
 
 const HomePage = () => {
-    const authenticationService = new AuthenticationService();
-    const httpHandlerService = new HttpHandlerService();
     const navigationService = useNavigate();
-    const { user, isAuthenticated, getIdTokenClaims, getAccessTokenSilently } = useAuth0();
-    getAccessTokenSilently().then((accessToken) => {
-        getIdTokenClaims().then((tokenClaims) => {
-            if(tokenClaims) {
-                if(!authenticationService.getAuthenticationInfo()) {
-                    authenticationService.storeAuthenticationInfo(tokenClaims, accessToken);
-                    httpHandlerService.post(Endpoints.Users, authenticationService.authenticationInfo.userDetails)
-                        .then((result) => {
-                            authenticationService.storeUserId(result.data._id);
-                        });
-                    }
-                }
-        });
-    });
     return (
         <div className="qcg-home-page qcg-flex qcg-flex-column">
             <div id="home" className="qcg-flex qcg-flex-center">

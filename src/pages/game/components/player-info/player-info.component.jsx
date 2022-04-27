@@ -14,10 +14,10 @@ const PlayerInfoComponent = (props) => {
           <img src={props.picture}></img>
         </div>
         <div className="info">
-          <div className="qcg-flex qcg-flex-center full-height">
-            <span>{props.fullName}</span>
-            <img src={image.cards_for_player}></img>
-            <span>{props.cardsLength}</span>
+          <div className="info-wrapper qcg-flex qcg-flex-center full-height">
+            <span className="qcg-flex-70 full-width">{props.fullName}</span>
+            <img className="qcg-flex-15" src={image.cards_for_player}></img>
+            <span className="qcg-flex-15">{props.cardsLength}</span>
           </div>
         </div>
       </div>
