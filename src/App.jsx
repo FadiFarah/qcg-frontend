@@ -17,8 +17,6 @@ function App() {
     const [name, setName] = useState("");
     const { isLoading, isAuthenticated, getIdTokenClaims, getAccessTokenSilently, logout, loginWithRedirect } = useAuth0();
 
-    // if (isLoading) return <div>Loading...</div>
-
     if (isAuthenticated) {
 
         setInterval(() => {
@@ -35,6 +33,7 @@ function App() {
                         authenticationService.storeAuthenticationInfo(tokenClaims, accessToken);
                         httpHandlerService.post(Endpoints.Users, authenticationService.authenticationInfo.userDetails)
                             .then((result) => {
+                                authenticationService.updateUserDetails(result.data);
                                 authenticationService.storeUserId(result.data._id);
                                 setName(result.data.firstName);
                             })

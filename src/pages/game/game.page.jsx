@@ -3,7 +3,7 @@ import "./../../theme/flex.scss";
 import "./../../theme/theme.scss";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Endpoints, States } from "../../constants";
+import { Endpoints, Limitations, States } from "../../constants";
 import HomePage from "../home/home.page";
 import RoomsListPage from "../rooms/rooms-list/rooms-list.page";
 import PopupMessageComponent from "../../components/popup-message/popup-message.component";
@@ -27,8 +27,10 @@ const GamePage = () => {
   const [popupAlert, setPopupAlert] = useState(false);
   const [isWaiting, setIsWaiting] = useState(true);
   const [remainingCards, setRemainigCards] = useState([]);
+  const [startingCards, setStartingCards] = useState([]);
   const [room, setRoom] = useState({});
   const [players, setPlayers] = useState([]);
+  const [currentPlayer, setCurrentPlayer] = useState({});
   const [roomName, setRoomName] = useState("");
   const [isMaster, setIsMaster] = useState(false);
   const [isChatDisplay, setIsChatDisplay] = useState(false);
@@ -58,9 +60,9 @@ const GamePage = () => {
     setPopupAlert(false);
   };
 
-  const handleInfoButtonClick = () => {
+  const handleInfoButtonClick = (description) => {
     setPopupModalSettings({
-      title: "Lorem epsososad asd asjd asdj askjd asdasdkhj",
+      title: description,
       input: null,
       action: "Ok",
       hasCancel: false,
@@ -69,14 +71,46 @@ const GamePage = () => {
   };
 
   const handleStartClick = async () => {
+    setStartingCards([...remainingCards]);
+    var tempPlayers = [...players];
+    tempPlayers.map(player => {
+        for(var i = 0; i < Limitations.cardsInHand ; i++) {
+          player.cards?.push(generateRandomCard())
+        }
+    })
+
+    setPlayers(tempPlayers);
+    setCurrentPlayer(tempPlayers.find(player => player.userId === localStorage.getItem("userId")));
+
     const bodyDetails = {
       roomId: id,
     };
-    await authenticationService.post(
-      `${Endpoints.SignalRGameEndpointPrefix}/gameStarted`,
-      bodyDetails
-    );
+    var updateRoom = {
+      ...room,
+      remainingCards: remainingCards,
+      players: players
+    }
+    authenticationService.put(Endpoints.RoomById.replace("{0}", id), updateRoom)
+      .then(async (result) => {
+        await authenticationService.post(
+          `${Endpoints.SignalRGameEndpointPrefix}/gameStarted`,
+          bodyDetails
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   };
+
+  const generateRandomCard = () => {
+    const randomNum = Math.floor( Math.random()*remainingCards.length);
+    if(remainingCards.length > 0)
+    {
+      var card = remainingCards.splice(randomNum, 1);
+      setRemainigCards(remainingCards);
+      return card[0];
+    }
+  }
 
   const handleNewChatMessageClick = async (message) => {
     const bodyDetails = {
@@ -92,6 +126,29 @@ const GamePage = () => {
       bodyDetails
     );
   };
+
+  const handleMiddleDeckClick = () => {
+    var cardPulled = generateRandomCard();
+    var tempPlayer = {
+      ...currentPlayer,
+      cards: [...currentPlayer.cards, cardPulled]
+    }
+    setCurrentPlayer(tempPlayer);
+    var index = players.findIndex(player => player.userId === tempPlayer.userId);
+    players[index] = tempPlayer;
+    var updateRoom = {
+      ...room,
+      remainingCards: remainingCards,
+      players: players
+    }
+    authenticationService.put(Endpoints.RoomById.replace("{0}", id), updateRoom)
+      .then(async (result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
 
   useEffect(() => {
     hubConnection.start().then(() => {
@@ -113,7 +170,10 @@ const GamePage = () => {
             var roomById = resultData.data;
             setRoom(roomById);
             setPlayers(roomById.players);
+            var player = roomById.players?.find(player => player.userId === localStorage.getItem("userId"));
+            setCurrentPlayer(player);
             setRemainigCards(roomById.remainingCards);
+            setStartingCards(roomById.remainingCards);
             setRoomName(roomById.roomName);
             setIsLoadingGame(false);
             var masterRoom = roomById.players.find((player) => player.isMaster);
@@ -138,6 +198,9 @@ const GamePage = () => {
             var roomById = resultData.data;
             setRoom(roomById);
             setPlayers(roomById.players);
+            setCurrentPlayer(roomById.players?.find(player => player.userId === localStorage.getItem("userId")));
+            setRemainigCards(roomById.remainingCards);
+
             var masterRoom = roomById.players.find((player) => player.isMaster);
             if (
               masterRoom &&
@@ -178,6 +241,13 @@ const GamePage = () => {
       <div className="qcg-game-page">
         {isLoadingGame && <LoaderCompletedComponent></LoaderCompletedComponent>}
 
+        {/* <StartedStateComponent
+            handleInfoButtonClick={handleInfoButtonClick}
+            remainingCards={remainingCards}
+            players={players}
+            startingCards={startingCards}
+            currentPlayer={currentPlayer}
+          ></StartedStateComponent> */}
         {isWaiting ? (
           <div className="qcg-flex qcg-flex-center full-height">
 
@@ -193,6 +263,9 @@ const GamePage = () => {
             handleInfoButtonClick={handleInfoButtonClick}
             remainingCards={remainingCards}
             players={players}
+            startingCards={startingCards}
+            currentPlayer={currentPlayer}
+            handleMiddleDeckClick={handleMiddleDeckClick}
           ></StartedStateComponent>
         )}
         <div className="floating-button">

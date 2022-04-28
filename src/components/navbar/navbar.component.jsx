@@ -43,7 +43,7 @@ const NavbarComponent = (props) => {
                     !isAuthenticated ?
                       <a href="#" onClick={loginWithRedirect}>Login</a>
                       :
-                      props.name.length > 0 &&
+                      props.name?.length > 0 &&
                       <span className="welcome-message">Welcome, {props.name}!</span>
                   }
                 </div>
