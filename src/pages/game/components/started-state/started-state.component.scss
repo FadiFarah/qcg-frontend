@@ -8,11 +8,25 @@
             position: absolute;
             top: 50%;
             left: 50%;
+            overflow: hidden;
+
             transform: translate(-50%, -100%);
+
+            .remaining-cards {
+                color: rgb(0, 255, 13);
+                position: absolute;
+                font-size: 2em;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -80%);
+                text-align: center;
+                background-color: rgba(5, 5, 5, 0.5);
+                box-shadow: 0 0 0.5em rgb(0, 0, 0);
+            }
         }
 
         .hand-cards {
-            width: 90%;
+            width: 80vw;
             height: 45vh;
             -webkit-overflow-scrolling: auto;
             

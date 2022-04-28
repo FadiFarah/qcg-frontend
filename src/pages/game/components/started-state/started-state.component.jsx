@@ -11,14 +11,35 @@ const StartedStateComponent = (props) => {
   const [cardNumber, setCardsNumber] = useState(4);
   const [id, setId] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-  const handleInfoButtonClick = () => {
-    props.handleInfoButtonClick();
+
+  const handleInfoButtonClick = (description) => {
+    props.handleInfoButtonClick(description);
   };
 
   const handlePlayerInfoClick = (id) => {
     setId(id);
     setIsOpen(true);
   };
+
+  const generateCardCategoryImages = (categoryGroup) => {
+    var cardsOfCategoryGroup = props.startingCards?.filter(card => card.categoryGroup === categoryGroup);
+    var cardCategoryImages = cardsOfCategoryGroup.map(card => {
+      if(props.currentPlayer?.cards?.find(playerCard => playerCard.cardName === card.cardName)) {
+        return {
+          isActive: true,
+          imageURL: card.imageURL
+        }
+      }
+      else {
+        return {
+          isActive: false,
+          imageURL: card.imageURL
+        }
+      }
+    });
+    
+    return cardCategoryImages;
+  }
 
   return (
     <div className="qcg-started-state qcg-flex full-height">
@@ -42,22 +63,32 @@ const StartedStateComponent = (props) => {
       </div>
       <div className="game-content qcg-flex qcg-flex-column-reverse full-height full-width">
         <div
-          onClick={() => setCardsNumber(cardNumber + 1)}
+          onClick={props.handleMiddleDeckClick}
           className="deck-on-table"
         >
           <img src={image.MidDeck}></img>
+          <div className="remaining-cards">
+            {props.remainingCards.length}
+          </div>
         </div>
         <div className="hand-cards qcg-flex qcg-flex-justify-center">
           <div className="cards-wrapper qcg-flex">
-            {Array.from(Array(cardNumber), (e, i) => {
+            {
+            props.currentPlayer?.cards?.map((card, i) => {
               return (
                 <div key={i} className="card qcg-flex qcg-flex-column">
                   <HandCardComponent
                     handleInfoButtonClick={handleInfoButtonClick}
+                    categoryGroup={card?.categoryGroup}
+                    description={card?.description}
+                    cardName={card?.cardName}
+                    imageURL={card?.imageURL}
+                    cardCategoryImages={generateCardCategoryImages(card?.categoryGroup)}
                   ></HandCardComponent>
                 </div>
               );
-            })}
+            })
+            }
           </div>
         </div>
       </div>

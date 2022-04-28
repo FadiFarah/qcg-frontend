@@ -82,7 +82,7 @@ const RoomsListPage = () => {
         setInputValidation(true);
         return;
       } else {
-        navigationService(States.Game + "/" + chosenRoom._id)
+        navigationService(States.Game + "/" + chosenRoom._id, { state: { GamePage } })
       }
     }
     setInputValidation(false);
