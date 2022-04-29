@@ -5,16 +5,15 @@ import * as image from "../../../../assets/exports/images";
 
 const PlayerInfoComponent = (props) => {
   const handlePlayerInfoClick = () => {
-    if (props.currentPlayer.isTurn) {
+    if (props.currentPlayer?.isTurn) {
       props.handlePlayerInfoClick(props.id);
     }
   };
   return (
     <div onClick={handlePlayerInfoClick} className="qcg-player-info full-width">
       <div
-        className={`game-wrapper qcg-flex qcg-flex-column qcg-flex-align-center ${
-          props.isTurn && "player-active"
-        }`}
+        className={`game-wrapper qcg-flex qcg-flex-column qcg-flex-align-center ${props.isTurn && "player-active"
+          }`}
       >
         <div className="image">
           <img src={props.picture}></img>
