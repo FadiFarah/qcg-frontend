@@ -30,7 +30,7 @@ const RoomCreationPage = () => {
   const [isPublic, setIsPublic] = useState(true);
   const [password, setPassword] = useState();
   const [isValid, setIsValid] = useState(true);
-  const validationMessage = "One of your inputs is missing!"
+  const validationMessage = "One of your inputs is missing."
 
   const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
 
