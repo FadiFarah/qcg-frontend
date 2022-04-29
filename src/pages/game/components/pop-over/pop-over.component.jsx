@@ -5,10 +5,11 @@ const PopOverComponent = (props) => {
       <ion-popover trigger={props.id} is-open={props.isOpen} mode="ios">
         <ion-content>
           <ion-list>
-            <ion-item>test1</ion-item>
-            <ion-item>test2</ion-item>
-            <ion-item>test3</ion-item>
-            <ion-item>test4</ion-item>
+            {
+              props.categoryGroups?.map(c => {
+                return <ion-item>{c}</ion-item>
+              })
+            }
           </ion-list>
         </ion-content>
       </ion-popover>

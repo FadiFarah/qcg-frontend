@@ -17,9 +17,19 @@ const StartedStateComponent = (props) => {
   };
 
   const handlePlayerInfoClick = (id) => {
+    generatePlayerCategoryGroups();
     setId(id);
     setIsOpen(true);
   };
+  const generatePlayerCategoryGroups = () => {
+    var categoryGroups = props.currentPlayer.cards?.map(card => {
+      return card.categoryGroup
+    })
+    var noDuplicates = categoryGroups.filter(function (elem, pos) {
+      return categoryGroups.indexOf(elem) == pos;
+    });
+    return noDuplicates;
+  }
 
   const generateCardCategoryImages = (categoryGroup) => {
     var cardsOfCategoryGroup = props.startingCards?.filter(
@@ -43,12 +53,13 @@ const StartedStateComponent = (props) => {
       }
     });
 
+
     return cardCategoryImages;
   };
 
   return (
     <div className="qcg-started-state qcg-flex full-height">
-      <PopOverComponent id={id} isOpen={isOpen}></PopOverComponent>
+      <PopOverComponent id={id} isOpen={isOpen} categoryGroups={generatePlayerCategoryGroups()}></PopOverComponent>
       <div className="game-players qcg-flex-5">
         <div className="qcg-flex qcg-flex-column qcg-flex-justify-space-evenly qcg-flex-center full-height">
           {props.players.map((player) => {
@@ -70,9 +81,8 @@ const StartedStateComponent = (props) => {
       <div className="game-content qcg-flex qcg-flex-column-reverse full-height full-width">
         <div
           onClick={props.handleMiddleDeckClick}
-          className={`deck-on-table ${
-            !props.currentPlayer.isTurn && "disabled-deck"
-          }`}
+          className={`deck-on-table ${!props.currentPlayer.isTurn && "disabled-deck"
+            }`}
         >
           <img src={image.MidDeck}></img>
           <div className="remaining-cards">{props.remainingCards.length}</div>
