@@ -17,7 +17,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import LoaderCompletedComponent from "../../components/loader-completed/loader-completed.component";
 
 const GamePage = () => {
-  const { id } = useParams();
+  const { id, password } = useParams();
   const authenticationService = new AuthenticationService();
   const navigationService = useNavigate();
   const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
@@ -37,7 +37,8 @@ const GamePage = () => {
   const [chatMessagesList, setChatMessagesList] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const chatBoxRef = useRef();
-
+  console.log(id);
+  console.log(password);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
     setIsChatDisplay(!isChatDisplay);

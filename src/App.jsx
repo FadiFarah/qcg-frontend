@@ -59,6 +59,7 @@ function App() {
                         <Route path={States.RoomCreation} element={<RoomCreationPage />} />
                         <Route path={States.RoomsList} element={<RoomsListPage />} />
                         <Route path={`${States.Game}/:id`} element={<GamePage />} />
+                        <Route path={`${States.Game}/:id/:password`} element={<GamePage />} />
                     </Routes>
                 </div>
             </BrowserRouter>
