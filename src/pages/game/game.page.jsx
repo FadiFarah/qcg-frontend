@@ -74,14 +74,18 @@ const GamePage = () => {
   const handleStartClick = async () => {
     setStartingCards([...remainingCards]);
     var tempPlayers = [...players];
-    tempPlayers.map(player => {
-        for(var i = 0; i < Limitations.cardsInHand ; i++) {
-          player.cards?.push(generateRandomCard())
-        }
-    })
+    tempPlayers.map((player) => {
+      for (var i = 0; i < Limitations.cardsInHand; i++) {
+        player.cards?.push(generateRandomCard());
+      }
+    });
 
     setPlayers(tempPlayers);
-    setCurrentPlayer(tempPlayers.find(player => player.userId === localStorage.getItem("userId")));
+    setCurrentPlayer(
+      tempPlayers.find(
+        (player) => player.userId === localStorage.getItem("userId")
+      )
+    );
 
     const bodyDetails = {
       roomId: id,
@@ -89,9 +93,10 @@ const GamePage = () => {
     var updateRoom = {
       ...room,
       remainingCards: remainingCards,
-      players: players
-    }
-    authenticationService.put(Endpoints.RoomById.replace("{0}", id), updateRoom)
+      players: players,
+    };
+    authenticationService
+      .put(Endpoints.RoomById.replace("{0}", id), updateRoom)
       .then(async (result) => {
         await authenticationService.post(
           `${Endpoints.SignalRGameEndpointPrefix}/gameStarted`,
@@ -100,18 +105,17 @@ const GamePage = () => {
       })
       .catch((error) => {
         console.log(error);
-      })
+      });
   };
 
   const generateRandomCard = () => {
-    const randomNum = Math.floor( Math.random()*remainingCards.length);
-    if(remainingCards.length > 0)
-    {
+    const randomNum = Math.floor(Math.random() * remainingCards.length);
+    if (remainingCards.length > 0) {
       var card = remainingCards.splice(randomNum, 1);
       setRemainigCards(remainingCards);
       return card[0];
     }
-  }
+  };
 
   const handleNewChatMessageClick = async (message) => {
     const bodyDetails = {
@@ -132,24 +136,27 @@ const GamePage = () => {
     var cardPulled = generateRandomCard();
     var tempPlayer = {
       ...currentPlayer,
-      cards: [...currentPlayer.cards, cardPulled]
-    }
+      cards: [...currentPlayer.cards, cardPulled],
+    };
     setCurrentPlayer(tempPlayer);
-    var index = players.findIndex(player => player.userId === tempPlayer.userId);
+    var index = players.findIndex(
+      (player) => player.userId === tempPlayer.userId
+    );
     players[index] = tempPlayer;
     var updateRoom = {
       ...room,
       remainingCards: remainingCards,
-      players: players
-    }
-    authenticationService.put(Endpoints.RoomById.replace("{0}", id), updateRoom)
+      players: players,
+    };
+    authenticationService
+      .put(Endpoints.RoomById.replace("{0}", id), updateRoom)
       .then(async (result) => {
         console.log(result);
       })
       .catch((error) => {
         console.log(error);
-      })
-  }
+      });
+  };
 
   useEffect(() => {
     hubConnection.start().then(() => {
@@ -171,7 +178,9 @@ const GamePage = () => {
             var roomById = resultData.data;
             setRoom(roomById);
             setPlayers(roomById.players);
-            var player = roomById.players?.find(player => player.userId === localStorage.getItem("userId"));
+            var player = roomById.players?.find(
+              (player) => player.userId === localStorage.getItem("userId")
+            );
             setCurrentPlayer(player);
             setRemainigCards(roomById.remainingCards);
             setStartingCards(roomById.remainingCards);
@@ -199,7 +208,11 @@ const GamePage = () => {
             var roomById = resultData.data;
             setRoom(roomById);
             setPlayers(roomById.players);
-            setCurrentPlayer(roomById.players?.find(player => player.userId === localStorage.getItem("userId")));
+            setCurrentPlayer(
+              roomById.players?.find(
+                (player) => player.userId === localStorage.getItem("userId")
+              )
+            );
             setRemainigCards(roomById.remainingCards);
 
             var masterRoom = roomById.players.find((player) => player.isMaster);
@@ -241,17 +254,8 @@ const GamePage = () => {
     return (
       <div className="qcg-game-page">
         {isLoadingGame && <LoaderCompletedComponent></LoaderCompletedComponent>}
-
-        {/* <StartedStateComponent
-            handleInfoButtonClick={handleInfoButtonClick}
-            remainingCards={remainingCards}
-            players={players}
-            startingCards={startingCards}
-            currentPlayer={currentPlayer}
-          ></StartedStateComponent> */}
         {isWaiting ? (
           <div className="qcg-flex qcg-flex-center full-height">
-
             <WaitingStateComponent
               isMaster={isMaster}
               handleStartClick={handleStartClick}
@@ -326,7 +330,7 @@ const GamePage = () => {
         />
       </div>
     );
-  };
-}
+  }
+};
 
 export default GamePage;

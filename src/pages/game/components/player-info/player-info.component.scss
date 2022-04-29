@@ -4,6 +4,12 @@
         height: 100%;
         padding: 0 0.2em;
 
+        &.player-active{
+            background-color: #7bf97b; 
+            box-shadow: 0 0.5em 0.5em #7bf97b;
+
+        }
+
         .image {
             overflow: hidden;
             width: 10vh;
@@ -40,6 +46,7 @@
             img {
                 padding: 0 0.2em;
             }
+            
         }
     }
 }

@@ -1,6 +1,11 @@
 .qcg-started-state {
     
     .game-content {
+          
+        .disabled-deck{
+            pointer-events: none;
+        }
+
         .deck-on-table{
             cursor: pointer;
             width: 15vh;

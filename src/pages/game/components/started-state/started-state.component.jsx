@@ -22,24 +22,29 @@ const StartedStateComponent = (props) => {
   };
 
   const generateCardCategoryImages = (categoryGroup) => {
-    var cardsOfCategoryGroup = props.startingCards?.filter(card => card.categoryGroup === categoryGroup);
-    var cardCategoryImages = cardsOfCategoryGroup.map(card => {
-      if(props.currentPlayer?.cards?.find(playerCard => playerCard.cardName === card.cardName)) {
+    var cardsOfCategoryGroup = props.startingCards?.filter(
+      (card) => card.categoryGroup === categoryGroup
+    );
+    var cardCategoryImages = cardsOfCategoryGroup.map((card) => {
+      if (
+        props.currentPlayer?.cards?.find(
+          (playerCard) => playerCard.cardName === card.cardName
+        )
+      ) {
         return {
           isActive: true,
-          imageURL: card.imageURL
-        }
-      }
-      else {
+          imageURL: card.imageURL,
+        };
+      } else {
         return {
           isActive: false,
-          imageURL: card.imageURL
-        }
+          imageURL: card.imageURL,
+        };
       }
     });
-    
+
     return cardCategoryImages;
-  }
+  };
 
   return (
     <div className="qcg-started-state qcg-flex full-height">
@@ -54,6 +59,7 @@ const StartedStateComponent = (props) => {
                   picture={player.picture}
                   cardsLength={player.cards.length}
                   fullName={player.fullName}
+                  isTurn={player.isTurn}
                   handlePlayerInfoClick={handlePlayerInfoClick}
                 ></PlayerInfoComponent>
               </div>
@@ -64,17 +70,16 @@ const StartedStateComponent = (props) => {
       <div className="game-content qcg-flex qcg-flex-column-reverse full-height full-width">
         <div
           onClick={props.handleMiddleDeckClick}
-          className="deck-on-table"
+          className={`deck-on-table ${
+            !props.currentPlayer.isTurn && "disabled-deck"
+          }`}
         >
           <img src={image.MidDeck}></img>
-          <div className="remaining-cards">
-            {props.remainingCards.length}
-          </div>
+          <div className="remaining-cards">{props.remainingCards.length}</div>
         </div>
         <div className="hand-cards qcg-flex qcg-flex-justify-center">
           <div className="cards-wrapper qcg-flex">
-            {
-            props.currentPlayer?.cards?.map((card, i) => {
+            {props.currentPlayer?.cards?.map((card, i) => {
               return (
                 <div key={i} className="card qcg-flex qcg-flex-column">
                   <HandCardComponent
@@ -83,12 +88,13 @@ const StartedStateComponent = (props) => {
                     description={card?.description}
                     cardName={card?.cardName}
                     imageURL={card?.imageURL}
-                    cardCategoryImages={generateCardCategoryImages(card?.categoryGroup)}
+                    cardCategoryImages={generateCardCategoryImages(
+                      card?.categoryGroup
+                    )}
                   ></HandCardComponent>
                 </div>
               );
-            })
-            }
+            })}
           </div>
         </div>
       </div>
