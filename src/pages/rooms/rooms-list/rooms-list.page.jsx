@@ -82,7 +82,7 @@ const RoomsListPage = () => {
         setInputValidation(true);
         return;
       } else {
-        navigationService(States.Game + "/" + chosenRoom._id, { state: { GamePage } })
+        navigationService(States.Game + "/" + chosenRoom._id + "/" +chosenRoom.roomPassword, { state: { GamePage } })
       }
     }
     setInputValidation(false);
@@ -151,6 +151,7 @@ const RoomsListPage = () => {
     return (
       <div className="qcg-rooms-list-page">
         <Tabs>
+          <a href={States.RoomCreation}>Create a room</a>
           <h1 className="qcg-flex-align-self-center">Rooms</h1>
           <TabList>
             <Tab>
