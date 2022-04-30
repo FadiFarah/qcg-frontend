@@ -15,6 +15,7 @@ import ChatMessages from "./components/chat/chat-messages.component";
 import { list } from "firebase/storage";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoaderCompletedComponent from "../../components/loader-completed/loader-completed.component";
+import HandCardComponent from "./components/hand-card/hand-card.component";
 
 const GamePage = () => {
   const { id, password } = useParams();
@@ -31,11 +32,13 @@ const GamePage = () => {
   const [room, setRoom] = useState({});
   const [players, setPlayers] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState({});
+  const [toPlayerUserId, setToPlayerUserId] = useState("");
   const [roomName, setRoomName] = useState("");
   const [isMaster, setIsMaster] = useState(false);
   const [isChatDisplay, setIsChatDisplay] = useState(false);
   const [chatMessagesList, setChatMessagesList] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [cardsRequest, setCardsRequest] = useState([]);
   const chatBoxRef = useRef();
   console.log(id);
   console.log(password);
@@ -69,6 +72,20 @@ const GamePage = () => {
       hasCancel: false,
     });
     setPopupAlert(true);
+  };
+
+  const handleCardClick = async (fromPlayerUserId, toPlayerUserId, card) => {
+    const body = {
+      roomId: id,
+      fromPlayerUserId: fromPlayerUserId,
+      toPlayerUserId: toPlayerUserId,
+      categoryGroup: card.categoryGroup,
+      cardName: card.cardName,
+    };
+    await authenticationService.post(
+      `${Endpoints.SignalRGameEndpointPrefix}/cardRequestFromPlayer`,
+      body
+    );
   };
 
   const handleStartClick = async () => {
@@ -158,6 +175,32 @@ const GamePage = () => {
       });
   };
 
+  const onCategoryGroupClick = (toPlayerUserId, categoryGroup) => {
+    setToPlayerUserId(toPlayerUserId);
+    const cardsOfCategoryInHand = currentPlayer.cards?.filter(
+      (card) => card.categoryGroup === categoryGroup
+    );
+    const cardsOfCategory = startingCards.filter(
+      (card) => card.categoryGroup === categoryGroup
+    );
+
+    const cardsOfCategoryNotInHand = cardsOfCategory.filter(
+      (card) => !cardsOfCategoryInHand.find((c) => c.cardName === card.cardName)
+    );
+
+    setPopupModalSettings({
+      title: "Request cards",
+      component: HandCardComponent,
+      content: cardsOfCategoryNotInHand,
+      input: null,
+      action: null,
+      hasCancel: true,
+    });
+    setPopupAlert(true);
+
+    setCardsRequest(cardsOfCategoryNotInHand);
+  };
+
   useEffect(() => {
     hubConnection.start().then(() => {
       hubConnection.on("UserConnected", async (connectionId) => {
@@ -225,6 +268,10 @@ const GamePage = () => {
           });
       });
 
+      hubConnection.on("playersCardsUpdated", (object) => {
+        console.log(object);
+      });
+
       hubConnection.on("gameStarted", () => {
         setIsWaiting(false);
       });
@@ -271,6 +318,8 @@ const GamePage = () => {
             startingCards={startingCards}
             currentPlayer={currentPlayer}
             handleMiddleDeckClick={handleMiddleDeckClick}
+            onCategoryGroupClick={onCategoryGroupClick}
+            cardsRequest={cardsRequest}
           ></StartedStateComponent>
         )}
         <div className="floating-button">
@@ -327,6 +376,9 @@ const GamePage = () => {
           popupAlert={popupAlert}
           handlePopupAlertClose={handlePopupAlertClose}
           popupModalSettings={popupModalSettings}
+          handleCardClick={handleCardClick}
+          toPlayerUserId={toPlayerUserId}
+          fromPlayerUserId={currentPlayer.userId}
         />
       </div>
     );

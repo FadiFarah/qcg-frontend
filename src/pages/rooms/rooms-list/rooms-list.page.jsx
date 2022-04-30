@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import * as signalR from "@microsoft/signalr";
 
 import "react-tabs/style/react-tabs.css";
-import GamePage from "./../../game/game.page"
+import GamePage from "./../../game/game.page";
 import PopupMessageComponent from "../../../components/popup-message/popup-message.component";
 import InfoCardComponent from "../../../components/info-card/info-card.component";
 import { Endpoints, Limitations, States } from "../../../constants";
@@ -21,20 +21,13 @@ const RoomsListPage = () => {
   const [isLoadingRooms, setIsLoadingRooms] = useState(true);
   const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
   const navigationService = useNavigate();
-  const [roomsList,
-    setRoomsList] = useState([]);
-  const [chosenRoom,
-    setChosenRoom] = useState({});
-  const [inputValue,
-    setInputValue] = useState("");
-  const [popupAlert,
-    setPopupAlert] = useState(false);
-  const [popupModalSettings,
-    setPopupModalSettings] = useState({});
-  const [inputValidation,
-    setInputValidation] = useState(false);
-  const hubConnection = new signalR
-    .HubConnectionBuilder()
+  const [roomsList, setRoomsList] = useState([]);
+  const [chosenRoom, setChosenRoom] = useState({});
+  const [inputValue, setInputValue] = useState("");
+  const [popupAlert, setPopupAlert] = useState(false);
+  const [popupModalSettings, setPopupModalSettings] = useState({});
+  const [inputValidation, setInputValidation] = useState(false);
+  const hubConnection = new signalR.HubConnectionBuilder()
     .withUrl(Endpoints.SignalRRoomsListEndpointPrefix)
     .configureLogging(signalR.LogLevel.Information)
     .build();
@@ -45,32 +38,42 @@ const RoomsListPage = () => {
     });
 
     if (roomById.isWaiting) {
-      if (roomById.players && roomById.players.length < Limitations.MaxPlayers) {
+      if (
+        roomById.players &&
+        roomById.players.length < Limitations.MaxPlayers
+      ) {
         if (roomById.isPublic) {
-          navigationService(States.Game + "/" + id, { state: { GamePage } })
-          console.log("Entered the room");
+          navigationService(States.Game + "/" + id, { state: { GamePage } });
         } else {
           setPopupModalSettings({
             title: "Enter the room password",
             input: {
               placeholder: "password...",
               type: "password",
-              errorMessage: "The password you entered is incorrect!"
+              errorMessage: "The password you entered is incorrect!",
             },
             action: "Confirm",
-            hasCancel: true
+            hasCancel: true,
           });
           setPopupAlert(true);
         }
       } else {
-        setPopupModalSettings({ title: "The room is full. Max number of players reached!", input: null, action: "Ok", hasCancel: false });
+        setPopupModalSettings({
+          title: "The room is full. Max number of players reached!",
+          input: null,
+          action: "Ok",
+          hasCancel: false,
+        });
         setPopupAlert(true);
-        console.log("The room is full. Max number of players reached!");
       }
     } else {
-      setPopupModalSettings({ title: "The game has already started. You cannot join!", input: null, action: "Ok", hasCancel: false });
+      setPopupModalSettings({
+        title: "The game has already started. You cannot join!",
+        input: null,
+        action: "Ok",
+        hasCancel: false,
+      });
       setPopupAlert(true);
-      console.log("The room has already started. You cannot join!");
     }
 
     setChosenRoom(roomById);
@@ -82,7 +85,10 @@ const RoomsListPage = () => {
         setInputValidation(true);
         return;
       } else {
-        navigationService(States.Game + "/" + chosenRoom._id + "/" +chosenRoom.roomPassword, { state: { GamePage } })
+        navigationService(
+          States.Game + "/" + chosenRoom._id + "/" + chosenRoom.roomPassword,
+          { state: { GamePage } }
+        );
       }
     }
     setInputValidation(false);
@@ -95,29 +101,22 @@ const RoomsListPage = () => {
       ribbonTitle: room.categoryName,
       ribbonIcon: {
         title: null,
-        value: room.isPublic
-          ? lockOpenOutline
-          : lockClosedOutline,
-        style: room.isPublic
-          ? MessageStyle.Good
-          : MessageStyle.Exclamation
+        value: room.isPublic ? lockOpenOutline : lockClosedOutline,
+        style: room.isPublic ? MessageStyle.Good : MessageStyle.Exclamation,
       },
       cardTitle: room.roomName,
       infoList: [
         {
           title: "Current users",
           value: `${room.players.length}/${Limitations.MaxPlayers}`,
-          style: MessageStyle.Normal
-        }, {
+          style: MessageStyle.Normal,
+        },
+        {
           title: "Status",
-          value: room.isWaiting
-            ? "Waiting"
-            : "Started",
-          style: room.isWaiting
-            ? MessageStyle.Good
-            : MessageStyle.Exclamation
-        }
-      ]
+          value: room.isWaiting ? "Waiting" : "Started",
+          style: room.isWaiting ? MessageStyle.Good : MessageStyle.Exclamation,
+        },
+      ],
     };
   };
 
@@ -131,19 +130,17 @@ const RoomsListPage = () => {
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   useEffect(() => {
-    hubConnection
-      .start()
-      .then(() => {
-        console.log("connected");
-        getAllRooms();
+    hubConnection.start().then(() => {
+      console.log("connected");
+      getAllRooms();
 
-        hubConnection.on("roomsListUpdated", () => {
-          getAllRooms();
-        });
+      hubConnection.on("roomsListUpdated", () => {
+        getAllRooms();
       });
+    });
   }, []);
 
   if (!isLoading && !isAuthenticated) loginWithRedirect();
@@ -168,33 +165,46 @@ const RoomsListPage = () => {
           <TabPanel>
             <div className="panel-content">
               {roomsList.map((room) => {
-                return (<InfoCardComponent
-                  handleClick={onRoomClicked}
-                  key={room._id}
-                  id={room._id}
-                  data={generateToInfoCard(room)} />);
+                return (
+                  <InfoCardComponent
+                    handleClick={onRoomClicked}
+                    key={room._id}
+                    id={room._id}
+                    data={generateToInfoCard(room)}
+                  />
+                );
               })}
             </div>
           </TabPanel>
           <TabPanel>
             <div className="panel-content">
               {roomsList.map((room) => {
-                return (room.isPublic && (<InfoCardComponent
-                  handleClick={onRoomClicked}
-                  key={room._id}
-                  id={room._id}
-                  data={generateToInfoCard(room)} />));
+                return (
+                  room.isPublic && (
+                    <InfoCardComponent
+                      handleClick={onRoomClicked}
+                      key={room._id}
+                      id={room._id}
+                      data={generateToInfoCard(room)}
+                    />
+                  )
+                );
               })}
             </div>
           </TabPanel>
           <TabPanel>
             <div className="panel-content">
               {roomsList.map((room) => {
-                return (!room.isPublic && (<InfoCardComponent
-                  handleClick={onRoomClicked}
-                  key={room._id}
-                  id={room._id}
-                  data={generateToInfoCard(room)} />));
+                return (
+                  !room.isPublic && (
+                    <InfoCardComponent
+                      handleClick={onRoomClicked}
+                      key={room._id}
+                      id={room._id}
+                      data={generateToInfoCard(room)}
+                    />
+                  )
+                );
               })}
             </div>
           </TabPanel>
@@ -206,12 +216,15 @@ const RoomsListPage = () => {
           setInputValue={(value) => setInputValue(value)}
           popupAlert={popupAlert}
           handlePopupAlertClose={handlePopupAlertClose}
-          popupModalSettings={popupModalSettings} />
+          popupModalSettings={popupModalSettings}
+        />
 
-        {isLoadingRooms && <LoaderCompletedComponent></LoaderCompletedComponent>}
+        {isLoadingRooms && (
+          <LoaderCompletedComponent></LoaderCompletedComponent>
+        )}
       </div>
     );
-  };
-}
+  }
+};
 
 export default RoomsListPage;
