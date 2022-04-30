@@ -2,12 +2,15 @@ import "./waiting-state.component.scss";
 import "../../../../theme/theme.scss";
 import "../../../../theme/flex.scss";
 import * as image from "../../../../assets/exports/images"
+import TranslationService from "../../../../services/translation.service";
 
 const WaitingStateComponent = ({ players, isMaster, handleStartClick, roomName }) => {
+    const translationService = new TranslationService();
+
     return (
         <div className="qcg-waiting-state qcg-flex qcg-flex-column full-width full-height">
             <div className="qcg-flex qcg-flex-column full-width full-height">
-                <div className="page-title">Waiting room</div>
+                <div className="page-title">{translationService.translate.waitingStateComponent.waitingPageTitle}</div>
                 <div className="qcg-flex qcg-flex-column qcg-flex-align-center full-height">
                     <div className="room-name">
                         {roomName}
@@ -40,7 +43,7 @@ const WaitingStateComponent = ({ players, isMaster, handleStartClick, roomName }
             {
                 isMaster &&
                 <div onClick={() => handleStartClick()} className="button-wrapper qcg-flex">
-                    <button className="qcg-flex qcg-flex-20 qcg-flex-center">Start</button>
+                    <button className="qcg-flex qcg-flex-20 qcg-flex-center">{translationService.translate.waitingStateComponent.hostStartGameButton}</button>
                 </div>
             }
         </div>

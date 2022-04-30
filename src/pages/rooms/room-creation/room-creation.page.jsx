@@ -20,8 +20,10 @@ import { useNavigate } from "react-router-dom";
 import AuthenticationService from "../../../services/authentication.service";
 import { useAuth0 } from "@auth0/auth0-react";
 import GamePage from "../../game/game.page";
+import TranslationService from "../../../services/translation.service";
 
 const RoomCreationPage = () => {
+  const translationService = new TranslationService();
   const authenticationService = new AuthenticationService();
 
   const [roomName, setRoomName] = useState();
@@ -30,7 +32,7 @@ const RoomCreationPage = () => {
   const [isPublic, setIsPublic] = useState(true);
   const [password, setPassword] = useState();
   const [isValid, setIsValid] = useState(true);
-  const validationMessage = "One of your inputs is missing."
+  const validationMessage = translationService.translate.roomCreationPage.validationInputsMessage;
 
   const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
 
@@ -92,14 +94,14 @@ const RoomCreationPage = () => {
       <div className="qcg-room-creation-page qcg-flex qcg-flex-center">
         <div className="wrapper">
           <div className="creation-wrapper qcg-flex qcg-flex-column qcg-flex-align-center">
-            <h1 className="qcg-flex qcg-flex-center">Create Your Room</h1>
+            <h1 className="qcg-flex qcg-flex-center">{translationService.translate.roomCreationPage.roomCreationTitle}</h1>
             <div className="create-button qcg-flex">
               <Button
                 variant="contained"
                 endIcon={<ArrowBackIcon />}
                 onClick={() => navigationService(States.RoomsList)}
               >
-                back to rooms list
+                {translationService.translate.roomCreationPage.backToPageButton}
               </Button>
             </div>
             <Box
@@ -112,7 +114,7 @@ const RoomCreationPage = () => {
             >
               <TextField
                 id="roomNameInput"
-                label="Room Name"
+                label={translationService.translate.roomCreationPage.roomNameInput}
                 variant="standard"
                 onChange={(e) => {
                   setRoomName(e.target.value);
@@ -121,14 +123,13 @@ const RoomCreationPage = () => {
               <br />
               <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
                 <InputLabel id="demo-simple-select-standard-label">
-                  Category
+                  {translationService.translate.roomCreationPage.categorySelect}
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-standard-label"
                   id="demo-simple-select-standard"
                   value={categoryId}
                   onChange={handleChange}
-                  label="Category"
                 >
                   {categories.length !== 0 ? (
                     categories.map((e) => {
@@ -143,7 +144,7 @@ const RoomCreationPage = () => {
               <div className="qcg-flex qcg-flex-center">
                 <FormControl>
                   <FormLabel id="creation-page-radio-buttons-group-label">
-                    Status
+                    {translationService.translate.roomCreationPage.roomStatus.statusTitle}
                   </FormLabel>
                   <RadioGroup
                     row
@@ -154,7 +155,7 @@ const RoomCreationPage = () => {
                       <FormControlLabel
                         value="public"
                         control={<Radio />}
-                        label="public"
+                        label={translationService.translate.roomCreationPage.roomStatus.statusPublic}
                         checked={isPublic}
                         onChange={() => {
                           setIsPublic(true);
@@ -163,7 +164,7 @@ const RoomCreationPage = () => {
                       <FormControlLabel
                         value="private"
                         control={<Radio />}
-                        label="Private"
+                        label={translationService.translate.roomCreationPage.roomStatus.statusPrivate}
                         checked={!isPublic}
                         onChange={() => {
                           setIsPublic(false);
@@ -177,7 +178,7 @@ const RoomCreationPage = () => {
                 <TextField
                   type="password"
                   id="isPrivatePassword"
-                  label="password"
+                  label={translationService.translate.roomCreationPage.roomStatus.privateStatusPasswordInput}
                   variant="standard"
                   onChange={(e) => {
                     setPassword(e.target.value);
@@ -188,7 +189,7 @@ const RoomCreationPage = () => {
               )}
               <div className="create-button qcg-flex">
                 <Button onClick={handleCreate} variant="contained" endIcon={<SendIcon />}>
-                  Create
+                  {translationService.translate.roomCreationPage.createRoomButton}
                 </Button>
               </div>
             </Box>

@@ -6,8 +6,10 @@ import PlayerInfoComponent from "../player-info/player-info.component";
 import HandCardComponent from "../hand-card/hand-card.component";
 import PopOverComponent from "../pop-over/pop-over.component";
 import { useState } from "react";
+import TranslationService from "../../../../services/translation.service";
 
 const StartedStateComponent = (props) => {
+  const translationService = new TranslationService();
   const [cardNumber, setCardsNumber] = useState(4);
   const [id, setId] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
@@ -86,7 +88,7 @@ const StartedStateComponent = (props) => {
       >
         <ion-item>
           <div className="popover-notify-wrapper qcg-flex qcg-flex-column qcg-flex-center">
-            <div>{props.cardNotifyDetails?.toPlayerFullName}, give me</div>
+            <div>{props.cardNotifyDetails?.toPlayerFullName}, {translationService.translate.startedStateComponent.requestMessage}</div>
             <HandCardComponent
               categoryGroup={props.cardNotifyDetails?.card?.categoryGroup}
               cardName={props.cardNotifyDetails?.card?.cardName}

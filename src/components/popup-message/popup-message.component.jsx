@@ -1,9 +1,11 @@
 import "../../theme/flex.scss";
 import "./popup-message.component.scss";
 import { Modal, Box, Typography, Input, Button } from "@mui/material";
+import TranslationService from "../../services/translation.service";
 
 const PopupMessageComponent = (props) => {
   const popupModalSettings = props.popupModalSettings;
+  const translationService = new TranslationService();
 
   const handlePopupAlertClose = (value) => {
     props.handlePopupAlertClose(value);
@@ -50,7 +52,7 @@ const PopupMessageComponent = (props) => {
               className="cancel-action"
               onClick={() => handlePopupAlertClose()}
             >
-              Cancel
+              {translationService.translate.popupModelSettings.hasCancel}
             </Button>
           )}
           {popupModalSettings.action && (

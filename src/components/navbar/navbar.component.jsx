@@ -6,10 +6,12 @@ import { States } from "../../constants";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import AuthenticationService from "../../services/authentication.service";
+import TranslationService from "../../services/translation.service";
 const NavbarComponent = (props) => {
   const navigationService = useNavigate();
   const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
   const authenticationServie = new AuthenticationService();
+  const translationService = new TranslationService();
 
   const handleClick = (event, state) => {
     if (window.location.pathname !== States.Main || state !== States.Main) {
@@ -28,12 +30,12 @@ const NavbarComponent = (props) => {
                 <img src={image.logo}></img>
               </div>
               <div className="nav-items-wrapper qcg-flex qcg-flex-40 qcg-flex-center qcg-flex-justify-space-evenly">
-                <a className="nav-item" href="#home" onClick={(e) => handleClick(e, States.Main)}>Home</a>
-                <a className="nav-item" href="#rules" onClick={(e) => handleClick(e, States.Main)}>Rules</a>
-                <a className="nav-item" href="#about" onClick={(e) => handleClick(e, States.Main)}>About</a>
+                <a className="nav-item" href="#home" onClick={(e) => handleClick(e, States.Main)}>{translationService.translate.navbarComponent.home}</a>
+                <a className="nav-item" href="#rules" onClick={(e) => handleClick(e, States.Main)}>{translationService.translate.navbarComponent.rules}</a>
+                <a className="nav-item" href="#about" onClick={(e) => handleClick(e, States.Main)}>{translationService.translate.navbarComponent.about}</a>
                 {
                   isAuthenticated &&
-                  <a className="nav-item" href="" onClick={(e) => handleClick(e, States.Profile)}>Profile</a>
+                  <a className="nav-item" href="" onClick={(e) => handleClick(e, States.Profile)}>{translationService.translate.navbarComponent.profile}</a>
                 }
               </div>
               {
@@ -41,10 +43,10 @@ const NavbarComponent = (props) => {
                 <div className="auth-details qcg-flex qcg-flex-auto qcg-flex-align-center qcg-flex-justify-content-end">
                   {
                     !isAuthenticated ?
-                      <a href="#" onClick={loginWithRedirect}>Login</a>
+                      <a href="#" onClick={loginWithRedirect}>{translationService.translate.navbarComponent.loginUserName}</a>
                       :
                       props.name?.length > 0 &&
-                      <span className="welcome-message">Welcome, {props.name}!</span>
+                      <span className="welcome-message">{translationService.translate.navbarComponent.welcomeUserName}, {props.name}!</span>
                   }
                 </div>
               }
@@ -59,22 +61,22 @@ const NavbarComponent = (props) => {
           </ion-fab-button>
           <ion-fab-list side="bottom">
             <ion-fab-button href="#home" onClick={(e) => handleClick(e, States.Main)} color="light">
-              <ion-label>Home</ion-label>
+              <ion-label>{translationService.translate.navbarComponent.home}</ion-label>
             </ion-fab-button>
             <ion-fab-button href="#rules" onClick={(e) => handleClick(e, States.Main)} color="light">
-              <ion-label>Rules</ion-label>
+              <ion-label>{translationService.translate.navbarComponent.rules}</ion-label>
             </ion-fab-button>
             <ion-fab-button href="#about" onClick={(e) => handleClick(e, States.Main)} color="light">
-              <ion-label>About</ion-label>
+              <ion-label>{translationService.translate.navbarComponent.about}</ion-label>
             </ion-fab-button>
             {
               isAuthenticated ?
                 <ion-fab-button onClick={(e) => handleClick(e, States.Profile)} color="light">
-                  <ion-label>Profile</ion-label>
+                  <ion-label>{translationService.translate.navbarComponent.profile}</ion-label>
                 </ion-fab-button>
                 :
                 <ion-fab-button onClick={loginWithRedirect} color="primary">
-                  <ion-label>Login</ion-label>
+                  <ion-label>{translationService.translate.navbarComponent.loginUserName}</ion-label>
                 </ion-fab-button>
             }
           </ion-fab-list>

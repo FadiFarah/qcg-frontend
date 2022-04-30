@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import LoaderCompletedComponent from "../../components/loader-completed/loader-completed.component";
 import { Endpoints } from "../../constants";
 import AuthenticationService from "../../services/authentication.service";
+import TranslationService from "../../services/translation.service";
 import {
   storage,
   ref,
@@ -12,6 +13,7 @@ import {
 import "./profile.page.scss";
 
 const ProfilePage = () => {
+  const translationService = new TranslationService();
   const authenticationService = new AuthenticationService();
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -99,10 +101,10 @@ const ProfilePage = () => {
             <ion-icon name="create-outline"></ion-icon>
           </div>
           <div className="title-wrapper">
-            <h1>User Profile</h1>
+            <h1>{translationService.translate.profilePage.profileTitle}</h1>
           </div>
           <div className="email-wrapper full-width qcg-flex">
-            <label className="qcg-flex qcg-flex-20">Email</label>
+            <label className="qcg-flex qcg-flex-20">{translationService.translate.profilePage.profileEmail}</label>
             <input
               type="email"
               disabled={!isEdit || sub !== "auth0"}
@@ -113,7 +115,7 @@ const ProfilePage = () => {
             ></input>
           </div>
           <div className="first-name-wrapper full-width qcg-flex">
-            <label className="qcg-flex qcg-flex-20">First Name</label>
+            <label className="qcg-flex qcg-flex-20">{translationService.translate.profilePage.profileFirstName}</label>
             <input
               type="text"
               disabled={!isEdit}
@@ -123,7 +125,7 @@ const ProfilePage = () => {
             ></input>
           </div>
           <div className="last-name-wrapper full-width qcg-flex">
-            <label className="qcg-flex qcg-flex-20">Last Name</label>
+            <label className="qcg-flex qcg-flex-20">{translationService.translate.profilePage.profileLastName}</label>
             <input
               type="text"
               disabled={!isEdit}
@@ -148,10 +150,10 @@ const ProfilePage = () => {
           </div>
           <div className="buttons-wrapper qcg-flex qcg-flex-justify-center">
             <button className="button full-width" onClick={onSaveClick}>
-              Save
+              {translationService.translate.profilePage.saveButton}
             </button>
             <button className="button full-width" onClick={onLogoutClick}>
-              Logout
+              {translationService.translate.profilePage.logoutButton}
             </button>
           </div>
           {isLoading && <LoaderCompletedComponent></LoaderCompletedComponent>}

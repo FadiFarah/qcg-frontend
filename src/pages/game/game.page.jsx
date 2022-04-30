@@ -16,10 +16,12 @@ import { list } from "firebase/storage";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoaderCompletedComponent from "../../components/loader-completed/loader-completed.component";
 import HandCardComponent from "./components/hand-card/hand-card.component";
+import TranslationService from "../../services/translation.service";
 
 const GamePage = () => {
   const { id, password } = useParams();
   const authenticationService = new AuthenticationService();
+  const translationService = new TranslationService();
   const navigationService = useNavigate();
   const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
   const [isLoadingGame, setIsLoadingGame] = useState(true);
@@ -200,7 +202,7 @@ const GamePage = () => {
     );
 
     setPopupModalSettings({
-      title: "Request cards",
+      title: translationService.translate.gamePage.popupForCardRequest.title,
       component: HandCardComponent,
       content: cardsOfCategoryNotInHand,
       input: null,
@@ -381,7 +383,7 @@ const GamePage = () => {
                 }
                 color="light"
               >
-                <ion-label>Main Menu</ion-label>
+                <ion-label>{translationService.translate.gamePage.sidaBar.mainMenu}</ion-label>
               </ion-fab-button>
 
               <ion-fab-button
@@ -392,7 +394,7 @@ const GamePage = () => {
                 }
                 color="light"
               >
-                <ion-label>Leave game</ion-label>
+                <ion-label>{translationService.translate.gamePage.sidaBar.leaveGame}</ion-label>
               </ion-fab-button>
             </ion-fab-list>
           </ion-fab>
