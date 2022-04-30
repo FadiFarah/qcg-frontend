@@ -15,9 +15,11 @@ import "./../../../theme/theme.scss";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoaderCompletedComponent from "../../../components/loader-completed/loader-completed.component";
+import TranslationService from "../../../services/translation.service";
 
 const RoomsListPage = () => {
   const authenticationService = new AuthenticationService();
+  const translationService = new TranslationService();
   const [isLoadingRooms, setIsLoadingRooms] = useState(true);
   const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
   const navigationService = useNavigate();
@@ -46,31 +48,31 @@ const RoomsListPage = () => {
           navigationService(States.Game + "/" + id, { state: { GamePage } });
         } else {
           setPopupModalSettings({
-            title: "Enter the room password",
+            title: translationService.translate.roomsListPage.privateRoomPasswordPopup.title,
             input: {
-              placeholder: "password...",
+              placeholder: translationService.translate.roomsListPage.privateRoomPasswordPopup.inputPlaceholder,
               type: "password",
-              errorMessage: "The password you entered is incorrect!",
+              errorMessage: translationService.translate.roomsListPage.privateRoomPasswordPopup.errorMessage,
             },
-            action: "Confirm",
+            action: translationService.translate.popupModelSettings.confimAction,
             hasCancel: true,
           });
           setPopupAlert(true);
         }
       } else {
         setPopupModalSettings({
-          title: "The room is full. Max number of players reached!",
+          title: translationService.translate.roomsListPage.popupRoomFull.title,
           input: null,
-          action: "Ok",
+          action: translationService.translate.roomsListPage.popupRoomFull.action,
           hasCancel: false,
         });
         setPopupAlert(true);
       }
     } else {
       setPopupModalSettings({
-        title: "The game has already started. You cannot join!",
+        title: translationService.translate.roomsListPage.popupRoomStarted.title,
         input: null,
-        action: "Ok",
+        action: translationService.translate.roomsListPage.popupRoomStarted.action,
         hasCancel: false,
       });
       setPopupAlert(true);
@@ -107,13 +109,13 @@ const RoomsListPage = () => {
       cardTitle: room.roomName,
       infoList: [
         {
-          title: "Current users",
+          title: translationService.translate.roomsListPage.roomCurrentUsers,
           value: `${room.players.length}/${Limitations.MaxPlayers}`,
           style: MessageStyle.Normal,
         },
         {
-          title: "Status",
-          value: room.isWaiting ? "Waiting" : "Started",
+          title: translationService.translate.roomsListPage.roomStatus.statusTitle,
+          value: room.isWaiting ? translationService.translate.roomsListPage.roomStatus.statusWaiting : translationService.translate.roomsListPage.roomStatus.statusStarted,
           style: room.isWaiting ? MessageStyle.Good : MessageStyle.Exclamation,
         },
       ],
@@ -148,17 +150,17 @@ const RoomsListPage = () => {
     return (
       <div className="qcg-rooms-list-page">
         <Tabs>
-          <a href={States.RoomCreation}>Create a room</a>
-          <h1 className="qcg-flex-align-self-center">Rooms</h1>
+          <a href={States.RoomCreation}>{translationService.translate.roomsListPage.roomListCreate}</a>
+          <h1 className="qcg-flex-align-self-center">{translationService.translate.roomsListPage.roomsListTitle}</h1>
           <TabList>
             <Tab>
-              <p>All rooms</p>
+              <p>{translationService.translate.roomsListPage.roomsListAllRooms}</p>
             </Tab>
             <Tab>
-              <p>Public rooms</p>
+              <p>{translationService.translate.roomsListPage.roomsListPublicRooms}</p>
             </Tab>
             <Tab>
-              <p>Private rooms</p>
+              <p>{translationService.translate.roomsListPage.roomsListPrivateRooms}</p>
             </Tab>
           </TabList>
 

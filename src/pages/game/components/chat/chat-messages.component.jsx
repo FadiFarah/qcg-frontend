@@ -5,8 +5,10 @@ import { Popover, TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
+import TranslationService from "../../../../services/translation.service";
 
 const ChatMessages = (props) => {
+  const translationService = new TranslationService();
   const [message, setMessage] = useState();
 
   const handleNewChatMessageClick = () => {
@@ -29,7 +31,7 @@ const ChatMessages = (props) => {
                 <TextField
                   id="chatMessageInput"
                   variant="standard"
-                  placeholder="New message"
+                  placeholder={translationService.translate.gamePage.chatMessages.newMessageInputPlaceholder}
                   onChange={(e) => {
                     setMessage(e.target.value);
                   }}
@@ -47,7 +49,7 @@ const ChatMessages = (props) => {
                       handleNewChatMessageClick();
                     }}
                   >
-                    Send
+                    {translationService.translate.gamePage.chatMessages.sendButton}
                   </Button>
                 </div>
               </div>

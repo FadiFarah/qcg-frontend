@@ -2,6 +2,7 @@
   font-size: medium;
   height: calc(100vh - 10em);
   overflow-y: scroll;
+  scroll-behavior: smooth;
 
   .home-wrapper {
     background: white;
@@ -62,10 +63,14 @@
         background: white;
         flex-grow: 1;
         min-width: 50%;
-        max-width: 100%;
+        max-width: 50%;
         border-radius: 1em;
         box-shadow: 0 0 2em rgb(214, 214, 214);
         padding: 0.5em 1.5em;
+
+        p {
+          display: list-item;
+        }
       }
       .image {
         background: transparent;
@@ -119,6 +124,14 @@
       }
       .about-image {
         width: 80%;
+      }
+    }
+
+    .rules-wrapper {
+      .rules-content-wrapper {
+        .rules {
+          max-width: 100%;
+        }
       }
     }
   }
