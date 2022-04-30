@@ -3,12 +3,23 @@ import "./../../../../theme/flex.scss";
 import "./../../../../theme/theme.scss";
 import * as image from "../../../../assets/exports/images";
 
-const HandCardComponent = ({ cardCategoryImages, cardName, categoryGroup, imageURL, description, handleInfoButtonClick }) => {
+const HandCardComponent = ({
+  cardCategoryImages,
+  cardName,
+  categoryGroup,
+  imageURL,
+  description,
+  handleInfoButtonClick,
+  handleCardClick,
+}) => {
   const handleInfoButtonClicked = () => {
     handleInfoButtonClick(description);
   };
   return (
-    <div className="qcg-hand-card qcg-flex qcg-flex-column">
+    <div
+      className="qcg-hand-card qcg-flex qcg-flex-column"
+      onClick={handleCardClick}
+    >
       <div className="header-wrapper full-width qcg-flex qcg-flex-align-center">
         <div className="header full-width single-line-ellipsis">
           {categoryGroup}
@@ -27,16 +38,13 @@ const HandCardComponent = ({ cardCategoryImages, cardName, categoryGroup, imageU
         <img src={imageURL}></img>
       </div>
       <div className="the-whole-cards-four-options qcg-flex qcg-flex-justify-center">
-        {
-          cardCategoryImages?.map(image => {
-            return <div className={`${image.isActive && 'active-image'}`}>
-              <img
-                src={image?.imageURL}
-              />
+        {cardCategoryImages?.map((image) => {
+          return (
+            <div className={`${image.isActive && "active-image"}`}>
+              <img src={image?.imageURL} />
             </div>
-          })
-        }
-
+          );
+        })}
       </div>
       <div className="card-description-wrapper">
         {description?.slice(0, 60)}...
