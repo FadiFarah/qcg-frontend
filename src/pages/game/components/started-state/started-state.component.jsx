@@ -29,6 +29,11 @@ const StartedStateComponent = (props) => {
     setIsOpen(true);
   };
 
+  const categoryGroupClick = (toPlayerUserId, categoryGroup) => {
+    handleClose();
+    props.onCategoryGroupClick(toPlayerUserId, categoryGroup);
+  };
+
   const generatePlayerCategoryGroups = () => {
     var categoryGroups = props.currentPlayer.cards?.map((card) => {
       return card.categoryGroup;
@@ -72,8 +77,25 @@ const StartedStateComponent = (props) => {
         categoryGroups={generatePlayerCategoryGroups()}
         handleClose={handleClose}
         anchorEl={anchorEl}
-        onCategoryGroupClick={props.onCategoryGroupClick}
+        onCategoryGroupClick={categoryGroupClick}
       ></PopOverComponent>
+      <ion-popover
+        trigger={props.cardNotifyDetails?.fromPlayerUserId}
+        side="right"
+        is-open={props.cardNotifyDetails?.isOpen}
+      >
+        <ion-item>
+          <div className="popover-notify-wrapper qcg-flex qcg-flex-column qcg-flex-center">
+            <div>{props.cardNotifyDetails?.toPlayerFullName}, give me</div>
+            <HandCardComponent
+              categoryGroup={props.cardNotifyDetails?.card?.categoryGroup}
+              cardName={props.cardNotifyDetails?.card?.cardName}
+              imageURL={props.cardNotifyDetails?.card?.imageURL}
+              description={props.cardNotifyDetails?.card?.description}
+            />
+          </div>
+        </ion-item>
+      </ion-popover>
       <div className="game-players qcg-flex-5">
         <div className="qcg-flex qcg-flex-column qcg-flex-justify-space-evenly qcg-flex-center full-height">
           {props.players.map((player) => {
