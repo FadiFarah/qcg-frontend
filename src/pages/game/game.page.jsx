@@ -231,6 +231,7 @@ const GamePage = () => {
           .get(Endpoints.RoomById.replace("{0}", id))
           .then((resultData) => {
             var roomById = resultData.data;
+            
             setRoom(roomById);
             setPlayers(roomById.players);
             var player = roomById.players?.find(
