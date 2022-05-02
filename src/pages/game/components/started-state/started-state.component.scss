@@ -1,78 +1,83 @@
 .qcg-started-state {
-    
+  .game-content {
+    .disabled-deck {
+      pointer-events: none;
+    }
+
+    .deck-on-table {
+      cursor: pointer;
+      width: 15vh;
+      height: 20vh;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      overflow: hidden;
+
+      transform: translate(-50%, -100%);
+
+      .remaining-cards {
+        color: rgb(0, 255, 13);
+        position: absolute;
+        font-size: 2em;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -80%);
+        text-align: center;
+        background-color: rgba(5, 5, 5, 0.5);
+        box-shadow: 0 0 0.5em rgb(0, 0, 0);
+      }
+    }
+
+    .hand-cards {
+      width: 80vw;
+      height: 45vh;
+      -webkit-overflow-scrolling: auto;
+
+      .cards-wrapper {
+        align-items: center;
+        padding: 0 3em;
+        margin: 0 1em;
+        -webkit-overflow-scrolling: auto;
+        height: 100%;
+        overflow-x: scroll;
+
+        .card {
+          position: relative;
+          height: fit-content;
+          width: 10em;
+          margin: auto 0.5em;
+          transition: ease-in 0.3s;
+        }
+
+        .card:hover {
+          transform: scale(1.1);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .game-players {
+    border-radius: 0 2em 2em 0;
+    box-shadow: 0 0 5em rgb(43, 42, 42);
+  }
+
+  ion-popover {
+    ion-item {
+      --padding-start: 0.3em;
+      --inner-padding-end: 0.3em;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
     .game-content {
-          
-        .disabled-deck{
-            pointer-events: none;
+      .hand-cards {
+        .cards-wrapper {
+          .card {
+            width: 100%;
+          }
         }
-
-        .deck-on-table{
-            cursor: pointer;
-            width: 15vh;
-            height: 20vh;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            overflow: hidden;
-
-            transform: translate(-50%, -100%);
-
-            .remaining-cards {
-                color: rgb(0, 255, 13);
-                position: absolute;
-                font-size: 2em;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -80%);
-                text-align: center;
-                background-color: rgba(5, 5, 5, 0.5);
-                box-shadow: 0 0 0.5em rgb(0, 0, 0);
-            }
-        }
-
-        .hand-cards {
-            width: 80vw;
-            height: 45vh;
-            -webkit-overflow-scrolling: auto;
-            
-            .cards-wrapper {
-                align-items: center;
-                padding: 0 3em;
-                margin: 0 1em;
-                -webkit-overflow-scrolling: auto;
-                height: 100%;
-                overflow-x: scroll;
-
-                .card {
-                    position: relative;
-                    height: fit-content;
-                    width: 10em;
-                    margin: auto 0.5em;
-                    transition: ease-in 0.3s;
-                }
-                
-                .card:hover {
-                    transform: scale(1.1);
-                    cursor: pointer;
-                }
-            }
-        }
+      }
     }
-
-    .game-players {
-        border-radius: 0 2em 2em 0;
-        box-shadow: 0 0 5em rgb(43, 42, 42);
-    }
-
-    @media only screen and (max-width: 768px) {
-        .game-content {
-            .hand-cards {
-                .cards-wrapper {
-                    .card {
-                        width: 100%;
-                    }
-                }
-            }
-        }
-    }
+  }
 }
