@@ -27,7 +27,7 @@ const GamePage = () => {
   const [popupModalSettings, setPopupModalSettings] = useState({});
   const [popupAlert, setPopupAlert] = useState(false);
   const [isWaiting, setIsWaiting] = useState(true);
-  const [remainingCards, setRemainigCards] = useState([]);
+  const [remainingCards, setRemainingCards] = useState([]);
   const [startingCards, setStartingCards] = useState([]);
   const [room, setRoom] = useState({});
   const [players, setPlayers] = useState([]);
@@ -42,6 +42,8 @@ const GamePage = () => {
   const chatBoxRef = useRef();
   console.log(id);
   console.log(password);
+  const [cardNotifyDetails, setCardNotifyDetails] = useState({});
+  const [connectionId, setConnectionId] = useState("");
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
     setIsChatDisplay(!isChatDisplay);
@@ -77,11 +79,20 @@ const GamePage = () => {
   const handleCardClick = async (fromPlayerUserId, toPlayerUserId, card) => {
     const body = {
       roomId: id,
+      connectionId: connectionId,
       fromPlayerUserId: fromPlayerUserId,
       toPlayerUserId: toPlayerUserId,
       categoryGroup: card.categoryGroup,
       cardName: card.cardName,
+      card: card,
     };
+    setPopupAlert(false);
+
+    await authenticationService.post(
+      `${Endpoints.SignalRGameEndpointPrefix}/cardRequestNotify`,
+      body
+    );
+
     await authenticationService.post(
       `${Endpoints.SignalRGameEndpointPrefix}/cardRequestFromPlayer`,
       body
@@ -129,7 +140,7 @@ const GamePage = () => {
     const randomNum = Math.floor(Math.random() * remainingCards.length);
     if (remainingCards.length > 0) {
       var card = remainingCards.splice(randomNum, 1);
-      setRemainigCards(remainingCards);
+      setRemainingCards(remainingCards);
       return card[0];
     }
   };
@@ -203,6 +214,7 @@ const GamePage = () => {
 
   useEffect(() => {
     hubConnection.start().then(() => {
+      setConnectionId(hubConnection.connectionId);
       hubConnection.on("UserConnected", async (connectionId) => {
         if (connectionId === hubConnection.connectionId) {
           const bodyDetails = {
@@ -219,13 +231,14 @@ const GamePage = () => {
           .get(Endpoints.RoomById.replace("{0}", id))
           .then((resultData) => {
             var roomById = resultData.data;
+            
             setRoom(roomById);
             setPlayers(roomById.players);
             var player = roomById.players?.find(
               (player) => player.userId === localStorage.getItem("userId")
             );
             setCurrentPlayer(player);
-            setRemainigCards(roomById.remainingCards);
+            setRemainingCards(roomById.remainingCards);
             setStartingCards(roomById.remainingCards);
             setRoomName(roomById.roomName);
             setIsLoadingGame(false);
@@ -256,7 +269,7 @@ const GamePage = () => {
                 (player) => player.userId === localStorage.getItem("userId")
               )
             );
-            setRemainigCards(roomById.remainingCards);
+            setRemainingCards(roomById.remainingCards);
 
             var masterRoom = roomById.players.find((player) => player.isMaster);
             if (
@@ -271,6 +284,39 @@ const GamePage = () => {
       hubConnection.on("playersCardsUpdated", (object) => {
         console.log(object);
       });
+
+      hubConnection.on(
+        "cardRequestNotify",
+        (connectionId, fromPlayerUserId, toPlayerUserId, card, players) => {
+          var playersReceived = JSON.parse(players);
+          var toPlayer = playersReceived?.find(
+            (player) => player.userId === toPlayerUserId
+          );
+
+          var requestDetails = {
+            fromPlayerUserId: fromPlayerUserId,
+            toPlayerFullName: toPlayer?.fullName,
+            card: JSON.parse(card),
+            isOpen: true,
+          };
+          if (connectionId === hubConnection.connectionId) {
+            setCardNotifyDetails({
+              ...requestDetails,
+              isOpen: false,
+              fromPlayerUserId: "",
+            });
+          } else {
+            setCardNotifyDetails(requestDetails);
+            setTimeout(() => {
+              setCardNotifyDetails({
+                ...requestDetails,
+                isOpen: false,
+                fromPlayerUserId: "",
+              });
+            }, 5000);
+          }
+        }
+      );
 
       hubConnection.on("gameStarted", () => {
         setIsWaiting(false);
@@ -320,6 +366,7 @@ const GamePage = () => {
             handleMiddleDeckClick={handleMiddleDeckClick}
             onCategoryGroupClick={onCategoryGroupClick}
             cardsRequest={cardsRequest}
+            cardNotifyDetails={cardNotifyDetails}
           ></StartedStateComponent>
         )}
         <div className="floating-button">
@@ -378,7 +425,7 @@ const GamePage = () => {
           popupModalSettings={popupModalSettings}
           handleCardClick={handleCardClick}
           toPlayerUserId={toPlayerUserId}
-          fromPlayerUserId={currentPlayer.userId}
+          fromPlayerUserId={currentPlayer?.userId}
         />
       </div>
     );
