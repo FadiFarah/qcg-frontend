@@ -48,6 +48,7 @@ const GamePage = () => {
   console.log(password);
   const [cardNotifyDetails, setCardNotifyDetails] = useState({});
   const [connectionId, setConnectionId] = useState("");
+  const [cardRequestDontHave, setCardRequestDontHave] = useState({});
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
     setIsChatDisplay(!isChatDisplay);
@@ -104,41 +105,46 @@ const GamePage = () => {
   };
 
   const handleStartClick = async () => {
-    setStartingCards([...remainingCards]);
-    var tempPlayers = [...players];
-    tempPlayers.map((player) => {
-      for (var i = 0; i < Limitations.cardsInHand; i++) {
-        player.cards?.push(generateRandomCard());
-      }
-    });
-
-    setPlayers(tempPlayers);
-    setCurrentPlayer(
-      tempPlayers.find(
-        (player) => player.userId === localStorage.getItem("userId")
-      )
-    );
-
-    const bodyDetails = {
-      roomId: id,
-    };
-    var updateRoom = {
-      ...room,
-      remainingCards: remainingCards,
-      players: players,
-      isWaiting: false
-    };
-    authenticationService
-      .put(Endpoints.RoomById.replace("{0}", id), updateRoom)
-      .then(async (result) => {
-        await authenticationService.post(
-          `${Endpoints.SignalRGameEndpointPrefix}/gameStarted`,
-          bodyDetails
-        );
-      })
-      .catch((error) => {
-        console.log(error);
+    if (
+      players.length >= Limitations.MinPlayers &&
+      players.length <= Limitations.MaxPlayers
+    ) {
+      setStartingCards([...remainingCards]);
+      var tempPlayers = [...players];
+      tempPlayers.map((player) => {
+        for (var i = 0; i < Limitations.cardsInHand; i++) {
+          player.cards?.push(generateRandomCard());
+        }
       });
+
+      setPlayers(tempPlayers);
+      setCurrentPlayer(
+        tempPlayers.find(
+          (player) => player.userId === localStorage.getItem("userId")
+        )
+      );
+
+      const bodyDetails = {
+        roomId: id,
+      };
+      var updateRoom = {
+        ...room,
+        remainingCards: remainingCards,
+        players: players,
+        isWaiting: false,
+      };
+      authenticationService
+        .put(Endpoints.RoomById.replace("{0}", id), updateRoom)
+        .then(async (result) => {
+          await authenticationService.post(
+            `${Endpoints.SignalRGameEndpointPrefix}/gameStarted`,
+            bodyDetails
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const handleReturnToRoomClick = () => {
@@ -150,16 +156,16 @@ const GamePage = () => {
         isTurn: player.isMaster ? true : false,
         isReady: true,
         isDonePlaying: false,
-        isWin: false
-      }
-    })
+        isWin: false,
+      };
+    });
     var updateRoom = {
       ...room,
       remainingCards: startingCards,
       players: resettedPlayers,
       totalPoints: 0,
       isWaiting: true,
-      isGameOver: false
+      isGameOver: false,
     };
     authenticationService
       .put(Endpoints.RoomById.replace("{0}", id), updateRoom)
@@ -170,7 +176,7 @@ const GamePage = () => {
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   const generateRandomCard = () => {
     const randomNum = Math.floor(Math.random() * remainingCards.length);
@@ -199,7 +205,7 @@ const GamePage = () => {
   const handleMiddleDeckClick = async () => {
     const bodyDetails = {
       roomId: id,
-      userId: currentPlayer.userId
+      userId: currentPlayer.userId,
     };
     await authenticationService.post(
       `${Endpoints.SignalRGameEndpointPrefix}/pullCardFromMiddleDeck`,
@@ -252,7 +258,7 @@ const GamePage = () => {
           .get(Endpoints.RoomById.replace("{0}", id))
           .then((resultData) => {
             var roomById = resultData.data;
-            
+
             setRoom(roomById);
             setPlayers(roomById.players);
             var player = roomById.players?.find(
@@ -296,15 +302,50 @@ const GamePage = () => {
             setRemainingCards(roomById.remainingCards);
 
             var masterRoom = roomById.players.find((player) => player.isMaster);
-            if (masterRoom && masterRoom.userId === localStorage.getItem("userId")) {
+            if (
+              masterRoom &&
+              masterRoom.userId === localStorage.getItem("userId")
+            ) {
               setIsMaster(true);
             }
           });
       });
 
-      hubConnection.on("playersCardsUpdated", (object) => {
-        console.log(object);
-      });
+      hubConnection.on(
+        "playersCardsUpdated",
+        (
+          roomId,
+          categoryGroup,
+          cardName,
+          fromPlayerUserId,
+          toPlayerUserId,
+          cardFound
+        ) => {
+          if (cardFound === "0") {
+            var updatedDetails = {
+              toPlayerUserId: toPlayerUserId,
+              isOpen: true,
+            };
+
+            if (localStorage.getItem("userId") === toPlayerUserId) {
+              setCardRequestDontHave({
+                ...updatedDetails,
+                isOpen: false,
+                toPlayerUserId: "",
+              });
+            } else {
+              setCardRequestDontHave(updatedDetails);
+              setTimeout(() => {
+                setCardRequestDontHave({
+                  ...updatedDetails,
+                  isOpen: false,
+                  toPlayerUserId: "",
+                });
+              }, 3000);
+            }
+          }
+        }
+      );
 
       hubConnection.on(
         "cardRequestNotify",
@@ -334,7 +375,7 @@ const GamePage = () => {
                 isOpen: false,
                 fromPlayerUserId: "",
               });
-            }, 5000);
+            }, 3000);
           }
         }
       );
@@ -366,72 +407,85 @@ const GamePage = () => {
   if (!isLoading && !isAuthenticated) loginWithRedirect();
   else {
     return (
-      <div className={`qcg-game-page ${translationService.translate.general.direction}`}>
+      <div
+        className={`qcg-game-page ${translationService.translate.general.direction}`}
+      >
         {isLoadingGame && <LoaderCompletedComponent></LoaderCompletedComponent>}
-        
-        {
-          (isWaiting && !isGameOver) && 
-            <div className="qcg-flex qcg-flex-center full-height">
-              <WaitingStateComponent
-                isMaster={isMaster}
-                handleStartClick={handleStartClick}
-                players={players}
-                roomName={roomName}
-              ></WaitingStateComponent>
-            </div>
-        }
-        {
-          (!isWaiting && !isGameOver) &&
-          (
-            <StartedStateComponent
-              handleInfoButtonClick={handleInfoButtonClick}
-              remainingCards={remainingCards}
+
+        {isWaiting && !isGameOver && (
+          <div className="qcg-flex qcg-flex-center full-height">
+            <WaitingStateComponent
+              isMaster={isMaster}
+              handleStartClick={handleStartClick}
               players={players}
-              startingCards={startingCards}
-              currentPlayer={currentPlayer}
-              handleMiddleDeckClick={handleMiddleDeckClick}
-              onCategoryGroupClick={onCategoryGroupClick}
-              cardsRequest={cardsRequest}
-              cardNotifyDetails={cardNotifyDetails}
-            ></StartedStateComponent>
-          )
-        }
+              roomName={roomName}
+            ></WaitingStateComponent>
+          </div>
+        )}
+        {!isWaiting && !isGameOver && (
+          <StartedStateComponent
+            handleInfoButtonClick={handleInfoButtonClick}
+            remainingCards={remainingCards}
+            players={players}
+            startingCards={startingCards}
+            currentPlayer={currentPlayer}
+            handleMiddleDeckClick={handleMiddleDeckClick}
+            onCategoryGroupClick={onCategoryGroupClick}
+            cardsRequest={cardsRequest}
+            cardNotifyDetails={cardNotifyDetails}
+            cardRequestDontHave={cardRequestDontHave}
+          ></StartedStateComponent>
+        )}
 
-        {
-          (isGameOver && !isWaiting) &&
-          <GameOverStateComponent handleReturnToRoomClick={handleReturnToRoomClick} players={players} currentPlayer={currentPlayer}></GameOverStateComponent>
-        }
-        {
-          !isGameOver &&
+        {isGameOver && !isWaiting && (
+          <GameOverStateComponent
+            handleReturnToRoomClick={handleReturnToRoomClick}
+            players={players}
+            currentPlayer={currentPlayer}
+          ></GameOverStateComponent>
+        )}
+        {!isGameOver && (
           <div className="floating-button">
-          <ion-fab horizontal={translationService.translate.general.direction === "qcg-ltr" ? "end" : "start"} vertical="top" slot="fixed">
-            <ion-fab-button>
-              <ion-icon name="chevron-down-outline"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-list side="bottom">
-              <ion-fab-button
-                onClick={(e) =>
-                  navigationService(States.Main, { state: { HomePage } })
-                }
-                color="light"
-              >
-                <ion-label>{translationService.translate.gamePage.sidaBar.mainMenu}</ion-label>
+            <ion-fab
+              horizontal={
+                translationService.translate.general.direction === "qcg-ltr"
+                  ? "end"
+                  : "start"
+              }
+              vertical="top"
+              slot="fixed"
+            >
+              <ion-fab-button>
+                <ion-icon name="chevron-down-outline"></ion-icon>
               </ion-fab-button>
+              <ion-fab-list side="bottom">
+                <ion-fab-button
+                  onClick={(e) =>
+                    navigationService(States.Main, { state: { HomePage } })
+                  }
+                  color="light"
+                >
+                  <ion-label>
+                    {translationService.translate.gamePage.sidaBar.mainMenu}
+                  </ion-label>
+                </ion-fab-button>
 
-              <ion-fab-button
-                onClick={(e) =>
-                  navigationService(States.RoomsList, {
-                    state: { RoomsListPage },
-                  })
-                }
-                color="light"
-              >
-                <ion-label>{translationService.translate.gamePage.sidaBar.leaveGame}</ion-label>
-              </ion-fab-button>
-            </ion-fab-list>
-          </ion-fab>
-        </div>
-        }
+                <ion-fab-button
+                  onClick={(e) =>
+                    navigationService(States.RoomsList, {
+                      state: { RoomsListPage },
+                    })
+                  }
+                  color="light"
+                >
+                  <ion-label>
+                    {translationService.translate.gamePage.sidaBar.leaveGame}
+                  </ion-label>
+                </ion-fab-button>
+              </ion-fab-list>
+            </ion-fab>
+          </div>
+        )}
 
         {isChatDisplay && (
           <ChatMessages
@@ -446,16 +500,23 @@ const GamePage = () => {
             chatBoxRef={chatBoxRef}
           />
         )}
-        {
-          !isGameOver &&
+        {!isGameOver && (
           <div className="floating-button">
-            <ion-fab horizontal={translationService.translate.general.direction === "qcg-ltr" ? "end" : "start"} vertical="bottom" slot="fixed">
+            <ion-fab
+              horizontal={
+                translationService.translate.general.direction === "qcg-ltr"
+                  ? "end"
+                  : "start"
+              }
+              vertical="bottom"
+              slot="fixed"
+            >
               <ion-fab-button id="chat" onClick={(e) => handleClick(e)}>
                 <ion-icon name="chatbubbles-outline"></ion-icon>
               </ion-fab-button>
             </ion-fab>
           </div>
-        }
+        )}
 
         <PopupMessageComponent
           popupAlert={popupAlert}

@@ -16,7 +16,8 @@
       "welcomeDescription": "You might know this famous game and maybe played with your family, our interactive game is the same and you can play with up to 4 people.{} Our company specifies in online card games and our goal is to give you the best experience online which will be very similar (and maybe better) than reality.{} Ok, Lets Start!{} Before you create a new game, you have to sign up/log in, find a free table and wait for the other players to log in. It might take a while so be patient.{} If you forgot the rules, or if its your first time playing, that's ok. You can always navigate to the Rules page by clicking The 'RULES' button on the of the screen.{} So have fun and lets hope you will be the winner of your table!",
       "rulesTitle": "RULES",
       "rulesDescription": "The deck has 36 cards, that means 9 quartets, one for each category.{} For example: Animals, Cars, Cities etc.{} Each player gets four cards and the rest of the cards stays in the deck.{} The Goal: To be the player with the most point.{} You can do so by creating a quartet with four cards from the same category.{} Once a player has a quartet he needs to put it in the center of the screen, he will earn one point.{} Game Play: each turn will give the player the ability to ask any other player about a specific category.{} If the other player said Yes: The asking player has to choose a specific card that the player might have. If the player who has been asked have the card, it will automatically will move to the asking player.{} If the other player said No: The asking player have to take a card from the deck and his the next player start his turn.{} The winner: will be declared once all the quartets are on the table and he will be the player who have the most points.",
-      "aboutDescription": "We are a team of four developers who are passionate about Creating web games. Our company specifies in online card games and our goal is to give you the best experience online which will be very similar (and maybe better) to reality.{} The idea behind our company is to connect people by playing the good old games with their friends. The Quartet game is our favorite one and we want to give our players the best experience that will be the closest to sitting with your friends.{} In the future, we would like you guys to ask us for specific games that we would love to re-create online for you.{} We believe that games connect people and it's a great excuse to spend time with others in a very busy world."
+      "aboutDescription": "We are a team of four developers who are passionate about Creating web games. Our company specifies in online card games and our goal is to give you the best experience online which will be very similar (and maybe better) to reality.{} The idea behind our company is to connect people by playing the good old games with their friends. The Quartet game is our favorite one and we want to give our players the best experience that will be the closest to sitting with your friends.{} In the future, we would like you guys to ask us for specific games that we would love to re-create online for you.{} We believe that games connect people and it's a great excuse to spend time with others in a very busy world.",
+      "aboutUsImage": "https://i.imgur.com/l9PmCzl.png"
     },
     "profilePage": {
       "profileTitle": "User Profile",
@@ -28,7 +29,7 @@
       "logoutButton": "Logout"
     },
     "roomsListPage": {
-      "popupModelRoomsList":{
+      "popupModelRoomsList": {
         "title": "Enter room's password",
         "inputPlaceholderPassword": "Password",
         "errorMessage": "Password entered is incorrect!"
@@ -76,10 +77,11 @@
       "waitingPageTitle": "Waiting Room",
       "hostStartGameButton": "Start"
     },
-    "startedStateComponent":  {
-      "requestMessage": "give me"
+    "startedStateComponent": {
+      "requestMessage": "give me",
+      "dontHaveCardRequestMessage": "I don't have the card"
     },
-    "gameOverStateComponent":  {
+    "gameOverStateComponent": {
       "gameOverTitle": "Game Result",
       "gameOverSubTitleWin": "You Win!",
       "gameOverSubTitleLose": "You Lose!",

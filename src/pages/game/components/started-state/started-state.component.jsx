@@ -25,8 +25,8 @@ const StartedStateComponent = (props) => {
   };
 
   const handlePlayerInfoClick = (event, id) => {
-    var player = props?.players?.find(player => player.userId === id);
-    if(player && !player.isDonePlaying) {
+    var player = props?.players?.find((player) => player.userId === id);
+    if (player && !player.isDonePlaying) {
       setAnchorEl(event.currentTarget);
       generatePlayerCategoryGroups();
       setId(id);
@@ -86,12 +86,22 @@ const StartedStateComponent = (props) => {
       ></PopOverComponent>
       <ion-popover
         trigger={props.cardNotifyDetails?.fromPlayerUserId}
-        side={translationService.translate.general.direction === "qcg-ltr" ? "right" : "left"}
+        side={
+          translationService.translate.general.direction === "qcg-ltr"
+            ? "right"
+            : "left"
+        }
         is-open={props.cardNotifyDetails?.isOpen}
       >
         <ion-item>
           <div className="popover-notify-wrapper qcg-flex qcg-flex-column qcg-flex-center">
-            <div>{props.cardNotifyDetails?.toPlayerFullName}, {translationService.translate.startedStateComponent.requestMessage}</div>
+            <div>
+              {props.cardNotifyDetails?.toPlayerFullName},{" "}
+              {
+                translationService.translate.startedStateComponent
+                  .requestMessage
+              }
+            </div>
             <HandCardComponent
               categoryGroup={props.cardNotifyDetails?.card?.categoryGroup}
               cardName={props.cardNotifyDetails?.card?.cardName}
@@ -101,24 +111,47 @@ const StartedStateComponent = (props) => {
           </div>
         </ion-item>
       </ion-popover>
+
+      <ion-popover
+        trigger={props.cardRequestDontHave?.toPlayerUserId}
+        side={
+          translationService.translate.general.direction === "qcg-ltr"
+            ? "right"
+            : "left"
+        }
+        is-open={props.cardRequestDontHave?.isOpen}
+      >
+        <ion-item>
+          <div className="popover-notify-wrapper qcg-flex qcg-flex-column qcg-flex-center">
+            <div>
+              {
+                translationService.translate.startedStateComponent
+                  .dontHaveCardRequestMessage
+              }
+            </div>
+          </div>
+        </ion-item>
+      </ion-popover>
+
       <div className="game-players qcg-flex-5">
         <div className="qcg-flex qcg-flex-column qcg-flex-justify-space-evenly qcg-flex-center full-height">
           {props.players.map((player) => {
             return (
-              player.userId !== props.currentPlayer?.userId &&
-              <div id={player.userId}>
-                <PlayerInfoComponent
-                  id={player.userId}
-                  picture={player.picture}
-                  cardsLength={player.cards.length}
-                  fullName={player.fullName}
-                  isTurn={player.isTurn}
-                  isDonePlaying={player.isDonePlaying}
-                  points={player.points}
-                  handlePlayerInfoClick={handlePlayerInfoClick}
-                  currentPlayer={props.currentPlayer}
-                ></PlayerInfoComponent>
-              </div>
+              player.userId !== props.currentPlayer?.userId && (
+                <div id={player.userId}>
+                  <PlayerInfoComponent
+                    id={player.userId}
+                    picture={player.picture}
+                    cardsLength={player.cards.length}
+                    fullName={player.fullName}
+                    isTurn={player.isTurn}
+                    isDonePlaying={player.isDonePlaying}
+                    points={player.points}
+                    handlePlayerInfoClick={handlePlayerInfoClick}
+                    currentPlayer={props.currentPlayer}
+                  ></PlayerInfoComponent>
+                </div>
+              )
             );
           })}
         </div>
@@ -127,7 +160,9 @@ const StartedStateComponent = (props) => {
         <div
           onClick={props.handleMiddleDeckClick}
           className={`deck-on-table ${
-            (!props.currentPlayer.isTurn || props.remainingCards.length === 0) && "disabled-deck"
+            (!props.currentPlayer.isTurn ||
+              props.remainingCards.length === 0) &&
+            "disabled-deck"
           }`}
         >
           <img src={image.MidDeck}></img>
