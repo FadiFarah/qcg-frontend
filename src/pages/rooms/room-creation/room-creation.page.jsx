@@ -55,7 +55,8 @@ const RoomCreationPage = () => {
       remainingCards: categories.find(category => category._id === categoryId)?.deck,
       players: [],
       isWaiting: true,
-      isPublic: isPublic
+      isPublic: isPublic,
+      totalPoints: 0
     }
     authenticationService.post(Endpoints.Rooms, room)
       .then((result) => {
