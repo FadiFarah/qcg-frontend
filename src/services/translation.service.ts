@@ -3,151 +3,153 @@ import english from "../assets/translations/english.json";
 import hebrew from "../assets/translations/hebrew.json";
 
 interface translation {
-    general: {
-        direction: string;
-    };
+  general: {
+    direction: string;
+  };
 
-    navbarComponent: {
-        home: string;
-        about: string;
-        rules: string;
-        profile: string;
-        loginUserName: string;
-        welcomeUserName: string;
-    };
+  navbarComponent: {
+    home: string;
+    about: string;
+    rules: string;
+    profile: string;
+    loginUserName: string;
+    welcomeUserName: string;
+  };
 
-    homePage: {
-        welcomeTitle: string;
-        welcomeDescription: string;
-        rulesTitle: string;
-        rulesDescription: string;
-        aboutDescription: string;
-    };
+  homePage: {
+    welcomeTitle: string;
+    welcomeDescription: string;
+    rulesTitle: string;
+    rulesDescription: string;
+    aboutDescription: string;
+    aboutUsImage: string;
+  };
 
-    profilePage: {
-        profileTitle: string;
-        profileEmail: string;
-        profileFirstName: string;
-        profileLastName: string;
-        profileLanguage: string;
-        saveButton: string;
-        logoutButton: string;
-    };
+  profilePage: {
+    profileTitle: string;
+    profileEmail: string;
+    profileFirstName: string;
+    profileLastName: string;
+    profileLanguage: string;
+    saveButton: string;
+    logoutButton: string;
+  };
 
-    roomsListPage: {
-        roomListCreate: string;
-        roomsListTitle: string;
-        roomsListAllRooms: string;
-        roomsListPublicRooms: string;
-        roomsListPrivateRooms: string;
-        roomCurrentUsers: string;
-        roomStatus: {
-            statusTitle: string;
-            statusWaiting: string;
-            statusStarted: string;
-        };
-        privateRoomPasswordPopup: {
-            title: string;
-            inputPlaceholder: string;
-            errorMessage: string;
-        };
-        popupModelRoomsList:{
-            title: string;
-            inputPlaceholderPassword: string;
-            errorMessage: string;
-          },
-          popupRoomFull: {
-            title: string;
-            action: string;
-          },
-          popupRoomStarted: {
-            title: string;
-            action: string;
-          },
+  roomsListPage: {
+    roomListCreate: string;
+    roomsListTitle: string;
+    roomsListAllRooms: string;
+    roomsListPublicRooms: string;
+    roomsListPrivateRooms: string;
+    roomCurrentUsers: string;
+    roomStatus: {
+      statusTitle: string;
+      statusWaiting: string;
+      statusStarted: string;
     };
-
-    roomCreationPage: {
-        roomCreationTitle: string;
-        backToPageButton: string;
-        roomNameInput: string;
-        categorySelect: string;
-        validationInputsMessage: string;
-        roomStatus: {
-            statusTitle: string;
-            statusPublic: string;
-            statusPrivate: string;
-            privateStatusPasswordInput: string;
-        };
-        createRoomButton: string;
+    privateRoomPasswordPopup: {
+      title: string;
+      inputPlaceholder: string;
+      errorMessage: string;
     };
-
-    waitingStateComponent: {
-        waitingPageTitle: string;
-        hostStartGameButton: string;
+    popupModelRoomsList: {
+      title: string;
+      inputPlaceholderPassword: string;
+      errorMessage: string;
     };
-
-    startedStateComponent:  {
-        requestMessage: string;
+    popupRoomFull: {
+      title: string;
+      action: string;
     };
-
-    gameOverStateComponent:  {
-        gameOverTitle: string;
-        gameOverSubTitleWin: string;
-        gameOverSubTitleLose: string;
-        playerWinner: string;
-        playerLoser: string;
-        returnToRoomButton: string;
+    popupRoomStarted: {
+      title: string;
+      action: string;
     };
+  };
 
-    gamePage: {
-        sidaBar: {
-            mainMenu: string;
-            leaveGame: string;
-        };
-        chatMessages: {
-            newMessageInputPlaceholder: string;
-            sendButton: string;
-        };
-        popupForCardRequest: {
-            title: string;
-        }
+  roomCreationPage: {
+    roomCreationTitle: string;
+    backToPageButton: string;
+    roomNameInput: string;
+    categorySelect: string;
+    validationInputsMessage: string;
+    roomStatus: {
+      statusTitle: string;
+      statusPublic: string;
+      statusPrivate: string;
+      privateStatusPasswordInput: string;
     };
+    createRoomButton: string;
+  };
 
-    popupModelSettings: {
-        confimAction: string;
-        hasCancel: string;
-      }
+  waitingStateComponent: {
+    waitingPageTitle: string;
+    hostStartGameButton: string;
+  };
+
+  startedStateComponent: {
+    requestMessage: string;
+    dontHaveCardRequestMessage: string;
+  };
+
+  gameOverStateComponent: {
+    gameOverTitle: string;
+    gameOverSubTitleWin: string;
+    gameOverSubTitleLose: string;
+    playerWinner: string;
+    playerLoser: string;
+    returnToRoomButton: string;
+  };
+
+  gamePage: {
+    sidaBar: {
+      mainMenu: string;
+      leaveGame: string;
+    };
+    chatMessages: {
+      newMessageInputPlaceholder: string;
+      sendButton: string;
+    };
+    popupForCardRequest: {
+      title: string;
+    };
+  };
+
+  popupModelSettings: {
+    confimAction: string;
+    hasCancel: string;
+  };
 }
 
-class TranslationService  {
+class TranslationService {
+  private authenticationService: AuthenticationService;
+  public translate: translation = null;
 
-    private authenticationService: AuthenticationService;
-    public translate: translation = null;
-    
-    constructor() {
-        this.authenticationService = new AuthenticationService();
-        this.initialize();
+  constructor() {
+    this.authenticationService = new AuthenticationService();
+    this.initialize();
+  }
+
+  public initialize() {
+    this.setLocale();
+
+    if (this.getLocale() === "en") {
+      this.translate = english.translation;
+    } else {
+      this.translate = hebrew.translation;
     }
+  }
 
-    public initialize() {
-        this.setLocale();
+  public setLocale() {
+    var locale = this.authenticationService
+      .getAuthenticationInfo()
+      ?.userDetails?.locale.split("-")[0];
+    localStorage.setItem("locale", locale);
+  }
 
-        if(this.getLocale() === "en") {
-            this.translate = english.translation;
-        }
-        else {
-            this.translate = hebrew.translation;
-        }
-    }
-
-    public setLocale() {
-        var locale = this.authenticationService.getAuthenticationInfo()?.userDetails?.locale.split("-")[0];
-        localStorage.setItem("locale", locale);
-    }
-
-    public getLocale(): string {
-        return localStorage.getItem("locale");
-    }
+  public getLocale(): string {
+    return localStorage.getItem("locale");
+  }
 }
 
 export default TranslationService;
