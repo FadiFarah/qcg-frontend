@@ -42,9 +42,9 @@
       },
       "roomListCreate": "Create a room",
       "roomsListTitle": "Rooms",
-      "roomsListTabsLeft": "All rooms",
-      "roomsListTabsCenter": "Public rooms",
-      "roomsListTabsRight": "Private rooms",
+      "roomsListAllRooms": "All rooms",
+      "roomsListPublicRooms": "Public rooms",
+      "roomsListPrivateRooms": "Private rooms",
       "roomCurrentUsers": "Current users",
       "roomStatus": {
         "statusTitle": "Status",
@@ -52,7 +52,7 @@
         "statusStarted": "Started"
       },
       "privateRoomPasswordPopup": {
-        "Title": "Enter the room password",
+        "title": "Enter the room password",
         "inputPlaceholder": "Enter password",
         "errorMessage": "The password you entered is incorrect!"
       }
@@ -71,9 +71,12 @@
       },
       "createRoomButton": "Create"
     },
-    "waitingGamePage": {
+    "waitingStateComponent": {
       "waitingPageTitle": "Waiting Room",
       "hostStartGameButton": "Start"
+    },
+    "startedStateComponent":  {
+      "requestMessage": "give me"
     },
     "gamePage": {
       "sidaBar": {

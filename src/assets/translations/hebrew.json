@@ -42,9 +42,9 @@
       },
       "roomListCreate": "צור חדר",
       "roomsListTitle": "חדרים",
-      "roomsListTabsLeft": "כל החדרים",
-      "roomsListTabsCenter": "חדרים ציבוריים",
-      "roomsListTabsRight": "חדרים פרטיים",
+      "roomsListAllRooms": "כל החדרים",
+      "roomsListPublicRooms": "חדרים ציבוריים",
+      "roomsListPrivateRooms": "חדרים פרטיים",
       "roomCurrentUsers": "מספר משתתפים",
       "roomStatus": {
         "statusTitle": "סטטוס",
@@ -52,7 +52,7 @@
         "statusStarted": "התחיל"
       },
       "privateRoomPasswordPopup": {
-        "Title": "הזן סיסמה עבור החדר",
+        "title": "הזן סיסמה עבור החדר",
         "inputPlaceholder": "הזן סיסמה",
         "errorMessage": "הסיסמה שהוזנה שגויה!"
       }
@@ -71,9 +71,12 @@
       },
       "createRoomButton": "צור חדר"
     },
-    "waitingGamePage": {
+    "waitingStateComponent": {
       "waitingPageTitle": "חדר המתנה",
       "hostStartGameButton": "התחל משחק"
+    },
+    "startedStateComponent":  {
+      "requestMessage": "תעביר לי"
     },
     "gamePage": {
       "sidaBar": {
