@@ -108,6 +108,7 @@ const StartedStateComponent = (props) => {
                   fullName={player.fullName}
                   isTurn={player.isTurn}
                   handlePlayerInfoClick={handlePlayerInfoClick}
+                  currentPlayer={props.currentPlayer}
                 ></PlayerInfoComponent>
               </div>
             );

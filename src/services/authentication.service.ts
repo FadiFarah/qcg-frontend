@@ -14,6 +14,7 @@ export interface user {
     displayName: string;
     picture: string;
     sub: string;
+    score: number;
 }
 
 export interface IAuthenticationService {
@@ -96,7 +97,8 @@ class AuthenticationService implements IAuthenticationService {
                 displayName: tokenClaims.name,
                 locale: tokenClaims.locale,
                 picture: tokenClaims.picture,
-                sub: tokenClaims.sub
+                sub: tokenClaims.sub,
+                score: 0
             },
             authenticationToken: accessToken
         };
