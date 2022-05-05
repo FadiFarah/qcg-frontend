@@ -1,0 +1,77 @@
+.qcg-game-over-state {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 80vh;
+    width: 80%;
+    background-color: white;
+    border-radius: 1em;
+    box-shadow: 0 0 1em rgb(131, 131, 131);
+    overflow-y: auto;
+
+    .title {
+        height: 30%;
+        font-size: 3em;
+        border-bottom: 1px ridge;
+    }
+
+    .subtitle {
+        height: 25%;
+        font-size: 3em;
+        font-weight: 700;
+
+        &.current-player-winner {
+            color: green;
+        }
+
+        &.current-player-loser {
+            color: red;
+        }
+    }
+
+    .players-results-wrapper {
+        height: 100%;
+
+        .player-result {
+            border-bottom: 1px solid;
+            padding: 1em 0;
+            font-size: larger;
+            font-weight: 700;
+
+            &.current-player-selected {
+                background-color: rgb(218, 216, 216);
+            }
+
+            img {
+                border-radius: 50%;
+                width: 4em;
+            }
+
+            .player-winner {
+                color: green;
+            }
+
+            .player-loser {
+                color: red;
+            }
+        }
+    }
+
+    .button-wrapper {
+        padding: 1em;
+        .button {
+            border-radius: 0.5em;
+            cursor: pointer;
+            color: white;
+            padding: 0.5em 1em;
+            background-color: black;
+            transition: 0.3s ease-in-out;
+        }
+    }
+
+    .button:hover {
+        color: black;
+        background-color: rgb(187, 184, 184);
+    }
+}

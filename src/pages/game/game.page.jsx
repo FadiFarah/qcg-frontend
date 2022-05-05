@@ -17,6 +17,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import LoaderCompletedComponent from "../../components/loader-completed/loader-completed.component";
 import HandCardComponent from "./components/hand-card/hand-card.component";
 import TranslationService from "../../services/translation.service";
+import GameOverStateComponent from "./components/game-over-state/game-over-state.component";
 
 const GamePage = () => {
   const { id, password } = useParams();
@@ -29,6 +30,7 @@ const GamePage = () => {
   const [popupModalSettings, setPopupModalSettings] = useState({});
   const [popupAlert, setPopupAlert] = useState(false);
   const [isWaiting, setIsWaiting] = useState(true);
+  const [isGameOver, setIsGameOver] = useState(false);
   const [remainingCards, setRemainingCards] = useState([]);
   const [startingCards, setStartingCards] = useState([]);
   const [room, setRoom] = useState({});
@@ -124,6 +126,7 @@ const GamePage = () => {
       ...room,
       remainingCards: remainingCards,
       players: players,
+      isWaiting: false
     };
     authenticationService
       .put(Endpoints.RoomById.replace("{0}", id), updateRoom)
@@ -137,6 +140,37 @@ const GamePage = () => {
         console.log(error);
       });
   };
+
+  const handleReturnToRoomClick = () => {
+    var resettedPlayers = players.map((player) => {
+      return {
+        ...player,
+        points: 0,
+        cards: [],
+        isTurn: player.isMaster ? true : false,
+        isReady: true,
+        isDonePlaying: false,
+        isWin: false
+      }
+    })
+    var updateRoom = {
+      ...room,
+      remainingCards: startingCards,
+      players: resettedPlayers,
+      totalPoints: 0,
+      isWaiting: true,
+      isGameOver: false
+    };
+    authenticationService
+      .put(Endpoints.RoomById.replace("{0}", id), updateRoom)
+      .then((result) => {
+        setIsWaiting(true);
+        setIsGameOver(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   const generateRandomCard = () => {
     const randomNum = Math.floor(Math.random() * remainingCards.length);
@@ -162,30 +196,15 @@ const GamePage = () => {
     );
   };
 
-  const handleMiddleDeckClick = () => {
-    var cardPulled = generateRandomCard();
-    var tempPlayer = {
-      ...currentPlayer,
-      cards: [...currentPlayer.cards, cardPulled],
+  const handleMiddleDeckClick = async () => {
+    const bodyDetails = {
+      roomId: id,
+      userId: currentPlayer.userId
     };
-    setCurrentPlayer(tempPlayer);
-    var index = players.findIndex(
-      (player) => player.userId === tempPlayer.userId
+    await authenticationService.post(
+      `${Endpoints.SignalRGameEndpointPrefix}/pullCardFromMiddleDeck`,
+      bodyDetails
     );
-    players[index] = tempPlayer;
-    var updateRoom = {
-      ...room,
-      remainingCards: remainingCards,
-      players: players,
-    };
-    authenticationService
-      .put(Endpoints.RoomById.replace("{0}", id), updateRoom)
-      .then(async (result) => {
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   const onCategoryGroupClick = (toPlayerUserId, categoryGroup) => {
@@ -243,6 +262,7 @@ const GamePage = () => {
             setRemainingCards(roomById.remainingCards);
             setStartingCards(roomById.remainingCards);
             setRoomName(roomById.roomName);
+            setIsGameOver(roomById.isGameOver);
             setIsLoadingGame(false);
             var masterRoom = roomById.players.find((player) => player.isMaster);
             if (
@@ -266,6 +286,8 @@ const GamePage = () => {
             var roomById = resultData.data;
             setRoom(roomById);
             setPlayers(roomById.players);
+            setIsGameOver(roomById.isGameOver);
+            setIsWaiting(roomById.isWaiting);
             setCurrentPlayer(
               roomById.players?.find(
                 (player) => player.userId === localStorage.getItem("userId")
@@ -274,10 +296,7 @@ const GamePage = () => {
             setRemainingCards(roomById.remainingCards);
 
             var masterRoom = roomById.players.find((player) => player.isMaster);
-            if (
-              masterRoom &&
-              masterRoom.userId === localStorage.getItem("userId")
-            ) {
+            if (masterRoom && masterRoom.userId === localStorage.getItem("userId")) {
               setIsMaster(true);
             }
           });
@@ -349,29 +368,42 @@ const GamePage = () => {
     return (
       <div className="qcg-game-page">
         {isLoadingGame && <LoaderCompletedComponent></LoaderCompletedComponent>}
-        {isWaiting ? (
-          <div className="qcg-flex qcg-flex-center full-height">
-            <WaitingStateComponent
-              isMaster={isMaster}
-              handleStartClick={handleStartClick}
+        
+        {
+          (isWaiting && !isGameOver) && 
+            <div className="qcg-flex qcg-flex-center full-height">
+              <WaitingStateComponent
+                isMaster={isMaster}
+                handleStartClick={handleStartClick}
+                players={players}
+                roomName={roomName}
+              ></WaitingStateComponent>
+            </div>
+        }
+        {
+          (!isWaiting && !isGameOver) &&
+          (
+            <StartedStateComponent
+              handleInfoButtonClick={handleInfoButtonClick}
+              remainingCards={remainingCards}
               players={players}
-              roomName={roomName}
-            ></WaitingStateComponent>
-          </div>
-        ) : (
-          <StartedStateComponent
-            handleInfoButtonClick={handleInfoButtonClick}
-            remainingCards={remainingCards}
-            players={players}
-            startingCards={startingCards}
-            currentPlayer={currentPlayer}
-            handleMiddleDeckClick={handleMiddleDeckClick}
-            onCategoryGroupClick={onCategoryGroupClick}
-            cardsRequest={cardsRequest}
-            cardNotifyDetails={cardNotifyDetails}
-          ></StartedStateComponent>
-        )}
-        <div className="floating-button">
+              startingCards={startingCards}
+              currentPlayer={currentPlayer}
+              handleMiddleDeckClick={handleMiddleDeckClick}
+              onCategoryGroupClick={onCategoryGroupClick}
+              cardsRequest={cardsRequest}
+              cardNotifyDetails={cardNotifyDetails}
+            ></StartedStateComponent>
+          )
+        }
+
+        {
+          (isGameOver && !isWaiting) &&
+          <GameOverStateComponent handleReturnToRoomClick={handleReturnToRoomClick} players={players} currentPlayer={currentPlayer}></GameOverStateComponent>
+        }
+        {
+          !isGameOver &&
+          <div className="floating-button">
           <ion-fab horizontal="end" vertical="top" slot="fixed">
             <ion-fab-button>
               <ion-icon name="chevron-down-outline"></ion-icon>
@@ -399,6 +431,7 @@ const GamePage = () => {
             </ion-fab-list>
           </ion-fab>
         </div>
+        }
 
         {isChatDisplay && (
           <ChatMessages
@@ -413,13 +446,16 @@ const GamePage = () => {
             chatBoxRef={chatBoxRef}
           />
         )}
-        <div className="floating-button">
-          <ion-fab horizontal="end" vertical="bottom" slot="fixed">
-            <ion-fab-button id="chat" onClick={(e) => handleClick(e)}>
-              <ion-icon name="chatbubbles-outline"></ion-icon>
-            </ion-fab-button>
-          </ion-fab>
-        </div>
+        {
+          !isGameOver &&
+          <div className="floating-button">
+            <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+              <ion-fab-button id="chat" onClick={(e) => handleClick(e)}>
+                <ion-icon name="chatbubbles-outline"></ion-icon>
+              </ion-fab-button>
+            </ion-fab>
+          </div>
+        }
 
         <PopupMessageComponent
           popupAlert={popupAlert}
