@@ -1,4 +1,25 @@
 .qcg-player-info {
+    position: relative;
+
+    .done-playing-wrapper {
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        background-color: rgba(0,0,0,0.3);
+        color: #b7094c;
+        font-weight: 700;
+        font-size: 4vh;
+        word-break: keep-all;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+
+        .done-playing {
+            width: min-content;
+        }
+    }
 
     .game-wrapper {
         height: 100%;

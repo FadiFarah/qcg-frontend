@@ -57,6 +57,7 @@ const RoomCreationPage = () => {
       remainingCards: categories.find(category => category._id === categoryId)?.deck,
       players: [],
       isWaiting: true,
+      isGameOver: false,
       isPublic: isPublic,
       totalPoints: 0
     }
