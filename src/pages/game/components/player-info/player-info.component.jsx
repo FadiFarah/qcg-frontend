@@ -27,6 +27,14 @@ const PlayerInfoComponent = (props) => {
           </div>
         </div>
       </div>
+      {
+        props.isDonePlaying &&
+        <div className="done-playing-wrapper qcg-flex qcg-flex-center">
+          <div className="done-playing">
+            OUT OF CARDS
+          </div>
+        </div>
+      }
     </div>
   );
 };

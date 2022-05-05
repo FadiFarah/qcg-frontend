@@ -25,10 +25,13 @@ const StartedStateComponent = (props) => {
   };
 
   const handlePlayerInfoClick = (event, id) => {
-    setAnchorEl(event.currentTarget);
-    generatePlayerCategoryGroups();
-    setId(id);
-    setIsOpen(true);
+    var player = props?.players?.find(player => player.userId === id);
+    if(player && !player.isDonePlaying) {
+      setAnchorEl(event.currentTarget);
+      generatePlayerCategoryGroups();
+      setId(id);
+      setIsOpen(true);
+    }
   };
 
   const categoryGroupClick = (toPlayerUserId, categoryGroup) => {
@@ -37,10 +40,10 @@ const StartedStateComponent = (props) => {
   };
 
   const generatePlayerCategoryGroups = () => {
-    var categoryGroups = props.currentPlayer.cards?.map((card) => {
+    var categoryGroups = props.currentPlayer?.cards?.map((card) => {
       return card.categoryGroup;
     });
-    var noDuplicates = categoryGroups.filter(function (elem, pos) {
+    var noDuplicates = categoryGroups?.filter(function (elem, pos) {
       return categoryGroups.indexOf(elem) == pos;
     });
     return noDuplicates;
@@ -109,6 +112,7 @@ const StartedStateComponent = (props) => {
                   cardsLength={player.cards.length}
                   fullName={player.fullName}
                   isTurn={player.isTurn}
+                  isDonePlaying={player.isDonePlaying}
                   handlePlayerInfoClick={handlePlayerInfoClick}
                   currentPlayer={props.currentPlayer}
                 ></PlayerInfoComponent>
@@ -121,7 +125,7 @@ const StartedStateComponent = (props) => {
         <div
           onClick={props.handleMiddleDeckClick}
           className={`deck-on-table ${
-            !props.currentPlayer.isTurn && "disabled-deck"
+            (!props.currentPlayer.isTurn || props.remainingCards.length === 0) && "disabled-deck"
           }`}
         >
           <img src={image.MidDeck}></img>
