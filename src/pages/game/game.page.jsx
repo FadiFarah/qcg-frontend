@@ -74,7 +74,7 @@ const GamePage = () => {
     setPopupModalSettings({
       title: description,
       input: null,
-      action: "Ok",
+      action: translationService.translate.popupModelSettings.confimAction,
       hasCancel: false,
     });
     setPopupAlert(true);
@@ -366,7 +366,7 @@ const GamePage = () => {
   if (!isLoading && !isAuthenticated) loginWithRedirect();
   else {
     return (
-      <div className="qcg-game-page">
+      <div className={`qcg-game-page ${translationService.translate.general.direction}`}>
         {isLoadingGame && <LoaderCompletedComponent></LoaderCompletedComponent>}
         
         {
@@ -404,7 +404,7 @@ const GamePage = () => {
         {
           !isGameOver &&
           <div className="floating-button">
-          <ion-fab horizontal="end" vertical="top" slot="fixed">
+          <ion-fab horizontal={translationService.translate.general.direction === "qcg-ltr" ? "end" : "start"} vertical="top" slot="fixed">
             <ion-fab-button>
               <ion-icon name="chevron-down-outline"></ion-icon>
             </ion-fab-button>
@@ -449,7 +449,7 @@ const GamePage = () => {
         {
           !isGameOver &&
           <div className="floating-button">
-            <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+            <ion-fab horizontal={translationService.translate.general.direction === "qcg-ltr" ? "end" : "start"} vertical="bottom" slot="fixed">
               <ion-fab-button id="chat" onClick={(e) => handleClick(e)}>
                 <ion-icon name="chatbubbles-outline"></ion-icon>
               </ion-fab-button>

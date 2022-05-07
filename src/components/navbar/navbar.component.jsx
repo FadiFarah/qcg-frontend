@@ -10,7 +10,6 @@ import TranslationService from "../../services/translation.service";
 const NavbarComponent = (props) => {
   const navigationService = useNavigate();
   const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
-  const authenticationServie = new AuthenticationService();
   const translationService = new TranslationService();
 
   const handleClick = (event, state) => {

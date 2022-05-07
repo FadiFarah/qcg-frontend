@@ -148,7 +148,7 @@ const RoomsListPage = () => {
   if (!isLoading && !isAuthenticated) loginWithRedirect();
   else {
     return (
-      <div className="qcg-rooms-list-page">
+      <div className={`qcg-rooms-list-page ${translationService.translate.general.direction}`}>
         <Tabs>
           <a href={States.RoomCreation}>{translationService.translate.roomsListPage.roomListCreate}</a>
           <h1 className="qcg-flex-align-self-center">{translationService.translate.roomsListPage.roomsListTitle}</h1>
