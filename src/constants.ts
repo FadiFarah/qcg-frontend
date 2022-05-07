@@ -29,4 +29,6 @@ export class Endpoints {
   public static Rooms: string = `${Endpoints.EndpointPrefix}/room`;
   public static RoomById: string = `${Endpoints.EndpointPrefix}/room/{0}`;
   public static Category: string = `${Endpoints.EndpointPrefix}/category`;
+  public static Languages: string = `${Endpoints.EndpointPrefix}/language`;
+  public static LanguageByIsoCode: string = `${Endpoints.EndpointPrefix}/language/{0}`;
 }

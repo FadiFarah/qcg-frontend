@@ -92,7 +92,7 @@ const RoomCreationPage = () => {
   if (!isLoading && !isAuthenticated) loginWithRedirect();
   else {
     return (
-      <div className="qcg-room-creation-page qcg-flex qcg-flex-center">
+      <div className={`qcg-room-creation-page qcg-flex qcg-flex-center ${translationService.translate.general.direction}`}>
         <div className="wrapper">
           <div className="creation-wrapper qcg-flex qcg-flex-column qcg-flex-align-center">
             <h1 className="qcg-flex qcg-flex-center">{translationService.translate.roomCreationPage.roomCreationTitle}</h1>

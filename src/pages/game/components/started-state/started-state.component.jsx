@@ -86,7 +86,7 @@ const StartedStateComponent = (props) => {
       ></PopOverComponent>
       <ion-popover
         trigger={props.cardNotifyDetails?.fromPlayerUserId}
-        side="right"
+        side={translationService.translate.general.direction === "qcg-ltr" ? "right" : "left"}
         is-open={props.cardNotifyDetails?.isOpen}
       >
         <ion-item>

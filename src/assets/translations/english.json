@@ -23,6 +23,7 @@
       "profileEmail": "Email",
       "profileFirstName": "First Name",
       "profileLastName": "Last Name",
+      "profileLanguage": "Language",
       "saveButton": "Save",
       "logoutButton": "Logout"
     },
@@ -77,6 +78,14 @@
     },
     "startedStateComponent":  {
       "requestMessage": "give me"
+    },
+    "gameOverStateComponent":  {
+      "gameOverTitle": "Game Result",
+      "gameOverSubTitleWin": "You Win!",
+      "gameOverSubTitleLose": "You Lose!",
+      "playerWinner": "Winner",
+      "playerLoser": "Loser",
+      "returnToRoomButton": "Return to room"
     },
     "gamePage": {
       "sidaBar": {
