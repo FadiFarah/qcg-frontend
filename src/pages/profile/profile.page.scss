@@ -7,8 +7,6 @@
     .profile-wrapper {
         overflow: hidden;
         position: relative;
-        transform: translate(-50%, 0);
-        left: 50%;
         top: 0;
         height: fit-content;
         width: 80%;
@@ -16,6 +14,20 @@
         border-radius: 2em;
         box-shadow: 0 0 3em rgb(124, 124, 124);
         margin: 1em 0;
+    }
+
+    &.qcg-ltr {
+        .profile-wrapper {
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+    }
+
+    &.qcg-rtl {
+        .profile-wrapper {
+            right: 50%;
+            transform: translate(50%, 0);
+        }
     }
 
     .edit-button {
@@ -38,7 +50,8 @@
         opacity: 0.5;
     }
 
-    input {
+    input, 
+    select {
         width: 100%;
         border-radius: 0.5em;
         border: 0.5px solid black;
@@ -46,7 +59,8 @@
     }
 
     input,
-    label {
+    label,
+    select {
         margin: 0.5em 1em;
     }
 

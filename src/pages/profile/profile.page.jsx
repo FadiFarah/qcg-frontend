@@ -20,6 +20,8 @@ const ProfilePage = () => {
   const [lastName, setLastName] = useState("");
   const [profileImage, setProfileImage] = useState("");
   const [sub, setSub] = useState("");
+  const [language, setLanguage] = useState("");
+  const [translationsList, setTranslationsList] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { logout, loginWithRedirect, isAuthenticated } = useAuth0();
@@ -27,6 +29,12 @@ const ProfilePage = () => {
 
 
   useEffect(() => {
+    authenticationService
+      .get(Endpoints.LanguageByIsoCode.replace("{0}", localStorage.getItem("locale")))
+      .then((result) => {
+        setLanguage(result.data);
+        setTranslationsList(result.data.translations);
+      });
     authenticationService
       .get(Endpoints.UserById.replace("{0}", authenticationService.getUserId()))
       .then((user) => {
@@ -42,6 +50,19 @@ const ProfilePage = () => {
   const onEditClick = () => {
     setIsEdit(!isEdit);
   };
+
+  const onLanguageChanged = (e) => {
+    var userDetails = authenticationService.getAuthenticationInfo().userDetails;
+    userDetails.locale = e.target.value;
+    authenticationService.updateUserDetails(userDetails);
+    localStorage.setItem("locale", e.target.value);
+    authenticationService
+      .get(Endpoints.LanguageByIsoCode.replace("{0}", e.target.value))
+      .then((result) => {
+        setLanguage(result.data);
+        setTranslationsList(result.data.translations);
+      });
+  }
 
   const onPictureChanged = (file) => {
     const fileType = file.type.split("/")[0];
@@ -70,6 +91,7 @@ const ProfilePage = () => {
       firstName: firstName,
       lastName: lastName,
       picture: profileImage,
+      locale: localStorage.getItem("locale")
     };
     authenticationService
       .put(
@@ -95,7 +117,7 @@ const ProfilePage = () => {
   if (!isAuthenticated) loginWithRedirect();
   else {
     return (
-      <div className="qcg-profile-page">
+      <div className={`qcg-profile-page ${translationService.translate.general.direction}`}>
         <div className="profile-wrapper qcg-flex qcg-flex-column qcg-flex-align-center">
           <div onClick={onEditClick} className="edit-button">
             <ion-icon name="create-outline"></ion-icon>
@@ -103,7 +125,7 @@ const ProfilePage = () => {
           <div className="title-wrapper">
             <h1>{translationService.translate.profilePage.profileTitle}</h1>
           </div>
-          <div className="email-wrapper full-width qcg-flex">
+          <div className="email-wrapper full-width qcg-flex qcg-flex-align-center">
             <label className="qcg-flex qcg-flex-20">{translationService.translate.profilePage.profileEmail}</label>
             <input
               type="email"
@@ -114,7 +136,7 @@ const ProfilePage = () => {
               onChange={(e) => setEmail(e.target.value)}
             ></input>
           </div>
-          <div className="first-name-wrapper full-width qcg-flex">
+          <div className="first-name-wrapper full-width qcg-flex qcg-flex-align-center">
             <label className="qcg-flex qcg-flex-20">{translationService.translate.profilePage.profileFirstName}</label>
             <input
               type="text"
@@ -124,7 +146,7 @@ const ProfilePage = () => {
               onChange={(e) => setFirstName(e.target.value)}
             ></input>
           </div>
-          <div className="last-name-wrapper full-width qcg-flex">
+          <div className="last-name-wrapper full-width qcg-flex qcg-flex-align-center">
             <label className="qcg-flex qcg-flex-20">{translationService.translate.profilePage.profileLastName}</label>
             <input
               type="text"
@@ -133,6 +155,16 @@ const ProfilePage = () => {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             ></input>
+          </div>
+          <div className="languages-wrapper full-width qcg-flex qcg-flex-align-center">
+            <label className="qcg-flex qcg-flex-20">{translationService.translate.profilePage.profileLanguage}</label>
+            <select value={localStorage.getItem("locale")} onChange={(e) => onLanguageChanged(e)} className={`qcg-flex qcg-flex-60 ${!isEdit && "input-disabled"}`} name="languages" id="languages">
+              {
+                translationsList?.map(translation => {
+                  return <option value={translation.isoCode}>{translation.title}</option>
+                })
+              }
+          </select>
           </div>
           <div className="picture-wrapper">
             <input

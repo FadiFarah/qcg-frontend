@@ -11,8 +11,10 @@ import { Endpoints, States } from './constants';
 import NavbarComponent from "./components/navbar/navbar.component";
 import AuthenticationService from './services/authentication.service';
 import HttpHandlerService from './services/http-handler.service';
+import TranslationService from './services/translation.service';
 function App() {
     const authenticationService = new AuthenticationService();
+    const translationService = new TranslationService();
     const httpHandlerService = new HttpHandlerService();
     const [name, setName] = useState("");
     const { isLoading, isAuthenticated, getIdTokenClaims, getAccessTokenSilently, logout, loginWithRedirect } = useAuth0();
@@ -46,7 +48,7 @@ function App() {
         });
     }
     return (
-        <div className="qcg-app qcg-flex qcg-flex-column">
+        <div className={`qcg-app qcg-flex qcg-flex-column ${translationService.translate.general.direction}`}>
             <BrowserRouter>
                 {
                     !window.location.pathname.includes(States.Game) &&

@@ -23,6 +23,7 @@
       "profileEmail": "מייל",
       "profileFirstName": "שם פרטי",
       "profileLastName": "שם משפחה",
+      "profileLanguage": "שפה",
       "saveButton": "שמור",
       "logoutButton": "התנתק"
     },
@@ -33,11 +34,11 @@
         "errorMessage": "הסיסמה שהוזנה שגויה!"
       },
       "popupRoomFull": {
-        "title": "החדר מלא, אנא בחר חדר אחר.",
+        "title": ".החדר מלא, אנא בחר חדר אחר",
         "action": "אישור"
       },
       "popupRoomStarted": {
-        "title": "המשחק החל, אינך יכול להצטרף כעת.",
+        "title": ".המשחק החל, אינך יכול להצטרף כעת",
         "action": "אישור"
       },
       "roomListCreate": "צור חדר",
@@ -77,6 +78,14 @@
     },
     "startedStateComponent":  {
       "requestMessage": "תעביר לי"
+    },
+    "gameOverStateComponent":  {
+      "gameOverTitle": "תוצאת המשחק",
+      "gameOverSubTitleWin": "ניצחת!",
+      "gameOverSubTitleLose": "הפסדת!",
+      "playerWinner": "מצליחן",
+      "playerLoser": "מפסידן",
+      "returnToRoomButton": "חזור לחדר"
     },
     "gamePage": {
       "sidaBar": {

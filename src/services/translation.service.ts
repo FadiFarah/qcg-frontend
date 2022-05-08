@@ -29,6 +29,7 @@ interface translation {
         profileEmail: string;
         profileFirstName: string;
         profileLastName: string;
+        profileLanguage: string;
         saveButton: string;
         logoutButton: string;
     };
@@ -87,6 +88,15 @@ interface translation {
 
     startedStateComponent:  {
         requestMessage: string;
+    };
+
+    gameOverStateComponent:  {
+        gameOverTitle: string;
+        gameOverSubTitleWin: string;
+        gameOverSubTitleLose: string;
+        playerWinner: string;
+        playerLoser: string;
+        returnToRoomButton: string;
     };
 
     gamePage: {
