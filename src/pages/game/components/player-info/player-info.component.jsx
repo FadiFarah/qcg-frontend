@@ -27,6 +27,11 @@ const PlayerInfoComponent = (props) => {
           </div>
         </div>
       </div>
+      <div className="player-points qcg-flex qcg-flex-center">
+        <div>
+          {props.points}
+        </div>
+      </div>
       {
         props.isDonePlaying &&
         <div className="done-playing-wrapper qcg-flex qcg-flex-center">

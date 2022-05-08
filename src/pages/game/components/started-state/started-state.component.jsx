@@ -105,6 +105,7 @@ const StartedStateComponent = (props) => {
         <div className="qcg-flex qcg-flex-column qcg-flex-justify-space-evenly qcg-flex-center full-height">
           {props.players.map((player) => {
             return (
+              player.userId !== props.currentPlayer?.userId &&
               <div id={player.userId}>
                 <PlayerInfoComponent
                   id={player.userId}
@@ -113,6 +114,7 @@ const StartedStateComponent = (props) => {
                   fullName={player.fullName}
                   isTurn={player.isTurn}
                   isDonePlaying={player.isDonePlaying}
+                  points={player.points}
                   handlePlayerInfoClick={handlePlayerInfoClick}
                   currentPlayer={props.currentPlayer}
                 ></PlayerInfoComponent>

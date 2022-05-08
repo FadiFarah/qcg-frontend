@@ -1,6 +1,18 @@
 .qcg-player-info {
     position: relative;
 
+    .player-points {
+        position: absolute;
+        top: 0;
+        background-color: rgba(red,0.5);
+        color: white;
+        width: 2em;
+        min-width: fit-content;
+        min-height: 2em;
+        height: 25%;
+        z-index: 0;
+    }
+
     .done-playing-wrapper {
         height: 100%;
         width: 100%;
@@ -19,7 +31,7 @@
         .done-playing {
             width: min-content;
         }
-    }
+    }   
 
     .game-wrapper {
         height: 100%;
@@ -38,6 +50,7 @@
             border-radius: 50%;
             background-color: black;
             margin: 0 0.3em;
+            z-index: 1;
 
             img {
                 width: 100%;
@@ -69,5 +82,17 @@
             }
             
         }
+    }
+}
+
+.qcg-ltr {
+    .player-points {
+        right: 0;
+    }
+}
+
+.qcg-rtl {
+    .player-points {
+        left: 0;
     }
 }
