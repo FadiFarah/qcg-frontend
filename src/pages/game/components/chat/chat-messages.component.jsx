@@ -38,7 +38,7 @@ const ChatMessages = (props) => {
                   onKeyPress={(e) => {
                     e.key === "Enter" && handleNewChatMessageClick();
                   }}
-                  value={message}
+                  value={message ?? ""}
                 />
 
                 <div className="send-button qcg-flex">
@@ -57,8 +57,8 @@ const ChatMessages = (props) => {
                 className="new-messages-wrapper qcg-flex qcg-flex-column qcg-flex-col-1 full-height full-width"
                 ref={props.chatBoxRef}
               >
-                {props.chatMessagesList.map((message) => {
-                  return <div>{message}</div>;
+                {props.chatMessagesList.map((message, index) => {
+                  return <div key={index}>{message}</div>;
                 })}
               </div>
             </div>

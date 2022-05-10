@@ -21,6 +21,7 @@ const PopupMessageComponent = (props) => {
           {popupModalSettings.content?.map((card) => {
             return (
               <popupModalSettings.component
+              key={card._id}
                 handleCardClick={() =>
                   props.handleCardClick(
                     props.fromPlayerUserId,

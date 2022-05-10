@@ -389,9 +389,11 @@ const GamePage = () => {
           ...chatMessagesList,
           `${fullName}: ${chatMessage}`,
         ]);
-        setTimeout(() => {
-          chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-        }, 100);
+        if(chatBoxRef.current?.scrollHeight !== undefined) {
+          setTimeout(() => {
+            chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+          }, 100);
+        }
       });
 
       hubConnection.onclose(() => {

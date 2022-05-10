@@ -160,8 +160,8 @@ const ProfilePage = () => {
             <label className="qcg-flex qcg-flex-20">{translationService.translate.profilePage.profileLanguage}</label>
             <select value={localStorage.getItem("locale")} onChange={(e) => onLanguageChanged(e)} className={`qcg-flex qcg-flex-60 ${!isEdit && "input-disabled"}`} name="languages" id="languages">
               {
-                translationsList?.map(translation => {
-                  return <option value={translation.isoCode}>{translation.title}</option>
+                translationsList?.map((translation, index) => {
+                  return <option key={index} value={translation.isoCode}>{translation.title}</option>
                 })
               }
           </select>

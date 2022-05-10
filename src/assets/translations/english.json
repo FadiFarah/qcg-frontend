@@ -81,6 +81,9 @@
       "requestMessage": "give me",
       "dontHaveCardRequestMessage": "I don't have the card"
     },
+    "playerInfoComponent": {
+      "donePlayingMessage": "OUT OF CARDS"
+    },
     "gameOverStateComponent": {
       "gameOverTitle": "Game Result",
       "gameOverSubTitleWin": "You Win!",

@@ -16,8 +16,8 @@ const GameOverStateComponent = ({players, currentPlayer, handleReturnToRoomClick
                     players?.map((player, index) => {
 
                        return(
-                           <div className={`player-result qcg-flex ${player.userId === currentPlayer.userId && "current-player-selected"}`}>
-                                <div className="qcg-flex qcg-flex-center qcg-flex-20 full-width">
+                           <div className={`player-result qcg-flex ${player.userId === currentPlayer.userId && "current-player-selected"}`} key={index}>
+                                <div className="qcg-flex qcg-flex-center qcg-flex-20 full-width" >
                                     {index+1}
                                 </div>
                                 <div className="qcg-flex qcg-flex-align-center qcg-flex-10 full-width">

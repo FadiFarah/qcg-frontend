@@ -81,6 +81,9 @@
       "requestMessage": "תעביר לי",
       "dontHaveCardRequestMessage": "אין לי את הכרטיס המבוקש"
     },
+    "playerInfoComponent": {
+      "donePlayingMessage": "נגמרו הכרטיסים"
+    },
     "gameOverStateComponent": {
       "gameOverTitle": "תוצאת המשחק",
       "gameOverSubTitleWin": "ניצחת!",
