@@ -87,3 +87,9 @@
         }
     }
 }
+
+@media only screen and (max-width: 940px) and (min-height: 0px) {
+    .nav-items-wrapper {
+        flex-wrap: wrap;
+    }
+}

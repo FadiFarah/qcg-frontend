@@ -4,10 +4,11 @@
       "direction": "qcg-ltr"
     },
     "navbarComponent": {
-      "home": "home",
-      "about": "about",
-      "rules": "rules",
-      "profile": "profile",
+      "home": "Home",
+      "about": "About",
+      "rules": "Rules",
+      "profile": "Profile",
+      "leaderBoard":"Leader Board",
       "loginUserName": "Login",
       "welcomeUserName": "Welcome"
     },
@@ -27,6 +28,9 @@
       "profileLanguage": "Language",
       "saveButton": "Save",
       "logoutButton": "Logout"
+    },
+    "leaderBoardPage": {
+      "title": "Top 10 Players 🏆"
     },
     "roomsListPage": {
       "popupModelRoomsList": {

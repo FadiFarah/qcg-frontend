@@ -8,6 +8,7 @@
       "about": "אודות",
       "rules": "חוקים",
       "profile": "פרופיל",
+      "leaderBoard": "טבלת האלופים",
       "loginUserName": "התחבר",
       "welcomeUserName": "ברוך הבא"
     },
@@ -27,6 +28,9 @@
       "profileLanguage": "שפה",
       "saveButton": "שמור",
       "logoutButton": "התנתק"
+    },
+    "leaderBoardPage": {
+      "title": "עשרת המובילים 🏆"
     },
     "roomsListPage": {
       "popupModelRoomsList": {

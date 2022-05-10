@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import AuthenticationService from "../../services/authentication.service";
 import TranslationService from "../../services/translation.service";
+ 
 const NavbarComponent = (props) => {
   const navigationService = useNavigate();
   const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
@@ -35,6 +36,11 @@ const NavbarComponent = (props) => {
                 {
                   isAuthenticated &&
                   <a className="nav-item" href="" onClick={(e) => handleClick(e, States.Profile)}>{translationService.translate.navbarComponent.profile}</a>
+                }
+
+                {
+                  isAuthenticated &&
+                  <a className="nav-item" href="" onClick={(e) => handleClick(e, States.LeaderBoard)}>{translationService.translate.navbarComponent.leaderBoard}</a>
                 }
               </div>
               {
@@ -78,6 +84,14 @@ const NavbarComponent = (props) => {
                   <ion-label>{translationService.translate.navbarComponent.loginUserName}</ion-label>
                 </ion-fab-button>
             }
+
+            {
+              isAuthenticated &&
+               <ion-fab-button onClick={(e) => handleClick(e, States.LeaderBoard)} color="light">
+                  <ion-label>{translationService.translate.navbarComponent.leaderBoard}</ion-label>
+               </ion-fab-button>
+            }
+
           </ion-fab-list>
         </ion-fab>
       </div>

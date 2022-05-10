@@ -12,6 +12,7 @@ interface translation {
     about: string;
     rules: string;
     profile: string;
+    leaderBoard: string;
     loginUserName: string;
     welcomeUserName: string;
   };
@@ -33,6 +34,10 @@ interface translation {
     profileLanguage: string;
     saveButton: string;
     logoutButton: string;
+  };
+
+  leaderBoardPage: {
+    title: string;
   };
 
   roomsListPage: {

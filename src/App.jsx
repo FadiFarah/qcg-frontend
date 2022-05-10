@@ -12,6 +12,7 @@ import NavbarComponent from "./components/navbar/navbar.component";
 import AuthenticationService from './services/authentication.service';
 import HttpHandlerService from './services/http-handler.service';
 import TranslationService from './services/translation.service';
+import LeaderBoardPage from './pages/leader-board/leader-board.page';
 function App() {
     const authenticationService = new AuthenticationService();
     const translationService = new TranslationService();
@@ -58,10 +59,12 @@ function App() {
                     <Routes>
                         <Route path={States.Main} element={<HomePage />} />
                         <Route path={States.Profile} element={<ProfilePage />} />
+                        <Route path={States.LeaderBoard} element={<LeaderBoardPage />} />
                         <Route path={States.RoomCreation} element={<RoomCreationPage />} />
                         <Route path={States.RoomsList} element={<RoomsListPage />} />
                         <Route path={`${States.Game}/:id`} element={<GamePage />} />
                         <Route path={`${States.Game}/:id/:password`} element={<GamePage />} />
+
                     </Routes>
                 </div>
             </BrowserRouter>

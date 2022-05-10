@@ -15,6 +15,7 @@ export class States {
   public static Category: string = "/category";
   public static Game: string = "/game";
   public static Profile: string = "/profile";
+  public static LeaderBoard: string = "/leaderboard";
 }
 
 export class Endpoints {
@@ -31,4 +32,5 @@ export class Endpoints {
   public static Category: string = `${Endpoints.EndpointPrefix}/category`;
   public static Languages: string = `${Endpoints.EndpointPrefix}/language`;
   public static LanguageByIsoCode: string = `${Endpoints.EndpointPrefix}/language/{0}`;
+  public static usersTopLeaderboard: string = `${Endpoints.EndpointPrefix}/user/top/leaderboard`;
 }
