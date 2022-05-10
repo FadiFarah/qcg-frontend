@@ -2,8 +2,10 @@ import "./player-info.component.scss";
 import "./../../../../theme/flex.scss";
 import "./../../../../theme/theme.scss";
 import * as image from "../../../../assets/exports/images";
+import TranslationService from "../../../../services/translation.service"
 
 const PlayerInfoComponent = (props) => {
+  const translationService = new TranslationService();
   const handlePlayerInfoClick = (e) => {
     if (props.currentPlayer?.isTurn) {
       props.handlePlayerInfoClick(e, props.id);
@@ -36,7 +38,7 @@ const PlayerInfoComponent = (props) => {
         props.isDonePlaying &&
         <div className="done-playing-wrapper qcg-flex qcg-flex-center">
           <div className="done-playing">
-            OUT OF CARDS
+            {translationService.translate.PlayerInfoComponent.donePlayingMessage}
           </div>
         </div>
       }

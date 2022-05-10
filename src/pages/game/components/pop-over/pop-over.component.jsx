@@ -10,11 +10,12 @@ const PopOverComponent = (props) => {
         onClose={(e) => props.handleClose(e)}
       >
         <div>
-          {props.categoryGroups?.map((c) => {
+          {props.categoryGroups?.map((c, index) => {
             return (
               <div
                 className="item"
                 onClick={() => props.onCategoryGroupClick(props.id, c)}
+                key={index}
               >
                 {c}
               </div>

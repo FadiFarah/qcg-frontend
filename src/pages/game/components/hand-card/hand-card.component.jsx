@@ -38,9 +38,9 @@ const HandCardComponent = ({
         <img src={imageURL}></img>
       </div>
       <div className="the-whole-cards-four-options qcg-flex qcg-flex-justify-center">
-        {cardCategoryImages?.map((image) => {
+        {cardCategoryImages?.map((image, index) => {
           return (
-            <div className={`${image.isActive && "active-image"}`}>
+            <div className={`${image.isActive && "active-image"}`} key={index}>
               <img src={image?.imageURL} />
             </div>
           );

@@ -135,10 +135,10 @@ const StartedStateComponent = (props) => {
 
       <div className="game-players qcg-flex-5">
         <div className="qcg-flex qcg-flex-column qcg-flex-justify-space-evenly qcg-flex-center full-height">
-          {props.players.map((player) => {
+          {props.players.map((player, index) => {
             return (
               player.userId !== props.currentPlayer?.userId && (
-                <div id={player.userId}>
+                <div id={player.userId} key={index}>
                   <PlayerInfoComponent
                     id={player.userId}
                     picture={player.picture}
