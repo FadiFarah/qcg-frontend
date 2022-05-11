@@ -12,7 +12,6 @@ import WaitingStateComponent from "./components/waiting-state/waiting-state.comp
 import AuthenticationService from "../../services/authentication.service";
 import * as signalR from "@microsoft/signalr";
 import ChatMessages from "./components/chat/chat-messages.component";
-import { list } from "firebase/storage";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoaderCompletedComponent from "../../components/loader-completed/loader-completed.component";
 import HandCardComponent from "./components/hand-card/hand-card.component";
