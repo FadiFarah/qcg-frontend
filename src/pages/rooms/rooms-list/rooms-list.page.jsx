@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoaderCompletedComponent from "../../../components/loader-completed/loader-completed.component";
 import TranslationService from "../../../services/translation.service";
+import { Button } from "@mui/material";
 
 const RoomsListPage = () => {
   const authenticationService = new AuthenticationService();
@@ -150,7 +151,14 @@ const RoomsListPage = () => {
     return (
       <div className={`qcg-rooms-list-page ${translationService.translate.general.direction}`}>
         <Tabs>
-          <a href={States.RoomCreation}>{translationService.translate.roomsListPage.roomListCreate}</a>
+            <div className="create-button qcg-flex-align-self-start">
+              <Button
+                variant="contained"
+                onClick={() => navigationService(States.RoomCreation)}
+              >
+                {translationService.translate.roomsListPage.roomListCreate}
+              </Button>
+            </div>
           <h1 className="qcg-flex-align-self-center">{translationService.translate.roomsListPage.roomsListTitle}</h1>
           <TabList>
             <Tab>

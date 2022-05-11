@@ -1,8 +1,11 @@
 .qcg-rooms-list-page {
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
   height: calc(100vh - 10em);
   overflow-y: scroll;
+
+  .MuiButton-root {
+    text-transform: none;
+    width: 11em;
+  }
 
   .react-tabs {
     background-color: rgb(255, 255, 255);

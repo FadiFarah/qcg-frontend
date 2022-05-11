@@ -1,20 +1,19 @@
 .qcg-pop-over {
-}
-
-ion-popover {
-    --width: fit-content;
-
-    ion-list {
-        &.list-md {
-            padding-top: unset;
-            padding-bottom: unset;
-        }
-
-        ion-item {
-            border-bottom: 1px solid rgb(159, 158, 158);
-            --inner-border-width: 0;
-            --padding-start: 0.5em;
-            --inner-padding-end: 0.5em;
+    ion-popover {
+        --width: fit-content;
+        
+        ion-list {
+            &.list-md {
+                padding-top: unset;
+                padding-bottom: unset;
+            }
+            
+            ion-item {
+                border-bottom: 1px solid rgb(159, 158, 158);
+                --inner-border-width: 0;
+                --padding-start: 0.5em;
+                --inner-padding-end: 0.5em;
+            }
         }
     }
 }
