@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import AuthenticationService from "../../services/authentication.service";
 import TranslationService from "../../services/translation.service";
+ 
 const NavbarComponent = (props) => {
   const navigationService = useNavigate();
   const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
@@ -20,15 +21,15 @@ const NavbarComponent = (props) => {
   };
 
   return (
-    <div className="qcg-navbar qcg-flex">
+    <div className={`qcg-navbar qcg-flex ${translationService.translate.general.direction}`}>
       <ion-header translucent>
         <ion-toolbar>
           <ion-title>
             <div className="qcg-flex">
-              <div className="qcg-flex qcg-flex-30">
+              <div className="qcg-flex qcg-flex-15">
                 <img src={image.logo}></img>
               </div>
-              <div className="nav-items-wrapper qcg-flex qcg-flex-40 qcg-flex-center qcg-flex-justify-space-evenly">
+              <div className="nav-items-wrapper qcg-flex qcg-flex-auto qcg-flex-center">
                 <a className="nav-item" href="#home" onClick={(e) => handleClick(e, States.Main)}>{translationService.translate.navbarComponent.home}</a>
                 <a className="nav-item" href="#rules" onClick={(e) => handleClick(e, States.Main)}>{translationService.translate.navbarComponent.rules}</a>
                 <a className="nav-item" href="#about" onClick={(e) => handleClick(e, States.Main)}>{translationService.translate.navbarComponent.about}</a>
@@ -36,10 +37,15 @@ const NavbarComponent = (props) => {
                   isAuthenticated &&
                   <a className="nav-item" href="" onClick={(e) => handleClick(e, States.Profile)}>{translationService.translate.navbarComponent.profile}</a>
                 }
+
+                {
+                  isAuthenticated &&
+                  <a className="nav-item" href="" onClick={(e) => handleClick(e, States.LeaderBoard)}>{translationService.translate.navbarComponent.leaderBoard}</a>
+                }
               </div>
               {
                 !isLoading &&
-                <div className="auth-details qcg-flex qcg-flex-auto qcg-flex-align-center qcg-flex-justify-content-end">
+                <div className="auth-details qcg-flex qcg-flex-15 qcg-flex-align-center qcg-flex-justify-content-end">
                   {
                     !isAuthenticated ?
                       <a href="#" onClick={loginWithRedirect}>{translationService.translate.navbarComponent.loginUserName}</a>
@@ -54,7 +60,11 @@ const NavbarComponent = (props) => {
         </ion-toolbar>
       </ion-header>
       <div className="floating-button">
-        <ion-fab horizontal="end" vertical="top" slot="fixed">
+        <ion-fab horizontal={
+                translationService.translate.general.direction === "qcg-ltr"
+                  ? "end"
+                  : "start"
+              } vertical="top" slot="fixed">
           <ion-fab-button>
             <ion-icon name="chevron-down-outline"></ion-icon>
           </ion-fab-button>
@@ -78,6 +88,14 @@ const NavbarComponent = (props) => {
                   <ion-label>{translationService.translate.navbarComponent.loginUserName}</ion-label>
                 </ion-fab-button>
             }
+
+            {
+              isAuthenticated &&
+               <ion-fab-button onClick={(e) => handleClick(e, States.LeaderBoard)} color="light">
+                  <ion-label>{translationService.translate.navbarComponent.leaderBoard}</ion-label>
+               </ion-fab-button>
+            }
+
           </ion-fab-list>
         </ion-fab>
       </div>

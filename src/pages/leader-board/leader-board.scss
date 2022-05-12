@@ -1,0 +1,60 @@
+.qcg-leader-board-page {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    text-transform: uppercase;
+    overflow-y: scroll;
+    line-height: normal;
+    height: calc(100vh - 10em);
+
+    .wrapper {
+      height: 100%;
+      width: 83%;
+  
+      .board-wrapper {
+        height: fit-content;
+        background-color: white;
+        border-radius: 2em;
+        box-shadow: 0 0 3em rgb(124, 124, 124);
+        margin: 1.5em 0;
+        padding: 1em;
+
+        .circle-around {
+          color: rgb(181, 71, 71);
+          border-radius: 2em;
+          box-shadow: 0 0 3em rgb(124, 124, 124);
+          margin: 0.5em 0;
+          padding: 1em;  
+          width:80%;
+          align-items: center;
+  
+          div {
+              margin-right: 1rem;   
+          }
+          
+          img {
+            height: 2.5rem;
+            width: 2.5rem;
+            margin-right: 1rem;
+            border-radius: 50%;
+          } 
+        }
+      }
+    }
+
+    @media only screen and (max-width: 940px) and (max-height: 660px) {
+      &.qcg-leader-board-page {
+        
+        .wrapper {
+          display: flex;
+          justify-content: center;
+  
+          .board-wrapper {
+            width: 80%;
+
+            .circle-around {
+              overflow: scroll;
+            }
+          } 
+        }
+      }
+    }
+  } 
