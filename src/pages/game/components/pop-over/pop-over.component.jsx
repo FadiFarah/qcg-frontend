@@ -1,5 +1,5 @@
 import "./pop-over.component.scss";
-import { Popover } from "@mui/material";
+import { Button, Popover } from "@mui/material";
 const PopOverComponent = (props) => {
   return (
     <div className="qcg-pop-over">
@@ -8,16 +8,25 @@ const PopOverComponent = (props) => {
         open={props.isOpen}
         anchorEl={props.anchorEl}
         onClose={(e) => props.handleClose(e)}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
       >
         <div>
           {props.categoryGroups?.map((c, index) => {
             return (
-              <div
-                className="item"
-                onClick={() => props.onCategoryGroupClick(props.id, c)}
-                key={index}
-              >
-                {c}
+              <div className="item" key={index}>
+                <Button
+                  variant="contained"
+                  onClick={() => props.onCategoryGroupClick(props.id, c)}
+                  >
+                  {c}
+                </Button> 
               </div>
             );
           })}
