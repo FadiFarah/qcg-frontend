@@ -82,8 +82,9 @@
       "hostStartGameButton": "Start"
     },
     "startedStateComponent": {
-      "requestMessage": "give me",
-      "dontHaveCardRequestMessage": "I don't have the card"
+      "requestMessage": "give me the card",
+      "dontHaveCardRequestMessage": "I don't have that card",
+      "ofType": "of type"
     },
     "playerInfoComponent": {
       "donePlayingMessage": "OUT OF CARDS"

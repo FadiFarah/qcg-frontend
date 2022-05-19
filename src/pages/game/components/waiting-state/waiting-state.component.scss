@@ -80,9 +80,14 @@
             transition: 0.2s ease-in;
         }
 
+        .button-disabled {
+            background: rgb(204, 204, 204);
+            color: rgb(255, 255, 255);
+        }
+
         button:hover {
             background: rgb(204, 204, 204);
-            color: rgb(129, 127, 127);
+            color: rgb(255, 255, 255);
         }
     }
 

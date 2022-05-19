@@ -6,7 +6,7 @@ import AuthenticationService from '../../services/authentication.service';
 import { Endpoints } from '../../constants';
 
 const LeaderBoardPage = (props) => {
-  const leaderBoardPlayers = props.leaderBoardPlayers;
+    const leaderBoardPlayers = props.leaderBoardPlayers;
     const authenticationService = new AuthenticationService();
     const translationService = new TranslationService();
     const [leaderboardUsers, setLeaderboardUsers] = useState([]);
