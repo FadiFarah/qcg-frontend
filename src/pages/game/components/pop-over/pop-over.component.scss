@@ -17,3 +17,14 @@
         }
     }
 }
+
+.MuiPaper-root {
+    .item {
+        .MuiButton-root {
+            width: -webkit-fill-available;
+            height: 1.6em;
+            margin: 0.2em;
+            text-transform: none;    
+        }
+    }
+}
