@@ -1,8 +1,11 @@
+import { useEffect, useState, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import * as signalR from "@microsoft/signalr";
+import { useAuth0 } from "@auth0/auth0-react";
+
 import "./game.page.scss";
 import "./../../theme/flex.scss";
 import "./../../theme/theme.scss";
-import { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { Endpoints, Limitations, States } from "../../constants";
 import HomePage from "../home/home.page";
 import RoomsListPage from "../rooms/rooms-list/rooms-list.page";
@@ -10,13 +13,12 @@ import PopupMessageComponent from "../../components/popup-message/popup-message.
 import StartedStateComponent from "./components/started-state/started-state.component";
 import WaitingStateComponent from "./components/waiting-state/waiting-state.component";
 import AuthenticationService from "../../services/authentication.service";
-import * as signalR from "@microsoft/signalr";
 import ChatMessages from "./components/chat/chat-messages.component";
-import { useAuth0 } from "@auth0/auth0-react";
 import LoaderCompletedComponent from "../../components/loader-completed/loader-completed.component";
 import HandCardComponent from "./components/hand-card/hand-card.component";
 import TranslationService from "../../services/translation.service";
 import GameOverStateComponent from "./components/game-over-state/game-over-state.component";
+import { textToSpeech } from "../../helpers/text-to-speech.helper";
 
 const GamePage = () => {
   const { id, password } = useParams();
@@ -43,11 +45,13 @@ const GamePage = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [cardsRequest, setCardsRequest] = useState([]);
   const chatBoxRef = useRef();
-  console.log(id);
-  console.log(password);
   const [cardNotifyDetails, setCardNotifyDetails] = useState({});
   const [connectionId, setConnectionId] = useState("");
   const [cardRequestDontHave, setCardRequestDontHave] = useState({});
+
+  console.log(id);
+  console.log(password);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
     setIsChatDisplay(!isChatDisplay);
@@ -79,7 +83,21 @@ const GamePage = () => {
     });
     setPopupAlert(true);
   };
-
+const cardRequestFromPlayer = async (connectionId, fromPlayerUserId, toPlayerUserId, card, players) => {
+  const body = {
+    roomId: id,
+    connectionId: connectionId,
+    fromPlayerUserId: fromPlayerUserId,
+    toPlayerUserId: toPlayerUserId,
+    categoryGroup: card.categoryGroup,
+    cardName: card.cardName,
+    card: card,
+  };
+  await authenticationService.post(
+    `${Endpoints.SignalRGameEndpointPrefix}/cardRequestFromPlayer`,
+    body
+  );
+}
   const handleCardClick = async (fromPlayerUserId, toPlayerUserId, card) => {
     const body = {
       roomId: id,
@@ -94,11 +112,6 @@ const GamePage = () => {
 
     await authenticationService.post(
       `${Endpoints.SignalRGameEndpointPrefix}/cardRequestNotify`,
-      body
-    );
-
-    await authenticationService.post(
-      `${Endpoints.SignalRGameEndpointPrefix}/cardRequestFromPlayer`,
       body
     );
   };
@@ -334,13 +347,15 @@ const GamePage = () => {
               });
             } else {
               setCardRequestDontHave(updatedDetails);
+              var text = translationService.translate.startedStateComponent.dontHaveCardRequestMessage;
+              textToSpeech(text);
               setTimeout(() => {
                 setCardRequestDontHave({
                   ...updatedDetails,
                   isOpen: false,
                   toPlayerUserId: "",
                 });
-              }, 3000);
+              }, 4000);
             }
           }
         }
@@ -348,7 +363,7 @@ const GamePage = () => {
 
       hubConnection.on(
         "cardRequestNotify",
-        (connectionId, fromPlayerUserId, toPlayerUserId, card, players) => {
+        async (connectionId, fromPlayerUserId, toPlayerUserId, card, players) => {
           var playersReceived = JSON.parse(players);
           var toPlayer = playersReceived?.find(
             (player) => player.userId === toPlayerUserId
@@ -368,13 +383,16 @@ const GamePage = () => {
             });
           } else {
             setCardNotifyDetails(requestDetails);
+            var text = `${toPlayer?.fullName} ${translationService.translate.startedStateComponent.requestMessage} ${requestDetails.card.cardName} ${translationService.translate.startedStateComponent.ofType} ${requestDetails.card.categoryGroup}`;
+            await textToSpeech(text);
             setTimeout(() => {
+              cardRequestFromPlayer(connectionId, fromPlayerUserId, toPlayerUserId, requestDetails.card, players);
               setCardNotifyDetails({
                 ...requestDetails,
                 isOpen: false,
                 fromPlayerUserId: "",
               });
-            }, 3000);
+            }, 4000);
           }
         }
       );

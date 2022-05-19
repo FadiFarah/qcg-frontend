@@ -95,6 +95,7 @@ interface translation {
   startedStateComponent: {
     requestMessage: string;
     dontHaveCardRequestMessage: string;
+    ofType: string;
   };
 
   gameOverStateComponent: {

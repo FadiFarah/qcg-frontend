@@ -82,8 +82,9 @@
       "hostStartGameButton": "התחל משחק"
     },
     "startedStateComponent": {
-      "requestMessage": "תעביר לי",
-      "dontHaveCardRequestMessage": "אין לי את הכרטיס המבוקש"
+      "requestMessage": "תעביר לי את הקלף",
+      "dontHaveCardRequestMessage": "אין לי את הקלף המבוקש",
+      "ofType": "מסוג"
     },
     "playerInfoComponent": {
       "donePlayingMessage": "נגמרו הכרטיסים"

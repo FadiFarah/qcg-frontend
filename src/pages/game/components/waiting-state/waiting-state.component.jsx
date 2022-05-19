@@ -3,6 +3,7 @@ import "../../../../theme/theme.scss";
 import "../../../../theme/flex.scss";
 import * as image from "../../../../assets/exports/images"
 import TranslationService from "../../../../services/translation.service";
+import { Limitations } from "../../../../constants";
 
 const WaitingStateComponent = ({ players, isMaster, handleStartClick, roomName }) => {
     const translationService = new TranslationService();
@@ -43,7 +44,7 @@ const WaitingStateComponent = ({ players, isMaster, handleStartClick, roomName }
             {
                 isMaster &&
                 <div onClick={() => handleStartClick()} className="button-wrapper qcg-flex">
-                    <button className="qcg-flex qcg-flex-20 qcg-flex-center">{translationService.translate.waitingStateComponent.hostStartGameButton}</button>
+                    <button disabled={players.length < Limitations.MinPlayers} className={`qcg-flex qcg-flex-20 qcg-flex-center ${players.length < Limitations.MinPlayers && 'button-disabled'}`}>{translationService.translate.waitingStateComponent.hostStartGameButton}</button>
                 </div>
             }
         </div>
