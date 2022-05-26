@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "./home.page.scss";
 import TranslationService from "../../services/translation.service";
 import NewlineText from "../../components/newline-text/newline-text.component";
+import FooterComponent from "../../components/footer/footer.component";
 
 const HomePage = () => {
   const translationService = new TranslationService();
@@ -66,6 +67,8 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+
+      <FooterComponent/>
     </div>
   );
 };
