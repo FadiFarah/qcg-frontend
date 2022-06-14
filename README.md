@@ -1,70 +1,89 @@
-# Getting Started with Create React App
+<p align="center"><img src="https://i.imgur.com/LjcWukf.png" width="300px"></p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Project Title
 
-## Available Scripts
+Quartets Card Educational Game
 
-In the project directory, you can run:
+## Description
+You might know this famous game and maybe played with your family, our interactive game is the same and you can play between 2 up to 4 people. All the players start with 4 cards in their hand and each category include 9 quartets.
+Our goal is to give you the best experience online which will be very similar (and maybe better) than reality. 
 
-### `npm start`
+Ok, Lets Start! 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Before you create a new game, you have to sign up/log in, find a free room and wait for the other players to log in. It might take a while, so be patient. If you forgot the rules, or if it's your first time playing, that's ok. You can always navigate to the Rules section by clicking The 'RULES' button on the of the screen. 
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The winner is the player with the highest number of quartets, so have fun and lets hope you will be the winner of your table!
 
-### `npm test`
+## WebSite
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+    https://quartet-card-game.herokuapp.com/
+```
 
-### `npm run build`
+## Video
+[![Watch the video](https://user-images.githubusercontent.com/93646445/173228071-09e282ab-c79d-4963-b1c7-65cb1e5aba38.png)](https://vimeo.com/715371009)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Features
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Support both languages English & Hebrew
+- Responsive to computer & phone devices
+- Chat online between players in the same room
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Run Locally
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Clone the project
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+  git clone https://github.com/FadiFarah/qcg-frontend
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+Install dependencies
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+  npm install
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Start the server
 
-### Code Splitting
+```bash
+  npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🔗 Repositories links
+- [Backend](https://github.com/FadiFarah/qcg-backend)
+- [Services](https://github.com/FadiFarah/qcg-services)
 
-### Analyzing the Bundle Size
+## Screenshots
+![site](https://user-images.githubusercontent.com/93646445/173227657-e0a6c99b-807d-4c7f-8291-58047f373fff.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Tech Stack :computer:
 
-### Making a Progressive Web App
+**Client:** JavaScript, Scss, React
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+**Server:** TypeScript, Node, Express, Azure
 
-### Advanced Configuration
+**Deploy:** Heroku
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+## Color Reference
+| Hex                                                                |
+ ------------------------------------------------------------------ |
+| #2e6f95 |
+| #455e89 |
+| #2e6f95 |
+| #455e89 |
+| #b92b27 |
+| #1565c0 |
+| #b7094c |
+| #723c70 |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Authors
 
-### `npm run build` fails to minify
+- [@Fadi Farah](https://github.com/FadiFarah)
+- [@Asaf Yacobovich](https://github.com/Asafyaco)
+- [@Bat El Peretz](https://github.com/PeretzBatel)
+- [@Amit Galam](http://github.com/amitimo)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
